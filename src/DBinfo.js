@@ -2,8 +2,8 @@
 module.exports = {
   connectionstring : {
   host    	: '******',
-  port	   	: '*****',
-  user 	   	: '******',
+  port 		: '*****',
+  user		: '******',
   password 	: '******',
   database	: '******'
 	}
