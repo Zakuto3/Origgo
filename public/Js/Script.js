@@ -1,7 +1,6 @@
 var postmsg = 'this came from script';
 
-
-//native Post/AJAX to serverside
+//native Post/AJAX to serverside: https://blog.garstasio.com/you-dont-need-jquery/ajax/
 function loginrequest(){
 let x = document.getElementById("btn-change");
 xhr = new XMLHttpRequest();

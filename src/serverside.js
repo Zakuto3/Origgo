@@ -1,8 +1,7 @@
-let express = require('express');
-let mysql = require('mysql');
-let bodyParser = require('body-parser');
-let http = require('http');
-let fs = require('fs');
+let express = require('express'); // https://expressjs.com/en/guide/routing.html
+let mysql = require('mysql');// https://www.npmjs.com/package/mysql
+let bodyParser = require('body-parser');// https://www.npmjs.com/package/body-parser
+let fs = require('fs'); // https://www.w3schools.com/nodejs/nodejs_filesystem.asp
 let db = require('./DBinfo');
 
 let app = express();
@@ -41,7 +40,7 @@ app.post('/request',(req, res) =>{
   res.send(DBresult) //sends DB result,
 });
 
-//request to go to map site, only allowed if loged in
+//request to go to map site, only allowed if loged in 
 app.get('/map.html', (req, res) => {
   if (login) {
     res.send(fs.readFileSync('../public/map.html', 'utf8'));
@@ -52,6 +51,6 @@ app.get('/map.html', (req, res) => {
 
 app.use(express.static(__dirname + '/../public')); // if not this is given, give specific adress like : app.get('/', (req, res) => res.send(fs.readFileSync('./index.html', 'utf8')));
 
-//keep server live trough port 3000
+//keep server live trough port 3000 // https://stackabuse.com/how-to-start-a-node-server-examples-with-the-most-popular-frameworks/
 app.listen(3000, () => console.log('Server running on port 3000.'));
 
