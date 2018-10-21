@@ -7,8 +7,6 @@ let db = require('./DBinfo');
 let app = express();
 //sets connection to Database with the specifics given from DBinfo.js
 let connection = mysql.createConnection(db.connectionstring);
-//sets static directory, "root" of homepage
-
 
 //use for complex json parsing
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,6 +47,7 @@ app.get('/map.html', (req, res) => {
   }
 });
 
+//sets static directory, "root" of homepage
 app.use(express.static(__dirname + '/../public')); // if not this is given, give specific adress like : app.get('/', (req, res) => res.send(fs.readFileSync('./index.html', 'utf8')));
 
 //keep server live trough port 3000 // https://stackabuse.com/how-to-start-a-node-server-examples-with-the-most-popular-frameworks/
