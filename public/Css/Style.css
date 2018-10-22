@@ -203,3 +203,8 @@ h1 {
     }
 }
 
+#map {
+    max-width: 100%;
+    border: 2px solid #00004d;
+}
+
