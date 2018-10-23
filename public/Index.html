@@ -3,7 +3,8 @@
 	<head> 
 		<meta charset="utf-8">
         <title>Project for Web application</title>
-        <link rel="stylesheet" href="Css/Style.css" type="text/css">
+        <link rel="stylesheet" href="/Css/Style.css" type="text/css">
+        <script type="text/javascript" src="./Js/Script.js"></script>
 	</head>
 	<body>
       <div id="container">
@@ -14,13 +15,12 @@
                 <input type="text"r placeholder="Search for flights..." name="search">
                 <button type="submit">Track</button>
             </div>
-            <div class="button"><button>Login</button></div>
+            <div class="button" onclick="loginrequest()"><button>Login</button></div>
             <div class="button1"><button>Signup</button></div>
         </div>
         <div class="navigation">
             <ul> 
-              <li><a href="index.html">Home</a></li>
-                
+              <li><a href="index.html">Home</a></li>              
               <li><a href="map.html">Map</a></li> 
               <li><a href="flights.html">Flights</a></li>
               <li><a href="airports.html">Airports</a></li>
@@ -53,7 +53,7 @@
                 <div class="fakeimg" style="height:60px;">Text</div><br>
             </div>
             <div class="column middle">
-                <h2>A real map goes here</h2>
+                <h2 id="element-test">A real map goes here</h2>
                 <img alt="map" src="pictures/map.jpg">
             </div>
             <div class="column right">
@@ -70,12 +70,12 @@
           
     </div>
         <script>
-           var slideIndex = 0;
+           let slideIndex = 0;
            showSlides();
 
     function showSlides() {
-    var i;
-    var slides = document.getElementsByClassName("mySlides");
+    let i;
+    let slides = document.getElementsByClassName("mySlides");
     for (i = 0; i < slides.length; i++) {
        slides[i].style.display = "none";  
     }
