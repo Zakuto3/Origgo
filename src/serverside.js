@@ -3,6 +3,7 @@ let mysql = require('mysql');// https://www.npmjs.com/package/mysql
 let bodyParser = require('body-parser');// https://www.npmjs.com/package/body-parser
 let fs = require('fs'); // https://www.w3schools.com/nodejs/nodejs_filesystem.asp
 let db = require('./DBinfo');
+let https = require('https');
 
 let app = express();
 //sets connection to Database with the specifics given from DBinfo.js
