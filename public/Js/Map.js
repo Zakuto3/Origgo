@@ -20,7 +20,9 @@ function initAirplanes(url, options){
   const planeOptions ={
     url : url,
     layer: planeLayer,
-    limit : options.limit || 1000
+    limit : options.limit || 1000,
+    updates : options.updates || true,
+    updateInterval: options.updateInterval || 10000
   };
   /*loader takes a function that loads the source*/
   let planeSource = new ol.source.Vector({
@@ -43,6 +45,9 @@ function loadLayer(options, loader){
     if(this.readyState == 4 && this.status == 200){
       let data = JSON.parse(this.responseText);
       loader(data, options.layer, options.limit);
+      if(options.updates){
+        setInterval(function(){ updateAirplanesCoords(options.url, options.layer); }, options.updateInterval);
+      }
     }
   }
   req.open("GET", options.url);
@@ -94,4 +99,39 @@ function planeLoader(data, layer, limit){
     map.addLayer(layer);
   }
 };
+
+/*Similar to airplaneloader but updates
+the coordinates on planes existing in layer*/
+function updateAirplanesCoords(url, layer){
+  let req = new XMLHttpRequest();
+  req.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){
+      let data = JSON.parse(this.responseText);
+      let states = data.states || undefined;
+      if(states){
+        let source = layer.getSource();
+        states.forEach(function(plane){
+          /*Indexes 5,6 contains coordinates for the plane*/
+          let lat = plane[6];
+          let lon = plane[5];
+          /*lookup if plane with icao24(plane[0]) code exists*/
+          let existingPlane = source.getFeatureById(plane[0]) || undefined;
+          if(lat && lon && existingPlane){
+            /*Convert the coordinates to our system before updating*/
+            let newCoords = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857');
+            let geom = existingPlane.getGeometry().setCoordinates(newCoords);
+            /*plane[10] contains direction in degrees, north = 0*/
+            existingPlane.getStyle().getImage().setRotation(toRadians(plane[10]));
+          }
+        });
+        console.log("Airplanes coordinates updated");
+      }
+      else{
+        console.log("States array was null");
+      }
+    }
+  }
+  req.open("GET", url);
+  req.send();
+}
 
