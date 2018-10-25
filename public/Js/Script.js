@@ -18,3 +18,20 @@ xhr.onload = function() {
 xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
 }
 
+function searchPlanes(str){
+    let input = document.getElementById("search");
+    filter = input.value.toUpperCase();
+    xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:3000/search?q='+str);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            document.getElementById("livesearch").innerHTML = this.responseText;
+        }
+        else if (xhr.status !== 200) {
+            alert('Request failed.  Returned status of ' + xhr.status);
+        }
+    };
+    xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
+}

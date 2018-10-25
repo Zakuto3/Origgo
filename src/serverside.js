@@ -28,7 +28,7 @@ connection.query('SELECT name FROM origgo.tesssst WHERE id = 1;',  (error, resul
   console.log('result from Database: on "SELECT name FROM origgo.tesssst WHERE id = 1;": ', results[0].name);
   DBresult = results[0].name;
 });
-connection.end();
+
 
 //Post awaint requests, DB connection should be inside this but separeted for better understanding
 let login = false;
@@ -38,6 +38,19 @@ app.post('/request',(req, res) =>{
   console.log("login: ",login);
   res.send(DBresult) //sends DB result,
 });
+
+var queryRes="";
+app.post('/search', function(req, res){
+  connection.query("select * from airport where city like '%"+req.query.q+"%'", (err, results, fields) =>{
+    if(err) console.log(err);
+    if(results) {
+        console.log('result', results[0].city);
+        queryRes = results[0].city;
+    }else{queryRes = "No match"}
+  });
+    console.log("req.body: ",req.body,"req.query: ",req.query);
+    res.send(queryRes);
+})
 
 //request to go to map site, only allowed if loged in 
 app.get('/map.html', (req, res) => {
