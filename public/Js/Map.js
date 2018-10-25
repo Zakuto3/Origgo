@@ -81,7 +81,7 @@ function planeLoader(data, layer, limit){
         newPlane.setStyle(new ol.style.Style({
           image: new ol.style.Icon({
             scale: 0.03,
-            src: 'plane.png',
+            src: 'pictures/vector-plane.png',
             /*Index 10 contains plane rotation in degrees
             North is 0 degrees. Openlayers wants radians*/
             rotation: toRadians(plane[10])
