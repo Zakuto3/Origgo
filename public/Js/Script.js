@@ -20,6 +20,7 @@ xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
 
 function searchPlanes(str){
     let input = document.getElementById("search");
+    let jsonData ="";
     filter = input.value.toUpperCase();
     xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:3000/search?q='+str);
@@ -27,7 +28,10 @@ function searchPlanes(str){
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            document.getElementById("livesearch").innerHTML = this.responseText;
+            jsonData = JSON.parse(this.responseText);
+            jsonData.forEach(function(element){
+                document.getElementById("livesearch").innerHTML = "<a>"+element.iataCode+" "+element.city+"</a><br>";
+            })
         }
         else if (xhr.status !== 200) {
             alert('Request failed.  Returned status of ' + xhr.status);

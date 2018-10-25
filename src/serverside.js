@@ -39,17 +39,21 @@ app.post('/request',(req, res) =>{
   res.send(DBresult) //sends DB result,
 });
 
-var queryRes="";
+var queryRes;
 app.post('/search', function(req, res){
-  connection.query("select * from airport where city like '%"+req.query.q+"%'", (err, results, fields) =>{
-    if(err) console.log(err);
-    if(results) {
-        console.log('result', results[0].city);
-        queryRes = results[0].city;
-    }else{queryRes = "No match"}
-  });
-    console.log("req.body: ",req.body,"req.query: ",req.query);
-    res.send(queryRes);
+  if(req.query.q!="") {
+      connection.query("select * from airport where city like '%" + req.query.q + "%'", (err, rows, fields) => {
+          if (err) console.log(err);
+          if (rows!= null) {
+              console.log('result', rows[0].city);
+              queryRes = JSON.stringify(rows);
+          } else {
+              // queryRes = {"No Match"};
+          }
+      });
+  }else{queryRes = "No Match";}
+      console.log("req.body: ", req.body, "req.query: ", req.query);
+      res.send(queryRes);
 })
 
 //request to go to map site, only allowed if loged in 

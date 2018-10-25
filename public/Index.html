@@ -14,9 +14,11 @@
             <div class="logo" style="flex-grow: 1"><a href="Index.html"><img alt="logo" src="pictures/logo.jpg" style="width:150px;height:150px;"></a></div>
             <h1>Flight tracking</h1>
             <div class="searchbar"  style="flex-grow: 7">
-                <input type="text"  id="search" placeholder="Search for flights..." name="search" onkeyup="searchPlanes(this.value)">
-                <button type="submit">Track</button>
-                <div id="livesearch"></div>
+                   <input type="text"  id="search" placeholder="Search for flights..." name="search" onkeyup="searchPlanes(this.value)">
+                   <button type="submit">Track</button>
+                <div class="drpdwn-content">
+                   <div id="livesearch"></div>
+               </div>
             </div>
             <div class="button" onclick="loginrequest()"><button>Login</button></div>
             <div class="button1"><button>Signup</button></div>

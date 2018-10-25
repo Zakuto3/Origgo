@@ -52,6 +52,23 @@ h1 {
     color: white;
     box-shadow: #1f1f60 0px 0px 40px 0px;
 }
+.drpdwn-content{
+    position: relative;
+    display: inline-block;
+    background-color: #66b3ff;
+    min-width: 70%;
+    overflow: auto;
+    border: none;
+    z-index: 1;
+}
+.drpdwn-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.drpdwn a:hover {background-color: #ddd;}
+
 .button {
     padding-top: 5%;
     color:#66b3ff; 
@@ -192,7 +209,7 @@ h1 {
 
 .fakeimg {
     background-color: #6699cc;
-    max-width:  width: 80%;
+    max-width: 80%;
     padding: 20px;
 }
 
