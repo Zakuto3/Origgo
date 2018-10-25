@@ -47,6 +47,35 @@ app.get('/map.html', (req, res) => {
   }
 });
 
+/*Sends all airplanes data to client*/
+app.get('/addAirplanes', (req, res) => {
+  request("https://opensky-network.org/api/states/all", function(data){
+    res.send(data);
+  })
+});
+
+/*function for accessing WEB API through https module,
+see it as serverside making requests to services*/
+function request(link, func){
+  let req = https.request(link, function(res){
+    //console.log(res.statusCode);
+    if(res.statusCode == 301){
+      request(res.headers.location, func);
+    }
+    else if(res.statusCode == 200){
+      let datastring = "";
+      res.setEncoding('utf8');
+      res.on('data', function(data){
+        datastring += data;
+      });
+      res.on('end', function(){
+        func(JSON.parse(datastring));
+      })      
+    }
+  });
+  req.end();
+}
+
 //sets static directory, "root" of homepage
 app.use(express.static(__dirname + '/../public')); // if not this is given, give specific adress like : app.get('/', (req, res) => res.send(fs.readFileSync('./index.html', 'utf8')));
 
