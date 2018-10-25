@@ -71,6 +71,10 @@ app.get('/addAirplanes', (req, res) => {
           planes.push(planeObject);
         }
       });
+      console.log("States true");
+    }
+    else{
+      console.log("States null");
     }
     res.send(planes);
   });
