@@ -47,11 +47,32 @@ app.get('/map.html', (req, res) => {
   }
 });
 
-/*Sends all airplanes data to client*/
+/*Sends all current non-null airplanes to client*/
 app.get('/addAirplanes', (req, res) => {
   request("https://opensky-network.org/api/states/all", function(data){
-    res.send(data);
-  })
+    let states = data.states || undefined;
+    let planes = [];
+    if(states){
+      states.forEach(function(plane){
+        /*Boolean if plane is on ground*/
+        let planeGrounded = plane[8];
+        /*Indexes 5,6 contains coordinates for the plane*/
+        let lat = plane[6];
+        let lon = plane[5];
+        if(!planeGrounded && lat && lon){
+          /*Index 10 contains plane rotation in degrees
+          North is 0 degrees. Index 0 has unique icao24 code*/
+          let planeObject = { icao24: plane[0],
+            lat: lat,
+            lon: lon,
+            direction: plane[10],
+             };
+          planes.push(planeObject);
+        }
+      });
+    }
+    res.send(planes);
+  });
 });
 
 /*function for accessing WEB API through https module,

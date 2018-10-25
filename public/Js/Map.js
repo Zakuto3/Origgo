@@ -57,48 +57,33 @@ function loadLayer(options, loader){
 /*loader function for airplanes.
 Adds specified amount of airplanes to a source
 for a layer and adds that layer*/
-function planeLoader(data, layer, limit){
-  /*States is array from response that contains
-  a plane on each index, can be null*/
-  let states = data.states || undefined;
-  if(states){
-    let source = layer.getSource();
-    let count = 0;
-    states.forEach(function(plane){
-      /*Boolean if plane is on ground*/
-      let planeGrounded = plane[8];
-      /*Indexes 5,6 contains coordinates for the plane*/
-      let lat = plane[6];
-      let lon = plane[5];
-      if(!planeGrounded && lat && lon && count < limit){
-        /*Convert the coordinates to our system*/
-        let coords = ol.proj.transform([lon,lat], 'EPSG:4326', 'EPSG:3857');
-        /*Create a point for the plane*/
-        let newPlane = new ol.Feature({
-          geometry: new ol.geom.Point([coords[0], coords[1]])
-        });
-        /*Set the image of the plane*/
-        newPlane.setStyle(new ol.style.Style({
-          image: new ol.style.Icon({
-            scale: 0.03,
-            src: 'pictures/vector-plane.png',
-            /*Index 10 contains plane rotation in degrees
-            North is 0 degrees. Openlayers wants radians*/
-            rotation: toRadians(plane[10])
-          })
-        }));
-        /*index 0 is the unique icao24 code*/
-        newPlane.setId(plane[0]);
-        /*Add plane to the source connected to the layer*/
-        source.addFeature(newPlane);
-        count++;
-      }
+function planeLoader(planes, layer, limit){
+  let source = layer.getSource();
+  for(let i = 0; i < planes.length && i < limit; i++){
+    /*Convert the coordinates to our system*/
+    let coords = ol.proj.transform([planes[i].lon, planes[i].lat], 'EPSG:4326', 'EPSG:3857');
+    /*Create a point for the plane*/
+    let newPlane = new ol.Feature({
+      geometry: new ol.geom.Point([coords[0], coords[1]])
     });
+    /*Set the image of the plane*/
+    newPlane.setStyle(new ol.style.Style({
+      image: new ol.style.Icon({
+        scale: 0.03,
+        src: 'pictures/vector-plane.png',
+        /*Openlayers wants radians*/
+        rotation: toRadians(planes[i].direction)
+      })
+    }));
+    /*set Id for point to be able to find it later*/
+    newPlane.setId(planes[i].icao24);
+    /*Add plane to the source connected to the layer*/
+    source.addFeature(newPlane);
+  }
     /*After all planes are added to the source, add the layer
     connected to source to the map*/
     map.addLayer(layer);
-  }
-};
+}
 
 /*Similar to airplaneloader but updates
 the coordinates on planes existing in layer*/
@@ -106,29 +91,20 @@ function updateAirplanesCoords(url, layer){
   let req = new XMLHttpRequest();
   req.onreadystatechange = function(){
     if(this.readyState == 4 && this.status == 200){
-      let data = JSON.parse(this.responseText);
-      let states = data.states || undefined;
-      if(states){
-        let source = layer.getSource();
-        states.forEach(function(plane){
-          /*Indexes 5,6 contains coordinates for the plane*/
-          let lat = plane[6];
-          let lon = plane[5];
-          /*lookup if plane with icao24(plane[0]) code exists*/
-          let existingPlane = source.getFeatureById(plane[0]) || undefined;
-          if(lat && lon && existingPlane){
-            /*Convert the coordinates to our system before updating*/
-            let newCoords = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857');
-            let geom = existingPlane.getGeometry().setCoordinates(newCoords);
-            /*plane[10] contains direction in degrees, north = 0*/
-            existingPlane.getStyle().getImage().setRotation(toRadians(plane[10]));
-          }
-        });
-        console.log("Airplanes coordinates updated");
+      let planes = JSON.parse(this.responseText);
+      let source = layer.getSource();
+      for (let i = 0; i < planes.length; i++) {
+        /*Plane need to exist in layer already, we can't update a nonexisting plane*/
+        let existingPlane = source.getFeatureById(planes[i].icao24) || undefined;
+        if(existingPlane){
+          /*Convert the coordinates to our system before updating*/
+          let newCoords = ol.proj.transform([planes[i].lon, planes[i].lat], 'EPSG:4326', 'EPSG:3857');
+          let geom = existingPlane.getGeometry().setCoordinates(newCoords);
+          /*degress must be converted to radians for Openlayers*/
+          existingPlane.getStyle().getImage().setRotation(toRadians(planes[i].direction));
+        }
       }
-      else{
-        console.log("States array was null");
-      }
+      console.log("Updated airplane coordinates");
     }
   }
   req.open("GET", url);
