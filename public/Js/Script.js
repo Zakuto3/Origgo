@@ -30,7 +30,7 @@ function searchPlanes(str){
         if (xhr.status === 200) {
             jsonData = JSON.parse(this.responseText);
             jsonData.forEach(function(element){
-                document.getElementById("livesearch").innerHTML = "<a>"+element.iataCode+" "+element.city+"</a><br>";
+                document.getElementById("livesearch").innerHTML = document.getElementById("livesearch")+"<a>"+element.iataCode+" "+element.city+"</a><br>";
             })
         }
         else if (xhr.status !== 200) {
