@@ -44,8 +44,7 @@ app.post('/search', function(req, res){
   if(req.query.q!="") {
       connection.query("select * from airport where city like '%" + req.query.q + "%'", (err, rows, fields) => {
           if (err) console.log(err);
-          if (rows!= null) {
-              console.log('result', rows[0].city);
+          if (rows!= null){
               queryRes = JSON.stringify(rows);
           } else {
               // queryRes = {"No Match"};
