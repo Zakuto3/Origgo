@@ -29,9 +29,10 @@ function searchPlanes(str){
     xhr.onload = function() {
         if (xhr.status === 200) {
             jsonData = JSON.parse(this.responseText);
-            jsonData.forEach(function(element){
-                document.getElementById("livesearch").innerHTML = document.getElementById("livesearch")+"<a>"+element.iataCode+" "+element.city+"</a><br>";
-            })
+            for (let index = 0; index > 5; index++) {
+                div.getElementsByTagName("a")[index].innerHTML = jsonData[index].iataCode+" "+jsonData[index].city;
+                div.getElementsByTagName("a")[index].style.display="";
+            }
         }
         else if (xhr.status !== 200) {
             alert('Request failed.  Returned status of ' + xhr.status);

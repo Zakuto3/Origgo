@@ -42,11 +42,11 @@ app.post('/request',(req, res) =>{
 var queryRes;
 app.post('/search', function(req, res){
   if(req.query.q!="") {
-      connection.query("select * from airport where city like '%" + req.query.q + "%' or iataCodes like '%" + req.query.q + "%'", (err, rows, fields) => {
+      connection.query("select * from airport where city like '%" + req.query.q + "%'", (err, rows, fields) => {
           if (err) console.log(err);
           if (Object.keys(rows).length){
             console.log(rows[0].city);
-              queryRes = JSON.stringify(rows);
+            queryRes = JSON.stringify(rows);
           } else {
               // queryRes = ;
           }
