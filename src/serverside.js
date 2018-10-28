@@ -4,8 +4,11 @@ let bodyParser = require('body-parser');// https://www.npmjs.com/package/body-pa
 let fs = require('fs'); // https://www.w3schools.com/nodejs/nodejs_filesystem.asp
 let db = require('./DBinfo');
 let https = require('https');
+let session = require('express-session');
+let app = express(); //---
 
-let app = express();
+app.use(session({secret: 'ALDO4923ALFO2QIA', resave: false, saveUninitialized : true, cookie:{ maxAge: 3600000}}));
+
 //sets connection to Database with the specifics given from DBinfo.js
 let connection = mysql.createConnection(db.connectionstring);
 
@@ -20,32 +23,40 @@ app.use(function (req, res, next) {
     next();
 });
 
-//testing connection, sending a query to DB, This is gonna be wrapped in post request below
-let DBresult = "";
-connection.connect(); 
-connection.query('SELECT name FROM origgo.tesssst WHERE id = 1;',  (error, results, fields) => {
-  if (error) throw error;
-  console.log('result from Database: on "SELECT name FROM origgo.tesssst WHERE id = 1;": ', results[0].name);
-  DBresult = results[0].name;
-});
-connection.end();
+var checklogin = function(req){ 
+  return new Promise(function(resolve, reject) { //makes a promise for sequential exection
+   connection.query('SELECT IF(EXISTS(SELECT * from origgo.users where Name = '+'"'+req.body.Name+'"'+' AND Password = '+'"'+req.body.Pass+'"'+'),1,0) AS result;',
+    (error, results, fields) => {   
+      if (error) return reject (error);
+      return resolve(results[0].result);
+    });
+  });
+};
+  
+app.post('/loginbtn',(req, res) =>{ 
 
-//Post awaint requests, DB connection should be inside this but separeted for better understanding
-let login = false;
-app.post('/request',(req, res) =>{
-  login = true;
-  console.log("req.body: ",req.body,"req.query: ",req.query); 
-  console.log("login: ",login);
-  res.send(DBresult) //sends DB result,
-});
-
-//request to go to map site, only allowed if loged in 
-app.get('/map.html', (req, res) => {
-  if (login) {
-    res.send(fs.readFileSync('../public/map.html', 'utf8'));
-  }else{
-    res.send(fs.readFileSync('../public/index.html', 'utf8'));
+  checklogin(req).then(function(data){
+    if (Number(data)){
+     req.session.login = true;
+     req.session.name = req.body.Name;
   }
+  console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass); 
+  res.send(req.session.login);
+  })  
+});
+
+app.post('/check',(req, res) =>{
+    res.send(req.session.name);
+});
+
+app.get('/logout',function(req,res){
+  req.session.destroy(function(err) {
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect('/');
+    }
+  });
 });
 
 /*Sends all current non-null airplanes to client*/
@@ -63,7 +74,8 @@ app.get('/addAirplanes', (req, res) => {
         if(!planeGrounded && lat && lon){
           /*Index 10 contains plane rotation in degrees
           North is 0 degrees. Index 0 has unique icao24 code*/
-          let planeObject = { icao24: plane[0],
+          let planeObject = { 
+            icao24: plane[0],
             lat: lat,
             lon: lon,
             direction: plane[10],

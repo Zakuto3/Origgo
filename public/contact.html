@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="Css/Style.css">
         <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
         <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
-        <script type="text/javascript" src="./Js/Script.js"></script>
+        <script type="text/javascript" src="./Js/index.js"></script>
 	</head>
 	<body>
       <div id="container">
@@ -18,8 +18,8 @@
                 <input type="text"r placeholder="Search for flights..." name="search">
                 <button type="submit">Track</button>
             </div>
-            <div class="button" onclick="loginrequest()"><button>Login</button></div>
-            <div class="button1"><button>Signup</button></div>
+            <div class="button"><button onclick="reDir()" id="loginIndex">Login</button></div>
+            <div class="button1" id="signupIndex"><button>Signup</button></div>
         </div>
         <div class="navigation">
             <ul> 
@@ -61,7 +61,7 @@
                 <h2 id="element-test">Contact list</h2>
             <div class="column right">
                 <h3>More info</h3>
-                <p>Jsdhs dsjfd  fjd  fjdjf</p>
+                <p id="moreInfo"></p>
                 <div class="fakeimg" style="height:60px;">1.info</div><br>
                 <div class="fakeimg" style="height:60px;">2.info</div><br>
                 <div class="polaroid">

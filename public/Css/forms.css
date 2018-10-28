@@ -5,6 +5,10 @@ body {
 b {
     color:#00004d;
 }
+h3 {
+    text-align: center;
+    color:#F5431D;
+}
 h2 {
     text-align: center;
 }
@@ -59,7 +63,3 @@ button:hover {
     padding: 16px;
 }
 
-span.psw {
-    padding-top: 16px;
-    margin: 0 auto;
-}

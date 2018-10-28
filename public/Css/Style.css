@@ -107,7 +107,7 @@ button:hover {
     visibility: visible;
     display: block;
 }
-.navigation a:link, a:active, a:visited {
+.navigation a:link, a:visited {
     display:inline-block;
     color: #f2f2f2;
     text-align: center;
@@ -269,6 +269,7 @@ button:hover {
     padding: 10px;
     text-align: center;
     align-content: center;
+    display: none;
 }
 
 
@@ -368,3 +369,10 @@ button:hover {
     padding: 2%;
 }
 
+#loginform{
+    width: 40%;
+    margin: auto;
+    margin-top: 1%;
+    background-color: white;
+    box-shadow: white 0px 0px 10px 0px;
+}
