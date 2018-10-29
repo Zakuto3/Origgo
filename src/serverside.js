@@ -5,8 +5,16 @@ let fs = require('fs'); // https://www.w3schools.com/nodejs/nodejs_filesystem.as
 let db = require('./DBinfo');
 let https = require('https');
 let session = require('express-session');
-let app = express(); //---
+let app = express();
 
+let crypto;
+try {
+  crypto = require('crypto');
+} catch (err) {
+  console.log('crypto support is disabled!');
+}
+
+//session cookie setting lives for 1h
 app.use(session({secret: 'ALDO4923ALFO2QIA', resave: false, saveUninitialized : true, cookie:{ maxAge: 3600000}}));
 
 //sets connection to Database with the specifics given from DBinfo.js
@@ -23,18 +31,19 @@ app.use(function (req, res, next) {
     next();
 });
 
-var checklogin = function(req){ 
-  return new Promise(function(resolve, reject) { //makes a promise for sequential exection
-   connection.query('SELECT IF(EXISTS(SELECT * from origgo.users where Name = '+'"'+req.body.Name+'"'+' AND Password = '+'"'+req.body.Pass+'"'+'),1,0) AS result;',
-    (error, results, fields) => {   
+var checklogin = function(req){
+  return new Promise(function(resolve, reject) { //makes a promise for sequential execution
+  const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
+  connection.query('SELECT IF(EXISTS(SELECT * from origgo.users where Name = '+'"'+req.body.Name+'"'+' AND Password = '+'"'+hash+'"'+'),1,0) AS result;',
+     (error, results, fields) => {  
+      console.log(hash); 
       if (error) return reject (error);
       return resolve(results[0].result);
     });
   });
 };
   
-app.post('/loginbtn',(req, res) =>{ 
-
+app.post('/loginbtn',(req, res) =>{
   checklogin(req).then(function(data){
     if (Number(data)){
      req.session.login = true;

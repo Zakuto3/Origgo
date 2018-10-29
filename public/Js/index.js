@@ -1,6 +1,6 @@
 function reDir() {
 	req = new XMLHttpRequest();
-	req.open('post','http://83.255.27.47:3000/check');
+	req.open('post','http://localhost:3000/check');
 	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	req.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){
@@ -15,7 +15,7 @@ function reDir() {
 }
 //check if user is loged in to show proper UI
 req = new XMLHttpRequest();
-req.open('post','http://83.255.27.47:3000/check');
+req.open('post','http://localhost:3000/check');
 req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 req.onreadystatechange = function(){
 	if(this.readyState == 4 && this.status == 200){
