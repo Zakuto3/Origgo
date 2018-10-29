@@ -31,27 +31,38 @@ app.use(function (req, res, next) {
     next();
 });
 
-var checklogin = function(req){
-  return new Promise(function(resolve, reject) { //makes a promise for sequential execution
-  const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
-  connection.query('SELECT IF(EXISTS(SELECT * from origgo.users where Name = '+'"'+req.body.Name+'"'+' AND Password = '+'"'+hash+'"'+'),1,0) AS result;',
-     (error, results, fields) => {  
-      console.log(hash); 
-      if (error) return reject (error);
-      return resolve(results[0].result);
+//makes a promise for sequential execution for database
+var DatabaseConn = function(queryString){
+  return new Promise(function(resolve, reject) { 
+  connection.query(queryString,(error, results, fields) => {  
+      if (error) return reject(error);
+      return resolve(results);
     });
   });
 };
   
 app.post('/loginbtn',(req, res) =>{
-  checklogin(req).then(function(data){
-    if (Number(data)){
+  const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
+  const QueryString = 'SELECT IF(EXISTS(SELECT * from origgo.users where Name = '+'"'+req.body.Name+'"'+' AND Password = '+'"'+hash+'"'+'),1,0) AS result;';
+
+  DatabaseConn(QueryString).then(function(data){
+    if (Number(data[0].result)){
      req.session.login = true;
      req.session.name = req.body.Name;
   }
   console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass); 
   res.send(req.session.login);
   })  
+});
+
+app.post('/signupForm', (req, res) =>{
+
+  const hash = crypto.createHmac('sha256', req.body.Password).digest('hex');
+  const QueryString = 'INSERT INTO `origgo`.`users` (`Name`, `Password`, `eMail`, `compName`) VALUES ('+'"'+req.body.Username+'"'+', '+'"'+hash+'"'+', '+'"'+req.body.Mail+'"'+', '+'"'+req.body.Company+'"'+');';
+
+  DatabaseConn(QueryString).then(function(data){
+    res.send(data.affectedRows.toString());
+  })
 });
 
 app.post('/check',(req, res) =>{
@@ -66,6 +77,22 @@ app.get('/logout',function(req,res){
       res.redirect('/');
     }
   });
+});
+
+app.get('/signup.html',(req, res) =>{//makes sure user dont reach signup if logedin
+    if (req.session.login) {
+      res.redirect('/');
+    }else{
+      res.send(fs.readFileSync(__dirname + '/../public/signup.html', 'utf8'));//go to signup
+    }
+});
+
+app.get('/login.html',(req, res) =>{
+    if (req.session.login) {
+      res.redirect('/');
+    }else{
+      res.send(fs.readFileSync(__dirname + '/../public/login.html', 'utf8'));
+    }
 });
 
 /*Sends all current non-null airplanes to client*/
