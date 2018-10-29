@@ -22,14 +22,14 @@ function searchPlanes(str){
     let input = document.getElementById("search");
     let jsonData ="";
     var drp = document.getElementById("drop");
-    var a = drp.getElementsByTagName("a")
+    var a = drp.getElementsByTagName("a");
     filter = input.value.toUpperCase();
     xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:3000/search?q='+str);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
-        console.log("baum!!!!");
+        console.log("baum!!!!"+xhr.responseText);
         if (xhr.status === 200) {
             jsonData = JSON.parse(xhr.responseText);
             for (let index = 0; index < 5; index++) {

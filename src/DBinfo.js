@@ -5,6 +5,6 @@ module.exports = {
   port	   	: '3306',
   user 	   	: 'Lennnyo',
   password 	: 'doggo21',
-  database	: 'origgo'
+  database	: 'origgox'
 	}
 };

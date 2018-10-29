@@ -76,16 +76,29 @@ h1 {
 
 .button {
     padding-top: 5%;
-    color:#66b3ff; 
+    border-radius: 2px;
 }
 
 .button1 {
     padding-top: 5%;
-    color:#66b3ff;
     padding-right: 1%;
     padding-left: 1%;
-    
+
 }
+
+button {
+    background-color: #66b3ff;
+    color: aliceblue;
+    border: none;
+    box-shadow: #1f1f60 0px 0px 40px 0px;
+    border-radius: 2px;
+}
+button:hover {
+    -ms-transform: scale(1.05); /* IE 9 */
+    -webkit-transform: scale(1.05); /* Safari 3-8 */
+    transform: scale(1.05);
+}
+
 
 
 .navigation {
@@ -107,24 +120,15 @@ h1 {
 
  .navigation li {
     display: inline-block;
-}
 
-/*dropdown*/
- .navigation li li{
-    position: absolute;
-}
-.navigation ul ul{
-    position: absolute;
-    display: block;
-    top: 100%;
-    padding: 0;
+   padding: 0;
 }
 
 .navigation ul li:hover > li{
     visibility: visible;
     display: block;
 }
-.navigation a:link {
+.navigation a:link, a:visited {
     display:inline-block;
     color: #f2f2f2;
     text-align: center;
@@ -135,8 +139,8 @@ h1 {
     text-decoration: none;
     text-transform: uppercase;
     border-radius: 5px;
-    -moz-borderradius: 10px;
-    
+    -moz-border-radius: 10px;
+
 }
 .navigation a:hover {
     background-color: #66b3ff;
@@ -162,17 +166,33 @@ h1 {
 
 .slideshow-container {
     max-width: 100%;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: #c2c2f0 0px 0px 10px 0px;
 }
 
-/* News image captions(it desn't sho) */
-.content {
-    background: rgb(0, 0, 0);
-    background: rgba(0, 0, 0, 0.5); 
-    color: #f1f1f1;
-    position: relative;
-    bottom: 8px;
-    left: 16px;
+.text {
+    background-color:white;
+    padding: 5px;
+    text-align: center;
+    width: 100%;
+    box-shadox: none;
+    color: black;
+    opacity: 0.5;
 }
+
+/*slideshow caption
+.slideshow-container .text {
+  position:absolute;
+    background-color:#5d7fb9;
+    opacity:0.75;
+    color:white;
+    font-size:12px;
+    border:none;
+    z-index:2;
+    widows: 100%
+}
+*/
 .fade {
   -webkit-animation-name: fade;
   -webkit-animation-duration: 2s;
@@ -180,13 +200,45 @@ h1 {
   animation-duration: 2s;
 }
 @-webkit-keyframes fade {
-  from {opacity: .4} 
+  from {opacity: .4}
   to {opacity: 1}
 }
 
 @keyframes fade {
-  from {opacity: .4} 
+  from {opacity: .4}
   to {opacity: 1}
+}
+
+/*news buttons after slide show*/
+.section button:hover {
+    opacity: 2;
+    -ms-transform: scale(1.05); /* IE 9 */
+    -webkit-transform: scale(1.05); /* Safari 3-8 */
+    transform: scale(1.05);
+}
+
+.section button {
+    box-shadow: none;
+    width: 100%;
+    border-radius: 2px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.ttl {
+    background-color:#7070db;
+    padding: 5px;
+    text-align: left;
+    width: 100%;
+    box-shadox: none;
+}
+.txt {
+    background-color: white;
+    padding: 5px;
+    text-align: left;
+    width: 100%;
+    opacity: 0.5;
+    color: gray;
+    height: 70px;
+
 }
 
 .column.middle {
@@ -198,10 +250,38 @@ h1 {
     text-align: center;
 }
 
-.column.middle img {
-    max-width: 100%;
+.add-container {
+    border-style: dotted;
+    border-color: darkslateblue;
+    width: 70%;
+    display: block;
+    margin: 0 auto;
+    background-color: white;
+
+}
+.add-box {
+    text-align: center;
+    padding: 1px 5px;
+    color: white;
+    background-color: #ec1313;
+    text-align: left;
+    padding-left: 20px;
 }
 
+.add2-box {
+    text-align: center;
+    padding: 1px 5px;
+    color: black;
+    background-color: white;
+    text-align: left;
+    padding-left: 20px;
+    opacity: 0.5;
+    font-size: 15px;
+}
+
+.add2-box:hover {
+    opacity: 1;
+}
 .column.right {
     -webkit-flex: 1;
     -ms-flex: 1;
@@ -210,12 +290,32 @@ h1 {
     padding: 10px;
     text-align: center;
     align-content: center;
+    display: none;
 }
+
 
 .fakeimg {
     background-color: #6699cc;
-    max-width: 80%;
+
     padding: 20px;
+    text-align: left;
+}
+
+/*info about weather */
+.polaroid {
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.box {
+    text-align: center;
+    padding: 1px 5px;
+    color: white;
+    background-color: #00004d;
+}
+.polaroid:hover {
+    opacity: 0.72;
 }
 
 @media (max-width: 600px) {
@@ -225,6 +325,8 @@ h1 {
     }
 }
 
+
+/*map style*/
 .map {
     max-width: 100%;
     border: 2px solid #00004d;
@@ -289,3 +391,10 @@ h1 {
     padding: 2%;
 }
 
+#loginform{
+    width: 40%;
+    margin: auto;
+    margin-top: 1%;
+    background-color: white;
+    box-shadow: white 0px 0px 10px 0px;
+}

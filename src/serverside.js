@@ -4,8 +4,19 @@ let bodyParser = require('body-parser');// https://www.npmjs.com/package/body-pa
 let fs = require('fs'); // https://www.w3schools.com/nodejs/nodejs_filesystem.asp
 let db = require('./DBinfo');
 let https = require('https');
-
+let session = require('express-session');
 let app = express();
+
+let crypto;
+try {
+  crypto = require('crypto');
+} catch (err) {
+  console.log('crypto support is disabled!');
+}
+
+//session cookie setting lives for 1h
+app.use(session({secret: 'ALDO4923ALFO2QIA', resave: false, saveUninitialized : true, cookie:{ maxAge: 3600000}}));
+
 //sets connection to Database with the specifics given from DBinfo.js
 let connection = mysql.createConnection(db.connectionstring);
 
@@ -20,24 +31,33 @@ app.use(function (req, res, next) {
     next();
 });
 
-//testing connection, sending a query to DB, This is gonna be wrapped in post request below
-let DBresult = "";
-connection.connect(); 
-connection.query('SELECT name FROM origgo.tesssst WHERE id = 1;',  (error, results, fields) => {
-  if (error) throw error;
-  console.log('result from Database: on "SELECT name FROM origgo.tesssst WHERE id = 1;": ', results[0].name);
-  DBresult = results[0].name;
+var checklogin = function(req){
+  return new Promise(function(resolve, reject) { //makes a promise for sequential execution
+  const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
+  connection.query('SELECT IF(EXISTS(SELECT * from origgo.users where Name = '+'"'+req.body.Name+'"'+' AND Password = '+'"'+hash+'"'+'),1,0) AS result;',
+     (error, results, fields) => {  
+      console.log(hash); 
+      if (error) return reject (error);
+      return resolve(results[0].result);
+    });
+  });
+};
+  
+app.post('/loginbtn',(req, res) =>{
+  checklogin(req).then(function(data){
+    if (Number(data)){
+     req.session.login = true;
+     req.session.name = req.body.Name;
+  }
+  console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass); 
+  res.send(req.session.login);
+  })  
 });
 
-
-//Post awaint requests, DB connection should be inside this but separeted for better understanding
-let login = false;
-app.post('/request',(req, res) =>{
-  login = true;
-  console.log("req.body: ",req.body,"req.query: ",req.query); 
-  console.log("login: ",login);
-  res.send(DBresult) //sends DB result,
+app.post('/check',(req, res) =>{
+    res.send(req.session.name);
 });
+
 
 var queryRes;
 app.post('/search', function(req, res){
@@ -63,6 +83,16 @@ app.get('/map.html', (req, res) => {
   }else{
     res.send(fs.readFileSync('../public/index.html', 'utf8'));
   }
+
+app.get('/logout',function(req,res) {
+    req.session.destroy(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/');
+        }
+    });
+});
 });
 
 /*Sends all current non-null airplanes to client*/
@@ -80,7 +110,8 @@ app.get('/addAirplanes', (req, res) => {
         if(!planeGrounded && lat && lon){
           /*Index 10 contains plane rotation in degrees
           North is 0 degrees. Index 0 has unique icao24 code*/
-          let planeObject = { icao24: plane[0],
+          let planeObject = { 
+            icao24: plane[0],
             lat: lat,
             lon: lon,
             direction: plane[10],
@@ -124,4 +155,3 @@ app.use(express.static(__dirname + '/../public')); // if not this is given, give
 
 //keep server live trough port 3000 // https://stackabuse.com/how-to-start-a-node-server-examples-with-the-most-popular-frameworks/
 app.listen(3000, () => console.log('Server running on port 3000.'));
-
