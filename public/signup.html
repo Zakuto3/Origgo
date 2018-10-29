@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html> 
 	<head> 
-		<meta charset="utf-8">
+        <meta charset="utf-8">
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
         <link rel="stylesheet" href="Css/forms.css" type="text/css">
+        <link rel="stylesheet" type="text/css" href="Css/Style.css">
+        <script type="text/javascript" src="./Js/signup.js"></script>
         <title>Project for Web application</title>
 	</head>
 	<body>
         <a href="Index.html"><img src="pictures/logo.jpg"></a>
         <h1>Flight tracking</h1>
-        <form action="/action_page.php">
+         <div id="loginform">
+        <!-- <form action="/signup-form/"> -->
+            <div class="container">
+                <label for="name"><h2>Sign up</h2></label>
+                <h3 id="errormsg"></h3>
+                <label for="name"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" id="Username" required>
 
-  <div class="container">
-    <label for="name"><h2>Sign up</h2></label>
-    <label for="name"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" id="Password" required>
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
-      
-    <label for="mail"><b>E-mail</b></label>
-    <input type="text" placeholder="Enter Your E-mail Address" name="mail" required> 
-      
-      <label for="coo"><b>Company name</b></label>
-    <input type="password" placeholder="Enter Name of Your Company" name="coo" required>
-      
-    <button type="submit">Sign up</button>
-  </div>
-    <label><input type="checkbox" name="employer">Employer</label>
-            
-    <label><input type="checkbox" name="employee">Employee</label>
-            
-</form>
-      
-		
+                <label for="mail"><b>E-mail</b></label>
+                <input type="text" placeholder="Enter Your E-mail Address" name="mail" id="Mail" required> 
+
+                <label for="coo"><b>Company name</b></label>
+                <input type="password" placeholder="Enter Name of Your Company" name="coo" id="Company" required>
+
+                <button id="submit" onclick="signupRequest()">Sign up</button>
+        </div>         
+        <!-- </form> -->
+    </div>
+<script>
+    document.getElementById("Company").addEventListener("keyup", function(event) {
+        event.preventDefault();
+            if (event.keyCode === 13) {
+         document.getElementById("submit").click();
+        }
+    });
+  </script>
 	</body>
 </html>
