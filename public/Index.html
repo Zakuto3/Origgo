@@ -14,14 +14,16 @@
             <div class="logo" style="flex-grow: 1"><a href="Index.html"><img alt="logo" src="pictures/logo.jpg" style="width:150px;height:150px;"></a></div>
             <h1>Flight tracking</h1>
             <div class="searchbar"  style="flex-grow: 7">
-                   <input type="text"  id="search" placeholder="Search for flights..." name="search" onkeyup="searchPlanes(this.value)">
-                   <button type="submit">Track</button>
-                <div class="drpdwn-content">
-                    <a id="livesearch0" style="display:none;"></a>
-                    <a id="livesearch1" style="display:none;"></a>
-                    <a id="livesearch2" style="display:none;"></a>
-                    <a id="livesearch3" style="display:none;"></a>
-                    <a id="livesearch4" style="display:none;"></a>
+                <div class="dropdown">
+                    <input type="text"  id="search" placeholder="Search for flights..." name="search" onkeyup="searchPlanes(this.value)">
+                    <button type="submit">Track</button>
+                    <div id="drop" class="drpdwn-content">
+                        <a href="#"></a>
+                        <a href="#"></a>
+                        <a href="#"></a>
+                        <a href="#"></a>
+                        <a href="#"></a>
+                    </div>
                 </div>
             </div>
             <div class="button" onclick="loginrequest()"><button>Login</button></div>

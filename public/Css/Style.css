@@ -52,9 +52,14 @@ h1 {
     color: white;
     box-shadow: #1f1f60 0px 0px 40px 0px;
 }
-.drpdwn-content{
+
+.dropdown{
     position: relative;
     display: inline-block;
+}
+.drpdwn-content{
+    position: absolute;
+    display: none;
     background-color: #66b3ff;
     min-width: 70%;
     overflow: auto;
