@@ -12,11 +12,13 @@ const map = new ol.Map({
   })
 });	
 
+let planeLayer; //moved, needed access in flyToPlane()
+
 initAirplanes("/addAirplanes", { limit : 50 });
 
 //Adds planes to the map
 function initAirplanes(url, options){
-  let planeLayer = new ol.layer.Vector();
+  planeLayer = new ol.layer.Vector();
   const planeOptions ={
     url : url,
     layer: planeLayer,
@@ -111,3 +113,45 @@ function updateAirplanesCoords(url, layer){
   req.send();
 }
 
+let intervalId; //needed to cancel intervals
+
+/*takes a planes icao24 number that is plane
+id in map. Then zooms on it and keeps centered*/
+function flyToPlane(icao24){
+  let view = map.getView();
+  let source = planeLayer.getSource();
+  let plane = source.getFeatureById(icao24);
+  //If searched plane exists
+  if(plane) {
+    let coords = plane.getGeometry().getCoordinates();
+    view.animate({
+      zoom: 3,
+      duration: 1000
+    },
+    { center: coords,
+      zoom: 12,
+      duration: 1000
+    });
+    //clear any ongoing intervals before setting new
+    clearInterval(intervalId);
+    //interval will keep map centered on plane
+    intervalId = setInterval(function() { keepCentered(plane);}, 100);
+    //dragging the map will cancel the interval
+    map.on("pointerdrag", function(){
+      clearInterval(intervalId); 
+      map.removeEventListener("pointerdrag");
+    }); 
+  }
+  else{
+    console.log("Plane not found on map");
+  }
+}
+
+function keepCentered(plane){
+  let view = map.getView();
+  let coords = plane.getGeometry().getCoordinates();
+  view.animate({
+    center: coords,
+    duration: 100
+  });
+}
