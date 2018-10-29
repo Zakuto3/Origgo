@@ -29,17 +29,43 @@ function searchPlanes(str){
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
-        console.log("baum!!!!"+xhr.responseText);
-        if (xhr.status === 200) {
-            jsonData = JSON.parse(xhr.responseText);
+        // console.log("baum!!!!"+this.responseText);
+        if (xhr.status === 200 && this.responseText!= "") {
+            jsonData = JSON.parse(this.responseText);
             for (let index = 0; index < 5; index++) {
-                a[index].innerHTML = jsonData[index].iataCode+" "+jsonData[index].city;
-                a[index].style.display="";
+                if (isEmpty(jsonData[index] == false)) {
+                    aTemp = a[index];
+                    aTemp.innerHTML = jsonData[index].iataCode + " " + jsonData[index].city;
+                    aTemp.id = jsonData[index].iataCode;
+                    document.getElementById("drop").style.display = "inline-block";
+
+                } else {
+                    a[index].innerHTML = "";
+                    a[index].style.display = "none";
+                    a[index].onClick = function () {};
+                }
             }
         }
         else if (xhr.status !== 200) {
-            alert('Request failed.  Returned status of ' + xhr.status);
+            console.log('Request failed.  Returned status of ' + xhr.status);
         }
     };
     xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
+}
+
+function select(iata) {
+    console.log(iata);
+    document.getElementById("search").value = iata;
+}
+
+function findflight(data) {
+    console.log(data);
+}
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
 }

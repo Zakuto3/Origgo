@@ -82,7 +82,7 @@ app.post('/search', function(req, res){
               // queryRes = ;
           }
       });
-  }else{queryRes = "No Match";}
+  }else{queryRes = "{\"No Match\"}"}
       console.log("req.body: ", req.body, "req.query: ", req.query);
       res.send(queryRes);
 })

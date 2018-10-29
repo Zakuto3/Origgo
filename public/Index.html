@@ -6,9 +6,10 @@
         <title>Project for Web application</title>
         <link rel="stylesheet" type="text/css" href="Css/Style.css">
         <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
-        <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>     
-        <script type="text/javascript" src="./Js/index.js"></script>        
-	</head>
+        <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
+        <script type="text/javascript" src="./Js/index.js"></script>
+        <script type="text/javascript" src="./Js/Script.js"></script>
+    </head>
 	<body>
       <div id="container">
         <div class="header">
@@ -17,13 +18,13 @@
             <div class="searchbar"  style="flex-grow: 7">
                 <div class="dropdown">
                     <input type="text"  id="search" placeholder="Search for flights..." name="search" onkeyup="searchPlanes(this.value)">
-                    <button type="submit">Track</button>
+                    <button type="submit" onclick="findflight(document.getElementsByName("search").value)">Track</button>
                     <div id="drop" class="drpdwn-content">
-                        <a href="#"></a>
-                        <a href="#"></a>
-                        <a href="#"></a>
-                        <a href="#"></a>
-                        <a href="#"></a>
+                        <a onclick="select(this.id)"></a>
+                        <a onclick="select(this.id)"></a>
+                        <a onclick="select(this.id)"></a>
+                        <a onclick="select(this.id)"></a>
+                        <a onclick="select(this.id)"></a>
                     </div>
                 </div>
             </div>
