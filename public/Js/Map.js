@@ -27,7 +27,7 @@ function initAirplanes(url, options){
     updateInterval: options.updateInterval || 10000
   };
   /*loader takes a function that loads the source*/
-  let planeSource = new ol.source.Vector({
+  var planeSource = new ol.source.Vector({
     loader: loadLayer(planeOptions, planeLoader)
   });
   planeLayer.setSource(planeSource);

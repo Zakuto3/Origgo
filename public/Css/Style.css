@@ -58,11 +58,10 @@ h1 {
     display: inline;
 
 }
-.drpdwn-content{
+.searchbar .drpdwn-content{
     position: absolute;
     display: none;
     background-color: #66b3ff;
-    /*width: 100%;*/
     min-width: 100%;
     overflow: auto;
     border: none;

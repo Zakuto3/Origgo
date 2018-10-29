@@ -71,7 +71,7 @@ app.post('/check',(req, res) =>{
 
 
 var queryRes;
-app.post('/search', function(req, res){
+app.get('/search', function(req, res){
   if(req.query.q!="") {
       connection.query("select * from airport where city like '%" + req.query.q + "%'", (err, rows, fields) => {
           if (err) console.log(err);

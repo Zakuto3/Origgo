@@ -1,3 +1,5 @@
+scriptLoader('/js/Map.js');
+
 var postmsg = 'this came from script';
 
 //native Post/AJAX to serverside: https://blog.garstasio.com/you-dont-need-jquery/ajax/
@@ -18,14 +20,14 @@ xhr.onload = function() {
 xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
 }
 
-function searchPlanes(str){
+function searchAirports(str){
     let input = document.getElementById("search");
     let jsonData ="";
     var drp = document.getElementById("drop");
     var a = drp.getElementsByTagName("a");
     filter = input.value.toUpperCase();
     xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:3000/search?q='+str);
+    xhr.open('GET', 'http://localhost:3000/search?q='+str, false);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
@@ -53,13 +55,30 @@ function searchPlanes(str){
     xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
 }
 
+function searchPlanes(str){
+    xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:3000/addAirplanes');//notice we use /request, this will match in serverside
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onload = function() {
+        let planes = this.responseText;
+        let jsonPlanes = JSON.parse(planes);
+        console.log(planes);
+    };
+    xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
+}
+
+//fills picked value from dropdown into searchbar
 function select(iata) {
     console.log(iata);
     document.getElementById("search").value = iata;
 }
 
-function findflight(data) {
+//test funktion for search
+function findflight() {
+    let data = document.getElementById("search").value;
     console.log(data);
+
 }
 
 function isEmpty(obj) {
