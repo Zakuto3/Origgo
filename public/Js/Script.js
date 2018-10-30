@@ -85,23 +85,67 @@ function searchPlanes(str){
     });
 }
 
-function getFlight() {
-    let data = document.getElementById("search").name;
-    let div = document.getElementById("moreInfo");
-    let a = div.getElementsByTagName("a");
+/*Get info on a flight*/
+function getFlight(icao24) {
+    //let data = document.getElementById("search").name;
     xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + data);
+    xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + icao24);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
-        // console.log("baum!!!!"+this.responseText);
-        if (xhr.status === 200 && this.responseText != "") {
-            jsonData = this.responseText;
-            a[0].innerHTML = jsonData[states][2];
-            a[1].innerHTML = jsonData[states][9]+"m/s";
-            console.log(this.responseText);
+        if (xhr.status === 200) {
+            var jsonData = JSON.parse(this.responseText);
+            //console.log(jsonData);
+            return jsonData;
         }else {console.log("no response");}
     }
-    xhr.send(encodeURI('name=' + postmsg));
+    xhr.send();
+}
+
+/*Add flight to a user in DB*/
+function addUserFlight(icao24){
+    let req = new XMLHttpRequest();
+    req.open('GET', '/flightToDB?icao24=' + icao24);
+    req.onload = function(){
+        if(req.status = 200){
+            if(this.responseText == "true") {
+                //addFlightToSide();
+            }
+            else { console.log("Could not add");}
+        }
+    }
+    req.send();
+}
+
+/*Save or update user flight in DB depending
+ if it user has save one already*/
+function saveUserFlight(){
+    let icao24 = document.getElementById("search").name;
+    let req = new XMLHttpRequest();
+    req.open('GET', '/checkUserSaved?icao24=' + icao24);
+    req.onload = function(){
+        if(req.status = 200){
+            if(this.responseText == "true") {
+                updateUserFlight(icao24);
+            }
+            else { addUserFlight(icao24); }
+        }
+    }
+    req.send();
+}
+
+/*updates users saved flight*/
+function updateUserFlight(icao24){
+    let req = new XMLHttpRequest();
+    req.open('GET', '/updateFlightToDB?icao24=' + icao24);
+    req.onload = function(){
+        if(req.status = 200){
+            if(this.responseText == "true") {
+                //addFlightToSide();
+            }
+            else { console.log("Could not update");}
+        }
+    }
+    req.send();
 }
 
 //fills picked value from dropdown into searchbar
