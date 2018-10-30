@@ -63,3 +63,10 @@ button:hover {
     padding: 16px;
 }
 
+#loginform{
+    width: 40%;
+    margin: auto;
+    margin-top: 1%;
+    background-color: white;
+    box-shadow: white 0px 0px 10px 0px;
+}

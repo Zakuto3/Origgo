@@ -89,12 +89,6 @@ app.get('/search', function(req, res){
 })
 
 //request to go to map site, only allowed if loged in 
-app.get('/map.html', (req, res) => {
-  if (login) {
-    res.send(fs.readFileSync('../public/map.html', 'utf8'));
-  }else{
-    res.send(fs.readFileSync('../public/index.html', 'utf8'));
-  }
 
 app.get('/logout',function(req,res) {
     req.session.destroy(function (err) {
@@ -105,7 +99,7 @@ app.get('/logout',function(req,res) {
         }
     });
 });
-});
+
 
 app.get('/signup.html',(req, res) =>{//makes sure user dont reach signup if logedin
     if (req.session.login) {

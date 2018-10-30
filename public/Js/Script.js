@@ -1,5 +1,5 @@
 var postmsg = 'this came from script';
-
+// var planeList = [];
 //native Post/AJAX to serverside: https://blog.garstasio.com/you-dont-need-jquery/ajax/
 function loginrequest(){
 let x = document.getElementById("btn-change");
@@ -59,7 +59,7 @@ function searchPlanes(str){
     xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:3000/addAirplanes');//notice we use /request, this will match in serverside
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    getPla;
+
     xhr.onload = function() {
         let planes = this.responseText;
         let jsonPlanes = JSON.parse(planes);

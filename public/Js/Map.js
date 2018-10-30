@@ -1,4 +1,5 @@
 //Creation of map with Openlayers API, requires script-tags in html
+// var planeList = [];
 const map = new ol.Map({
   target: 'map',
   layers: [
