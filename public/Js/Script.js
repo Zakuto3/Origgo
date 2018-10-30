@@ -85,7 +85,7 @@ function searchPlanes(str){
     });
 }
 
-function getFlight() {
+function getInfo() {
     let data = document.getElementById("search").name;
     xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + data);
