@@ -61,10 +61,7 @@ function searchPlanes(str){
     planeList.forEach(function (flight, index) {
         if(count < 5) {        // console.log(flight);
             if (str !== "") {
-                console.log("test")
                 if (flight.callsign.toLowerCase().includes(str.toLowerCase())) {
-
-                    console.log(flight.callsign);
                     a[count].innerHTML = flight.callsign;
                     a[count].id = flight.icao24;
                     a[count].name = flight.callsign;
