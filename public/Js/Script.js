@@ -59,7 +59,7 @@ function searchPlanes(str){
     xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:3000/addAirplanes');//notice we use /request, this will match in serverside
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
+    getPla;
     xhr.onload = function() {
         let planes = this.responseText;
         let jsonPlanes = JSON.parse(planes);
