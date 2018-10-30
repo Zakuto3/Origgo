@@ -7,7 +7,7 @@ req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 req.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){
 			if (req.responseText == 'true') {
-				window.location.href="/index.html";
+				window.location.href="/Index.html";
 			}
 			else{
 				document.getElementById("errormsg").innerHTML = "Wrong username and/or password"
