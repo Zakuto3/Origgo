@@ -136,7 +136,7 @@ button:hover {
     visibility: visible;
     display: block;
 }
-.navigation a:link, a:visited {
+.navigation a:link,a:visited {
     display:inline-block;
     color: #f2f2f2;
     text-align: center;

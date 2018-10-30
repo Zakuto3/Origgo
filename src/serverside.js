@@ -136,6 +136,7 @@ app.get('/addAirplanes', (req, res) => {
         var lat = plane[6];
         var lon = plane[5];
         if(!planeGrounded && lat && lon && plane[1]!=""){
+
           /*Index 10 contains plane rotation in degrees
           North is 0 degrees. Index 0 has unique icao24 code*/
           var planeObject = { 
