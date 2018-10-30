@@ -64,7 +64,8 @@ h1 {
     display: inline;
 
 }
-.searchbar .drpdwn-content{
+.drpdwn-content{
+    margin-top: 2em;
     position: absolute;
     /*display: none;*/
     background-color: #66b3ff;

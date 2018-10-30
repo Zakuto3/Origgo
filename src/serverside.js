@@ -71,18 +71,16 @@ app.post('/check',(req, res) =>{
 });
 
 
-var queryRes;
 app.get('/search', function(req, res){
   if(req.query.q!="") {
       connection.query("select * from airport where city like '%" + req.query.q + "%'", (err, rows, fields) => {
           if (err) console.log(err);
           if (Object.keys(rows).length){
             console.log(rows[0].city);
-            queryRes = JSON.stringify(rows);
           } else {
               // queryRes = ;
           }
-          res.send(queryRes);
+          res.send(rows);
       });
   }else{queryRes = "{\"No Match\"}"}
       console.log("req.body: ", req.body, "req.query: ", req.query);
@@ -154,11 +152,13 @@ app.get('/addAirplanes', (req, res) => {
 });
 
 app.get('/getAirplane', (req, res) => {
-    console.log("req.body: ", req.body, "req.query: ", req.query);
-    request("https://opensky-network.org/api/states/all?icao24="+req.query.q, function(data) {
-        let flight = JSON.stringify(data);
-        res.send(flight);
-    });
+    if(req.session.login) {
+        console.log("req.body: ", req.body, "req.query: ", req.query);
+        request("https://opensky-network.org/api/states/all?icao24=" + req.query.q, function (data) {
+            let flight = JSON.stringify(data);
+            res.send(data);
+        });
+    } else{res.send("")}
 });
 
 /*function for accessing WEB API through https module,

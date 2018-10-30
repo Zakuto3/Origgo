@@ -19,14 +19,14 @@
             <h1>Flight tracking</h1>
             <div class="searchbar"  style="flex-grow: 7">
                 <div class="dropdown">
-                    <input type="text"  id="search" placeholder="Search for flights..." name="search" onkeyup="searchPlanes(this.value)" >
-                    <button type="submit" onclick="getFlight()">Track</button><br><br><br>
+                    <input type="text"  id="search" placeholder="Search for flights..." onkeyup="searchPlanes(this.value)" onfocusout="clear()" >
+                    <button type="submit" onclick="flyToPlane(document.getElementById('search').name)">Track</button><br>
                     <div id="drop" class="drpdwn-content">
-                        <a onclick="select(this.id)"></a>
-                        <a onclick="select(this.id)"></a>
-                        <a onclick="select(this.id)"></a>
-                        <a onclick="select(this.id)"></a>
-                        <a onclick="select(this.id)"></a>
+                        <a onclick="select(this.id, this.name)" style="display: none"></a>
+                        <a onclick="select(this.id, this.name)" style="display: none"></a>
+                        <a onclick="select(this.id, this.name)" style="display: none"></a>
+                        <a onclick="select(this.id, this.name)" style="display: none"></a>
+                        <a onclick="select(this.id, this.name)" style="display: none"></a>
                     </div>
                 </div>
             </div>
@@ -94,8 +94,8 @@
             <div class="column right">
                 <h3>More info</h3>
                 <p id="moreInfo"></p>
-                <div class="fakeimg" style="height:60px;">1.info</div><br>
-                <div class="fakeimg" style="height:60px;">2.info</div><br>
+                <a class="fakeimg" style="height:60px;"></a><br>
+                <a class="fakeimg" style="height:60px;"></a><br>
                 <div class="polaroid">
                     <img src="pictures/weather.jpg" style="width: 100%">
                     <div class="box"><p><b>Check weather before flying</b></p></div>

@@ -31,7 +31,7 @@ function searchAirports(str){
     xhr.onload = function() {
         // console.log("baum!!!!"+this.responseText);
         if (xhr.status === 200 && this.responseText!= "") {
-            jsonData = JSON.parse(this.responseText);
+            jsonData = this.responseText;
 
             console.log(this.responseText);
             for (let index = 0; index < 5; index++) {
@@ -57,42 +57,50 @@ function searchPlanes(str){
     var drp = document.getElementById("drop");
     var a = drp.getElementsByTagName("a");
     for(let i = 0; i < 5; i++){a[i].style.display = "none";}
-
-
+    let count = 0;
     planeList.forEach(function (flight, index) {
-        // console.log(flight);
-        if(str !== "") {
-            console.log("test")
-                if (flight.callsign.includes(str)) {
-                    for (let i = 0; i < 5; i++) {
-                        console.log(flight.callsign);
-                        a[i].innerHTML = flight.callsign;
-                        a[i].id = flight.icao24;
-                        a[i].style.display = "";
-                    }
+        if(count < 5) {        // console.log(flight);
+            if (str !== "") {
+                console.log("test")
+                if (flight.callsign.toLowerCase().includes(str.toLowerCase())) {
+
+                    console.log(flight.callsign);
+                    a[count].innerHTML = flight.callsign;
+                    a[count].id = flight.icao24;
+                    a[count].name = flight.callsign;
+                    a[count].style.display = "";
+                    count++;
+
                 } else {
-                    console.log("notting")
-                    a[0].style.display = "none";
+                    console.log("notting");
+
                 }
-        }else {
-            console.log("no result");
-            a[0].innerHTML = "no Result";
-            a[0].style.display = "";
-            for(let i = 1; i < 5; i++){a[i].style.display = "none";}
+            } else {
+                console.log("no result");
+                a[0].innerHTML = "no Result";
+                a[0].style.display = "";
+                for (let i = 1; i < 5; i++) {
+                    a[i].style.display = "none";
+                }
+                count = 5;
+            }
         }
     });
 }
 
 function getFlight() {
-    let data = document.getElementById("search").value;
+    let data = document.getElementById("search").name;
+    let div = document.getElementById("moreInfo");
+    let a = div.getElementsByTagName("a");
     xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + data);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
         // console.log("baum!!!!"+this.responseText);
         if (xhr.status === 200 && this.responseText != "") {
-            jsonData = JSON.parse(this.responseText);
-
+            jsonData = this.responseText;
+            a[0].innerHTML = jsonData[states][2];
+            a[1].innerHTML = jsonData[states][9]+"m/s";
             console.log(this.responseText);
         }else {console.log("no response");}
     }
@@ -100,9 +108,10 @@ function getFlight() {
 }
 
 //fills picked value from dropdown into searchbar
-function select(iata) {
-    console.log(iata);
-    document.getElementById("search").value = iata;
+function select(code, callSign) {
+    console.log(code);
+    document.getElementById("search").name = code;
+    document.getElementById("search").value = callSign;
 }
 
 //test funktion for search
@@ -118,4 +127,13 @@ function isEmpty(obj) {
             return false;
     }
     return true;
+}
+
+//cleared dropdown
+function clear() {
+    var drp = document.getElementById("drop");
+    var a = drp.getElementsByTagName("a");
+    for(let i = 0; i < 5; i++){
+        a[i].style.display = "none";
+    }
 }
