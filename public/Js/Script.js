@@ -96,7 +96,7 @@ function getFlight(icao24) {
 
         if (xhr.status === 200) {
             var jsonData = JSON.parse(this.responseText);
-            //console.log(jsonData);
+            //console.log(jsonData);git
             return jsonData;
         }else {console.log("no response");}
     }
