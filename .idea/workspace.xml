@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f8c4917f-2457-4365-836e-1e2c1ac89dc9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/public/Js/Script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/Js/Script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/serverside.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/serverside.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -41,14 +42,14 @@
         <counts>
           <entry key="css" value="295" />
           <entry key="html" value="1144" />
-          <entry key="js" value="5282" />
+          <entry key="js" value="5286" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="295" />
           <entry key="HTML" value="1144" />
-          <entry key="JavaScript" value="5282" />
+          <entry key="JavaScript" value="5286" />
         </counts>
       </usages-collector>
     </session>
@@ -168,8 +169,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/Js/Script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="111" column="22" lean-forward="true" selection-start-line="111" selection-start-column="22" selection-end-line="111" selection-end-column="22" />
+            <state relative-caret-position="413">
+              <caret line="106" selection-start-line="106" selection-end-line="126" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -318,7 +319,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72372000" />
+    <option name="totallyTimeSpent" value="72512000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="11" y="-9" width="944" height="1078" extended-state="0" />
@@ -474,8 +475,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/Js/Script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="111" column="22" lean-forward="true" selection-start-line="111" selection-start-column="22" selection-end-line="111" selection-end-column="22" />
+        <state relative-caret-position="413">
+          <caret line="106" selection-start-line="106" selection-end-line="126" selection-end-column="1" />
         </state>
       </provider>
     </entry>

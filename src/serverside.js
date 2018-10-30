@@ -87,8 +87,6 @@ app.get('/search', function(req, res){
       //res.send(queryRes);
 })
 
-//request to go to map site, only allowed if loged in 
-
 app.get('/logout',function(req,res) {
     req.session.destroy(function (err) {
         if (err) {
@@ -151,6 +149,7 @@ app.get('/addAirplanes', (req, res) => {
   });
 });
 
+//gets a bunch of info on a plane
 app.get('/getAirplane', (req, res) => {
   let data = {};
       request("https://opensky-network.org/api/states/all?icao24="+req.query.q, function(statesData) {
@@ -161,6 +160,7 @@ app.get('/getAirplane', (req, res) => {
           let end = currentTime + 43200;
           request("https://opensky-network.org/api/flights/aircraft?icao24="+req.query.q+"&begin="+begin+"&end="+end, function(flightsData){ 
             data = { 
+              icao24 : plane[0],
               estArrival : unixTimeToNormal(flightsData[0].lastSeen),
               estDeparture : unixTimeToNormal(flightsData[0].firstSeen),
               callsign : flightsData[0].callsign.trim(),
@@ -196,6 +196,45 @@ function unixTimeToNormal(unix){
   let date = new Date(unix*1000);
   return date.getHours()+":"+date.getMinutes();
 }
+
+app.get('/flightToDB', (req, res) => {
+  if(req.session.login){
+    const query = "INSERT INTO origgo.usersavedplanes (UID, Icao24) VALUES ('"+req.session.userId+"', '"+req.query.icao24+"');";
+    DatabaseConn(query).then(function(){
+      res.send(true);
+    }).catch(function(){
+      res.send(false);
+    })
+  }
+  else { res.send(false); }
+});
+
+app.get('/updateFlightToDB', (req, res) => {
+  if(req.session.login){
+    const query = "UPDATE origgo.usersavedplanes SET icao24 = '"+req.query.icao24+"' WHERE UID = '"+req.session.userId+"';";
+    DatabaseConn(query).then(function(){
+      res.send(true);
+    }).catch(function(){
+      res.send(false);
+    })
+  }
+  else { res.send(false); }
+});
+
+app.get('/checkUserSaved', (req, res) => {
+  if(req.session.login){
+    const query = "SELECT * FROM origgo.usersavedplanes WHERE UID = '"+req.session.userId+"';";
+    DatabaseConn(query).then(function(rows){
+      console.log("rows: ", rows);
+      if(rows.length > 0) res.send(true);
+      else res.send(false);
+    }).catch(function(){
+      res.send(false);
+    })
+  }
+  else { res.send(false); }
+  
+});
 
 /*function for accessing WEB API through https module,
 see it as serverside making requests to services*/
