@@ -60,6 +60,7 @@ function loadLayer(options, loader){
 Adds specified amount of airplanes to a source
 for a layer and adds that layer*/
 function planeLoader(planes, layer, limit){
+  
   let source = layer.getSource();
   for(let i = 0; i < planes.length && i < limit; i++){
     /*Convert the coordinates to our system*/
@@ -79,6 +80,7 @@ function planeLoader(planes, layer, limit){
     }));
     /*set Id for point to be able to find it later*/
     newPlane.setId(planes[i].icao24);
+    planeList.push(planes[i]);
     /*Add plane to the source connected to the layer*/
     source.addFeature(newPlane);
   }

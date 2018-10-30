@@ -1,13 +1,13 @@
-let express = require('express'); // https://expressjs.com/en/guide/routing.html
-let mysql = require('mysql');// https://www.npmjs.com/package/mysql
-let bodyParser = require('body-parser');// https://www.npmjs.com/package/body-parser
-let fs = require('fs'); // https://www.w3schools.com/nodejs/nodejs_filesystem.asp
-let db = require('./DBinfo');
-let https = require('https');
-let session = require('express-session');
-let app = express();
+var express = require('express'); // https://expressjs.com/en/guide/routing.html
+var mysql = require('mysql');// https://www.npmjs.com/package/mysql
+var bodyParser = require('body-parser');// https://www.npmjs.com/package/body-parser
+var fs = require('fs'); // https://www.w3schools.com/nodejs/nodejs_filesystem.asp
+var db = require('./DBinfo');
+var https = require('https');
+var session = require('express-session');
+var app = express();
 
-let crypto;
+var crypto;
 try {
   crypto = require('crypto');
 } catch (err) {
@@ -18,7 +18,7 @@ try {
 app.use(session({secret: 'ALDO4923ALFO2QIA', resave: false, saveUninitialized : true, cookie:{ maxAge: 3600000}}));
 
 //sets connection to Database with the specifics given from DBinfo.js
-let connection = mysql.createConnection(db.connectionstring);
+var connection = mysql.createConnection(db.connectionstring);
 
 //use for complex json parsing
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -81,10 +81,11 @@ app.get('/search', function(req, res){
           } else {
               // queryRes = ;
           }
+          res.send(queryRes);
       });
   }else{queryRes = "{\"No Match\"}"}
       console.log("req.body: ", req.body, "req.query: ", req.query);
-      res.send(queryRes);
+      //res.send(queryRes);
 })
 
 //request to go to map site, only allowed if loged in 
@@ -125,20 +126,21 @@ app.get('/login.html',(req, res) =>{
 /*Sends all current non-null airplanes to client*/
 app.get('/addAirplanes', (req, res) => {
   request("https://opensky-network.org/api/states/all", function(data){
-    let states = data.states || undefined;
-    let planes = [];
+    var states = data.states || undefined;
+    var planes = [];
     if(states){
       states.forEach(function(plane){
         /*Boolean if plane is on ground*/
-        let planeGrounded = plane[8];
+        var planeGrounded = plane[8];
         /*Indexes 5,6 contains coordinates for the plane*/
-        let lat = plane[6];
-        let lon = plane[5];
-        if(!planeGrounded && lat && lon){
+        var lat = plane[6];
+        var lon = plane[5];
+        if(!planeGrounded && lat && lon && plane[1]!=""){
           /*Index 10 contains plane rotation in degrees
           North is 0 degrees. Index 0 has unique icao24 code*/
-          let planeObject = { 
+          var planeObject = { 
             icao24: plane[0],
+            callsign: plane[1].trim(),
             lat: lat,
             lon: lon,
             direction: plane[10],
@@ -158,13 +160,13 @@ app.get('/addAirplanes', (req, res) => {
 /*function for accessing WEB API through https module,
 see it as serverside making requests to services*/
 function request(link, func){
-  let req = https.request(link, function(res){
+  var req = https.request(link, function(res){
     //console.log(res.statusCode);
     if(res.statusCode == 301){
       request(res.headers.location, func);
     }
     else if(res.statusCode == 200){
-      let datastring = "";
+      var datastring = "";
       res.setEncoding('utf8');
       res.on('data', function(data){
         datastring += data;

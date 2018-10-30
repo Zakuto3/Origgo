@@ -1,5 +1,3 @@
-scriptLoader('/js/Map.js');
-
 var postmsg = 'this came from script';
 
 //native Post/AJAX to serverside: https://blog.garstasio.com/you-dont-need-jquery/ajax/
@@ -34,8 +32,10 @@ function searchAirports(str){
         // console.log("baum!!!!"+this.responseText);
         if (xhr.status === 200 && this.responseText!= "") {
             jsonData = JSON.parse(this.responseText);
+
+            console.log(this.responseText);
             for (let index = 0; index < 5; index++) {
-                if (isEmpty(jsonData[index] == false)) {
+                if (isEmpty(jsonData[index]) == false) {
                     aTemp = a[index];
                     aTemp.innerHTML = jsonData[index].iataCode + " " + jsonData[index].city;
                     aTemp.id = jsonData[index].iataCode;
@@ -63,7 +63,7 @@ function searchPlanes(str){
     xhr.onload = function() {
         let planes = this.responseText;
         let jsonPlanes = JSON.parse(planes);
-        console.log(planes);
+        console.log(planeList);
     };
     xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
 }
