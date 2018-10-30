@@ -31,7 +31,7 @@ function searchAirports(str){
     xhr.onload = function() {
         // console.log("baum!!!!"+this.responseText);
         if (xhr.status === 200 && this.responseText!= "") {
-            jsonData = this.responseText;
+            jsonData = JSON.parse(this.responseText);
 
             console.log(this.responseText);
             for (let index = 0; index < 5; index++) {
@@ -105,10 +105,17 @@ function getFlight() {
 }
 
 //fills picked value from dropdown into searchbar
-function select(code, callSign) {
+function selectPlane(code, callSign) {
     console.log(code);
     document.getElementById("search").name = code;
     document.getElementById("search").value = callSign;
+    clear();
+}
+
+function selectAirport(city, code) {
+    document.getElementById("search").name = code;
+    document.getElementById("search").value = city;
+    clear();
 }
 
 //test funktion for search
@@ -128,6 +135,8 @@ function isEmpty(obj) {
 
 //cleared dropdown
 function clear() {
+
+    console.log("should go");
     var drp = document.getElementById("drop");
     var a = drp.getElementsByTagName("a");
     for(let i = 0; i < 5; i++){

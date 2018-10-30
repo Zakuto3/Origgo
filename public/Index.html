@@ -19,14 +19,14 @@
             <h1>Flight tracking</h1>
             <div class="searchbar"  style="flex-grow: 7">
                 <div class="dropdown">
-                    <input type="text"  id="search" placeholder="Search for flights..." onkeyup="searchPlanes(this.value)" onfocusout="clear()" >
+                    <input type="text"  id="search" placeholder="Search for flights..." onkeyup="searchPlanes(this.value)">
                     <button type="submit" onclick="flyToPlane(document.getElementById('search').name)">Track</button><br>
                     <div id="drop" class="drpdwn-content">
-                        <a onclick="select(this.id, this.name)" style="display: none"></a>
-                        <a onclick="select(this.id, this.name)" style="display: none"></a>
-                        <a onclick="select(this.id, this.name)" style="display: none"></a>
-                        <a onclick="select(this.id, this.name)" style="display: none"></a>
-                        <a onclick="select(this.id, this.name)" style="display: none"></a>
+                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
+                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
+                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
+                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
+                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
                     </div>
                 </div>
             </div>
