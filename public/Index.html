@@ -20,7 +20,7 @@
             <div class="searchbar"  style="flex-grow: 7">
                 <div class="dropdown">
                     <input type="text"  id="search" placeholder="Search for flights..." onkeyup="searchPlanes(this.value)">
-                    <button type="submit" onclick="flyToPlane(document.getElementById('search').name)">Track</button><br>
+                    <button type="submit" onclick="flyToPlane(document.getElementById('search').name); getFlight()">Track</button><br>
                     <div id="drop" class="drpdwn-content">
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
@@ -94,8 +94,7 @@
             <div class="column right">
                 <h3>More info</h3>
                 <p id="moreInfo"></p>
-                <a class="fakeimg" style="height:60px;"></a><br>
-                <a class="fakeimg" style="height:60px;"></a><br>
+                <div class="fakeimg" id="info" style="min-height:60px;"></div>
                 <div class="polaroid">
                     <img src="pictures/weather.jpg" style="width: 100%">
                     <div class="box"><p><b>Check weather before flying</b></p></div>

@@ -87,17 +87,20 @@ function searchPlanes(str){
 
 function getFlight() {
     let data = document.getElementById("search").name;
-    let div = document.getElementById("moreInfo");
-    let a = div.getElementsByTagName("a");
     xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + data);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
         // console.log("baum!!!!"+this.responseText);
         if (xhr.status === 200 && this.responseText != "") {
-            jsonData = this.responseText;
-            a[0].innerHTML = jsonData[states][2];
-            a[1].innerHTML = jsonData[states][9]+"m/s";
+            jsonData = JSON.parse(this.responseText);
+            document.getElementById("info").innerHTML =
+                "Callsign:<br>"+jsonData["callsign"]+"<br><br>"+
+                "Origin country:<br>"+jsonData["origin"]+"<br><br>"+
+                "Velocity:<br>"+jsonData["velocity"]+"m/s<br><br>"+
+                "Altitude:<br>"+jsonData["altitude"]+"m<br><br>"+
+                "Departure:<br>"+jsonData["depatureAirport"]["city"]+"<br><br>"+
+                "Arival:<br>"+jsonData["arrivalAirport"];
             console.log(this.responseText);
         }else {console.log("no response");}
     }

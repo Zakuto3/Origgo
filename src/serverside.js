@@ -153,7 +153,6 @@ app.get('/addAirplanes', (req, res) => {
 
 app.get('/getAirplane', (req, res) => {
   let data = {};
-  if(req.session.login) {
       request("https://opensky-network.org/api/states/all?icao24="+req.query.q, function(statesData) {
           let plane = statesData.states[0];
           //Time in unix stamp, 43200 is 12 hours
@@ -191,7 +190,6 @@ app.get('/getAirplane', (req, res) => {
             });
           });
       });
-  } else{ res.send(data); }
 });
 
 function unixTimeToNormal(unix){
