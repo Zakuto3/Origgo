@@ -25,7 +25,7 @@ function searchAirports(str){
     var a = drp.getElementsByTagName("a");
     filter = input.value.toUpperCase();
     xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/search?q='+str, false);
+    xhr.open('GET', 'http://localhost:3000/search?q='+str);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
@@ -36,11 +36,9 @@ function searchAirports(str){
             console.log(this.responseText);
             for (let index = 0; index < 5; index++) {
                 if (isEmpty(jsonData[index]) == false) {
-                    aTemp = a[index];
-                    aTemp.innerHTML = jsonData[index].iataCode + " " + jsonData[index].city;
-                    aTemp.id = jsonData[index].iataCode;
-                    document.getElementById("drop").style.display = "inline-block";
-
+                    a[index].innerHTML = jsonData[index].iataCode + " " + jsonData[index].city;
+                    a[index].id = jsonData[index].iataCode;
+                    a[index].style.display = "";
                 } else {
                     a[index].innerHTML = "";
                     a[index].style.display = "none";
@@ -56,16 +54,49 @@ function searchAirports(str){
 }
 
 function searchPlanes(str){
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/addAirplanes');//notice we use /request, this will match in serverside
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    var drp = document.getElementById("drop");
+    var a = drp.getElementsByTagName("a");
+    for(let i = 0; i < 5; i++){a[i].style.display = "none";}
 
-    xhr.onload = function() {
-        let planes = this.responseText;
-        let jsonPlanes = JSON.parse(planes);
-        console.log(planeList);
-    };
-    xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
+
+    planeList.forEach(function (flight, index) {
+        // console.log(flight);
+        if(str !== "") {
+            console.log("test")
+                if (flight.callsign.includes(str)) {
+                    for (let i = 0; i < 5; i++) {
+                        console.log(flight.callsign);
+                        a[i].innerHTML = flight.callsign;
+                        a[i].id = flight.icao24;
+                        a[i].style.display = "";
+                    }
+                } else {
+                    console.log("notting")
+                    a[0].style.display = "none";
+                }
+        }else {
+            console.log("no result");
+            a[0].innerHTML = "no Result";
+            a[0].style.display = "";
+            for(let i = 1; i < 5; i++){a[i].style.display = "none";}
+        }
+    });
+}
+
+function getFlight() {
+    let data = document.getElementById("search").value;
+    xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + data);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function () {
+        // console.log("baum!!!!"+this.responseText);
+        if (xhr.status === 200 && this.responseText != "") {
+            jsonData = JSON.parse(this.responseText);
+
+            console.log(this.responseText);
+        }else {console.log("no response");}
+    }
+    xhr.send(encodeURI('name=' + postmsg));
 }
 
 //fills picked value from dropdown into searchbar

@@ -124,6 +124,7 @@ function flyToPlane(icao24){
   let view = map.getView();
   let source = planeLayer.getSource();
   let plane = source.getFeatureById(icao24);
+
   //If searched plane exists
   if(plane) {
     let coords = plane.getGeometry().getCoordinates();

@@ -152,6 +152,14 @@ app.get('/addAirplanes', (req, res) => {
   });
 });
 
+app.get('/getAirplane', (req, res) => {
+    console.log("req.body: ", req.body, "req.query: ", req.query);
+    request("https://opensky-network.org/api/states/all?icao24="+req.query.q, function(data) {
+        let flight = JSON.stringify(data);
+        res.send(flight);
+    });
+});
+
 /*function for accessing WEB API through https module,
 see it as serverside making requests to services*/
 function request(link, func){
