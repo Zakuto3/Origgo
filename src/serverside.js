@@ -152,14 +152,52 @@ app.get('/addAirplanes', (req, res) => {
 });
 
 app.get('/getAirplane', (req, res) => {
-    if(req.session.login) {
-        console.log("req.body: ", req.body, "req.query: ", req.query);
-        request("https://opensky-network.org/api/states/all?icao24=" + req.query.q, function (data) {
-            let flight = JSON.stringify(data);
-            res.send(data);
-        });
-    } else{res.send("")}
+  let data = {};
+  if(req.session.login) {
+      request("https://opensky-network.org/api/states/all?icao24="+req.query.q, function(statesData) {
+          let plane = statesData.states[0];
+          //Time in unix stamp, 43200 is 12 hours
+          let currentTime = Math.floor(Date.now()/1000);
+          let begin =  currentTime - 43200;
+          let end = currentTime + 43200;
+          request("https://opensky-network.org/api/flights/aircraft?icao24="+req.query.q+"&begin="+begin+"&end="+end, function(flightsData){ 
+            data = { 
+              estArrival : unixTimeToNormal(flightsData[0].lastSeen),
+              estDeparture : unixTimeToNormal(flightsData[0].firstSeen),
+              callsign : flightsData[0].callsign.trim(),
+              velocity : plane[9],
+              origin : plane[2],
+              altitude : plane[7]
+            };   
+            DatabaseConn("SELECT * FROM origgo.airport WHERE icaoCode = '"+flightsData[0].estDepartureAirport+"'").then(function(airport){
+              if(airport.length > 0) { 
+                data.depatureAirport = { 
+                    iataCode : airport[0].iataCode, 
+                    city : airport[0].city,
+                    country : airport[0].country }
+              }else 
+                data.depatureAirport = flightsData[0].estDepartureAirport;       
+              DatabaseConn("SELECT * FROM origgo.airport WHERE icaoCode = '"+flightsData[0].estArrivalAirport+"'").then(function(airport){
+                if(airport.length > 0) { 
+                  data.arrivalAirport = { 
+                    iataCode : airport[0].iataCode, 
+                    city : airport[0].city,
+                    country : airport[0].country }
+                }else 
+                  data.arrivalAirport = flightsData[0].estArrivalAirport;
+                console.log("DATA: \n", data);
+                res.send(data);
+              });
+            });
+          });
+      });
+  } else{ res.send(data); }
 });
+
+function unixTimeToNormal(unix){
+  let date = new Date(unix*1000);
+  return date.getHours()+":"+date.getMinutes();
+}
 
 /*function for accessing WEB API through https module,
 see it as serverside making requests to services*/
