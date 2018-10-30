@@ -43,13 +43,14 @@ var DatabaseConn = function(queryString){
   
 app.post('/loginbtn',(req, res) =>{
   const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
-  const QueryString = 'SELECT IF(EXISTS(SELECT * from origgo.users where Name = '+'"'+req.body.Name+'"'+' AND Password = '+'"'+hash+'"'+'),1,0) AS result;';
+  const QueryString = "SELECT userID, name FROM origgo.users WHERE Name = '"+req.body.Name+"' AND Password = '"+hash+"';";
 
   DatabaseConn(QueryString).then(function(data){
-    if (Number(data[0].result)){
+    if (data.length > 0){
      req.session.login = true;
-     req.session.name = req.body.Name;
-  }
+     req.session.name = data[0].name;
+     req.session.userId = data[0].userID;
+    }
   console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass); 
   res.send(req.session.login);
   })  
