@@ -1,4 +1,4 @@
-var postmsg = 'this came from script';
+
 // var planeList = [];
 //native Post/AJAX to serverside: https://blog.garstasio.com/you-dont-need-jquery/ajax/
 function loginrequest(){
@@ -15,7 +15,7 @@ xhr.onload = function() {
         alert('Request failed.  Returned status of ' + xhr.status);
     }
 };
-xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
+xhr.send(); 
 }
 
 function searchAirports(str){
@@ -50,7 +50,7 @@ function searchAirports(str){
             console.log('Request failed.  Returned status of ' + xhr.status);
         }
     };
-    xhr.send(encodeURI('name=' + postmsg)); //sends this to serverside
+    xhr.send();
 }
 
 function searchPlanes(str){
@@ -104,26 +104,27 @@ function getFlight(icao24) {
 }
 
 
-function getInfo() {
-    let data = document.getElementById("search").name;
+function getInfo(icao24) {
     xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + data);
+    xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + icao24);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
         // console.log("baum!!!!"+this.responseText);
         if (xhr.status === 200 && this.responseText != "") {
             jsonData = JSON.parse(this.responseText);
+            let depatureAirport = jsonData["depatureAirport"] ? jsonData["depatureAirport"]["city"] : jsonData["depatureAirport"];
             document.getElementById("info").innerHTML =
                 "Callsign:<br>"+jsonData["callsign"]+"<br><br>"+
                 "Origin country:<br>"+jsonData["origin"]+"<br><br>"+
                 "Velocity:<br>"+jsonData["velocity"]+"m/s<br><br>"+
                 "Altitude:<br>"+jsonData["altitude"]+"m<br><br>"+
-                "Departure:<br>"+jsonData["depatureAirport"]["city"]+"<br><br>"+
+                "Departure:<br>"+depatureAirport+"<br><br>"+
                 "Arival:<br>"+jsonData["arrivalAirport"];
+            document.getElementById("info").style.display = "block";
             console.log(this.responseText);
         }else {console.log("no response");}
     }
-    xhr.send(encodeURI('name=' + postmsg));
+    xhr.send();
 }
 
 /*Add flight to a user in DB*/
@@ -148,6 +149,7 @@ function saveUserFlight(){
     let req = new XMLHttpRequest();
     req.open('GET', '/checkUserSaved?icao24=' + icao24);
     req.onload = function(){
+        console.log("responseText: "+this.responseText+".")
         if(req.status = 200){
             if(this.responseText == "true") {
                 updateUserFlight(icao24);
@@ -171,6 +173,15 @@ function updateUserFlight(icao24){
         }
     }
     req.send();
+}
+
+function track(icao24){
+    try{ 
+        flyToPlane(icao24);
+        getInfo(icao24);
+        saveUserFlight(icao24);   
+    }
+    catch(e){ console.log("Could not track");}
 }
 
 //fills picked value from dropdown into searchbar

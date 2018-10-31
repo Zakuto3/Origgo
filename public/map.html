@@ -12,10 +12,10 @@
 		<div id="map" class="map-fullscreen"></div>	
 		<div class="map-searchbar">
             <input type="text" id="search" placeholder="Search for flights..." onkeyup="searchPlanes(this.value)">
-            <input type="button" value="Track" onclick="flyToPlane(document.getElementById('search').name)">
+            <input type="button" value="Track" onclick="flyToPlane(document.getElementById('search').name); saveUserFlight(document.getElementById('search').name);">
 			<div id="drop" class="drpdwn-content">
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
-				<a onclick="selectPlane()p(this.id, this.name)" style="display: none"></a>
+				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
