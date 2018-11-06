@@ -64,26 +64,7 @@ function planeLoader(planes, layer, limit){
   
   let source = layer.getSource();
   for(let i = 0; i < planes.length && i < limit; i++){
-    /*Convert the coordinates to our system*/
-    let coords = ol.proj.transform([planes[i].lon, planes[i].lat], 'EPSG:4326', 'EPSG:3857');
-    /*Create a point for the plane*/
-    let newPlane = new ol.Feature({
-      geometry: new ol.geom.Point([coords[0], coords[1]])
-    });
-    /*Set the image of the plane*/
-    newPlane.setStyle(new ol.style.Style({
-      image: new ol.style.Icon({
-        scale: 0.03,
-        src: 'pictures/vector-plane.png',
-        /*Openlayers wants radians*/
-        rotation: toRadians(planes[i].direction)
-      })
-    }));
-    /*set Id for point to be able to find it later*/
-    newPlane.setId(planes[i].icao24);
-    planeList.push(planes[i]);
-    /*Add plane to the source connected to the layer*/
-    source.addFeature(newPlane);
+    loadPlane(planes[i]);
   }
     /*After all planes are added to the source, add the layer
     connected to source to the map*/
@@ -148,6 +129,7 @@ function flyToPlane(icao24){
   }
   else{
     console.log("Plane not found on map");
+    addPlaneByIcao24(icao24);
   }
 }
 
@@ -158,4 +140,40 @@ function keepCentered(plane){
     center: coords,
     duration: 100
   });
+}
+
+
+function addPlaneByIcao24(icao24){
+  AJAXget("/addAirplanes?icao24="+icao24, function(data){
+    var plane = JSON.parse(data);
+    if(plane.length > 0){
+      loadPlane(plane[0]);
+      flyToPlane(icao24)
+    }
+    else { console.log("Plane not found from API")}
+
+  })
+}
+
+//loads a plane to a layer
+function loadPlane(plane){
+  /*Convert the coordinates to our system*/
+  let coords = ol.proj.transform([plane.lon, plane.lat], 'EPSG:4326', 'EPSG:3857');
+  /*Create a point for the plane*/
+  let newPlane = new ol.Feature({
+    geometry: new ol.geom.Point([coords[0], coords[1]])
+  });
+  /*Set the image of the plane*/
+  newPlane.setStyle(new ol.style.Style({
+    image: new ol.style.Icon({
+      scale: 0.03,
+      src: 'pictures/vector-plane.png',
+      /*Openlayers wants radians*/
+      rotation: toRadians(plane.direction)
+    })
+  }));
+  /*set Id for point to be able to find it later*/
+  newPlane.setId(plane.icao24);
+  /*Add plane to the source connected to the layer*/
+  planeLayer.getSource().addFeature(newPlane);
 }

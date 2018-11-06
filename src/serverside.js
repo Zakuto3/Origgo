@@ -130,7 +130,9 @@ app.get('/login.html',(req, res) =>{
 
 /*Sends all current non-null airplanes to client*/
 app.get('/addAirplanes', (req, res) => {
-  request("https://opensky-network.org/api/states/all", function(data){
+  var url = req.query.icao24 ? "https://opensky-network.org/api/states/all?icao24="+req.query.icao24 : "https://opensky-network.org/api/states/all";
+  console.log("is url working? ", url);
+  request(url, function(data){
     var states = data.states || undefined;
     var planes = [];
     if(states){
@@ -249,8 +251,26 @@ app.get('/checkUserSaved', (req, res) => {
     })
   }
   else { res.send(false); }
-  
 });
+
+app.get('/getIcao24', (req, res) => {
+  if(req.query.callSign){
+    const query = "SELECT icao24 FROM origgo.airplane WHERE callsign = '"+req.query.callSign+"';";
+    DatabaseConn(query).then(function(rows){
+      console.log("rows: ",rows);
+      if(rows.length > 0){
+        var plane = { 
+          icao24: rows[0].icao24,
+          callsign: rows[0].callsign 
+        };
+        console.log("icao24? ", rows[0].icao24);
+        res.send(rows[0].icao24);
+      }
+      else{ res.send("no results"); }
+    }).catch((err) => {console.log("err: ", err);})
+  }
+  else { res.send("callsign empty"); }
+})
 
 /*function for accessing WEB API through https module,
 see it as serverside making requests to services*/

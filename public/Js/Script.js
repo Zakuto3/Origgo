@@ -53,56 +53,55 @@ function searchAirports(str){
     xhr.send();
 }
 
-function searchPlanes(str){
-    var drp = document.getElementById("drop");
-    var a = drp.getElementsByTagName("a");
-    for(let i = 0; i < 5; i++){a[i].style.display = "none";}
-    let count = 0;
-    planeList.forEach(function (flight, index) {
-        if(count < 5) {        // console.log(flight);
-            if (str !== "") {
-                if (flight.callsign.toLowerCase().includes(str.toLowerCase())) {
-                    a[count].innerHTML = flight.callsign;
-                    a[count].id = flight.icao24;
-                    a[count].name = flight.callsign;
-                    a[count].style.display = "";
-                    count++;
+// function searchPlanes(str){
+//     var drp = document.getElementById("drop");
+//     var a = drp.getElementsByTagName("a");
+//     for(let i = 0; i < 5; i++){a[i].style.display = "none";}
+//     let count = 0;
+//     planeList.forEach(function (flight, index) {
+//         if(count < 5) {        // console.log(flight);
+//             if (str !== "") {
+//                 if (flight.callsign.toLowerCase().includes(str.toLowerCase())) {
+//                     a[count].innerHTML = flight.callsign;
+//                     a[count].id = flight.icao24;
+//                     a[count].name = flight.callsign;
+//                     a[count].style.display = "";
+//                     count++;
 
-                } else {
-                    console.log("notting");
+//                 } else {
+//                     console.log("notting");
 
-                }
-            } else {
-                console.log("no result");
-                a[0].innerHTML = "no Result";
-                a[0].style.display = "";
-                for (let i = 1; i < 5; i++) {
-                    a[i].style.display = "none";
-                }
-                count = 5;
-            }
-        }
-    });
-}
+//                 }
+//             } else {
+//                 console.log("no result");
+//                 a[0].innerHTML = "no Result";
+//                 a[0].style.display = "";
+//                 for (let i = 1; i < 5; i++) {
+//                     a[i].style.display = "none";
+//                 }
+//                 count = 5;
+//             }
+//         }
+//     });
+// }
 
 
-/*Get info on a flight*/
-function getFlight(icao24) {
-    //let data = document.getElementById("search").name;
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + icao24);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function () {
+// /*Get info on a flight*/
+// function getFlight(icao24) {
+//     //let data = document.getElementById("search").name;
+//     xhr = new XMLHttpRequest();
+//     xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + icao24);
+//     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+//     xhr.onload = function () {
 
-        if (xhr.status === 200) {
-            var jsonData = JSON.parse(this.responseText);
-            //console.log(jsonData);git
-            return jsonData;
-        }else {console.log("no response");}
-    }
-    xhr.send();
-}
-
+//         if (xhr.status === 200) {
+//             var jsonData = JSON.parse(this.responseText);
+//             //console.log(jsonData);git
+//             return jsonData;
+//         }else {console.log("no response");}
+//     }
+//     xhr.send();
+// }
 
 function getInfo(icao24) {
     xhr = new XMLHttpRequest();
@@ -149,7 +148,6 @@ function saveUserFlight(){
     let req = new XMLHttpRequest();
     req.open('GET', '/checkUserSaved?icao24=' + icao24);
     req.onload = function(){
-        console.log("responseText: "+this.responseText+".")
         if(req.status = 200){
             if(this.responseText == "true") {
                 updateUserFlight(icao24);
@@ -165,7 +163,7 @@ function updateUserFlight(icao24){
     let req = new XMLHttpRequest();
     req.open('GET', '/updateFlightToDB?icao24=' + icao24);
     req.onload = function(){
-        if(req.status = 200){
+        if(req.status == 200){
             if(this.responseText == "true") {
                 //addFlightToSide();
             }
@@ -175,22 +173,26 @@ function updateUserFlight(icao24){
     req.send();
 }
 
-function track(icao24){
-    try{ 
-        flyToPlane(icao24);
-        getInfo(icao24);
-        saveUserFlight(icao24);   
-    }
-    catch(e){ console.log("Could not track");}
+function track(callSign){
+    AJAXget('/getIcao24?callSign='+callSign, function(icao24){
+        if(icao24 != "no results"){
+            flyToPlane(icao24);
+            getInfo(icao24);
+            saveUserFlight(icao24);
+        } 
+        else{
+            console.log("Icao24 not found");
+        }
+    })
 }
 
 //fills picked value from dropdown into searchbar
-function selectPlane(code, callSign) {
-    console.log(code);
-    document.getElementById("search").name = code;
-    document.getElementById("search").value = callSign;
-    clear();
-}
+// function selectPlane(code, callSign) {
+//     console.log(code);
+//     document.getElementById("search").name = code;
+//     document.getElementById("search").value = callSign;
+//     clear();
+// }
 
 function selectAirport(city, code) {
     document.getElementById("search").name = code;
@@ -199,11 +201,11 @@ function selectAirport(city, code) {
 }
 
 //test funktion for search
-function findflight() {
-    let data = document.getElementById("search").value;
-    console.log(data);
+// function findflight() {
+//     let data = document.getElementById("search").value;
+//     console.log(data);
 
-}
+// }
 
 function isEmpty(obj) {
     for(var key in obj) {
@@ -213,13 +215,23 @@ function isEmpty(obj) {
     return true;
 }
 
-//cleared dropdown
-function clear() {
+// //cleared dropdown
+// function clear() {
 
-    console.log("should go");
-    var drp = document.getElementById("drop");
-    var a = drp.getElementsByTagName("a");
-    for(let i = 0; i < 5; i++){
-        a[i].style.display = "none";
+//     console.log("should go");
+//     var drp = document.getElementById("drop");
+//     var a = drp.getElementsByTagName("a");
+//     for(let i = 0; i < 5; i++){
+//         a[i].style.display = "none";
+//     }
+// }
+
+function AJAXget(link, callback){
+    let req = new XMLHttpRequest();
+    req.open('GET', link);
+    req.onload = function(){
+        if(req.status == 200)
+            callback(req.responseText);
     }
+    req.send();
 }
