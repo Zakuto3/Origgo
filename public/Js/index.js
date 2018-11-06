@@ -40,5 +40,10 @@ function isLoggedIn(username){
 	document.getElementById("moreInfo").innerHTML = "Logged in as " + username;
 	document.getElementById("loginIndex").innerHTML = "Logout";
 	document.getElementById("signupIndex").style.visibility="hidden";
+	document.getElementById("loginIndex2").innerHTML = "Logout";
+	document.getElementById("signupIndex2").style.visibility="hidden"
+
+	document.getElementById("loginIndex2").style.marginTop="1.6%"
+    document.getElementById("loginIndex2").style.float="right"
 	document.getElementsByClassName("column right")[0].style.display="block";
-}
+}   

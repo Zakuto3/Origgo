@@ -157,6 +157,7 @@ button:hover {
         overflow: hidden;
 }
 
+
  .navigation li {
     display: inline-block;
 
@@ -452,6 +453,7 @@ button:hover {
     .searchbar{
         margin: 0 auto;
         width: 90%;
+        padding-top: 0%;
     }
 
     .navigation a.icon{
@@ -459,6 +461,7 @@ button:hover {
         right:0px;
         float: right;
         display: block;
+        padding: 1%;
     }
     .navigation li {
         display: none;
@@ -476,7 +479,9 @@ button:hover {
      .button2{
         display: inline;
     }
-
+    .navigation ul {
+        margin: auto;
+    }
 }
 
 @media (max-width: 600px) {
