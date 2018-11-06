@@ -20,7 +20,7 @@
             <div class="searchbar"  style="flex-grow: 7">
                 <div class="dropdown">
                     <input type="text"  id="search" placeholder="Search for flights..." onkeyup="searchPlanes(this.value)">
-                    <button type="submit" onclick="track(document.getElementById('search').name)">Track</button><br>
+                    <input type="button" value="Track" onclick="track(document.getElementById('search').value)"><br>
                     <div id="drop" class="drpdwn-content">
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
@@ -30,8 +30,6 @@
                     </div>
                 </div>
             </div>
-            <div class="button"><button onclick="reDir()" id="loginIndex">Login</button></div>
-            <div class="button1" id="signupIndex"><a href="signup.html"><button>Signup</button></a></div>
         </div>
         <div class="navigation" id="myTopnav">
             <ul> 
@@ -42,6 +40,8 @@
               <li><a href="contact.html">Contact</a></li>
               <a href="javascript:void(0);" class="icon" onclick="myFunction()">
               <i class="fa fa-bars"></i></a>
+                <div class="button2"><button onclick="reDir()" id="loginIndex">Login</button></div>
+                <div class="button1" id="signupIndex"><button onclick="window.location.href='/signup.html'">Signup</button></div>
              </ul> 
         </div>
 
@@ -57,73 +57,60 @@
         </script>
 
         <div class="section">
-            <div class="column left">
-                <h2>News</h2><br>
-                <div class="slideshow-container">
-                    <div class="mySlides fade">
-                        <img src="pictures/news1.jpg" style="width: 100%">
-                        <button class="text"><b>Emirates launches flights from Edinburgh to Dubai</b></button>
-                        
-                    </div>
-                    <div class="mySlides fade">
-                        <img src="pictures/news2.jpg" style="width: 100%">
-                        <button class="text"><b>Get discount on flight tickets </b></button>
-                    </div>
-                    <div class="mySlides fade">
-                        <img src="pictures/news3.jpg" style="width: 100%">
-                        <button class="text"><b>Raynair delayed 153 flights</b></button>
-                    </div>
-                </div><br><br>
-                <button class="ttl"><b>Four direct routes to new summer destinations from Stockholm Arlanda with SAS</b></button><a href="flights.html"><button class="txt">Scandinavian Airlines will launch four new routes this summer to the European destinations...</button></a>
-                <br><br>
-                <button class="ttl"><b>Jetstar named the world's worst airline.</b></button>
-                <a href="flights.html"><button class="txt">Jetstar has been branded the worst airline in the world, after receiving one star...</button></a>
-                <br><br>
-                <button class="ttl"><b>Southend Airport offers free flights?</b></button>
-                <a href="flights.html"><button class="txt">Southend Airport offers free flights to passengers delayed at Heathrow or Gatwick...</button></a>
-            </div>
+            <!--<div class="column left">-->
+                <!--<h2>News</h2><br>-->
+                <!--<div class="slideshow-container">-->
+                    <!--<div class="mySlides fade">-->
+                        <!--<img src="pictures/news1.jpg" style="width: 100%">-->
+                        <!--<button class="text"><b>Emirates launches flights from Edinburgh to Dubai</b></button>-->
+
+                    <!--</div>-->
+                    <!--<div class="mySlides fade">-->
+                        <!--<img src="pictures/news2.jpg" style="width: 100%">-->
+                        <!--<button class="text"><b>Get discount on flight tickets </b></button>-->
+                    <!--</div>-->
+                    <!--<div class="mySlides fade">-->
+                        <!--<img src="pictures/news3.jpg" style="width: 100%">-->
+                        <!--<button class="text"><b>Raynair delayed 153 flights</b></button>-->
+                    <!--</div>-->
+                <!--</div><br><br>-->
+                <!--<button class="ttl"><b>Four direct routes to new summer destinations from Stockholm Arlanda with SAS</b></button><a href="flights.html"><button class="txt">Scandinavian Airlines will launch four new routes this summer to the European destinations...</button></a>-->
+                <!--<br><br>-->
+                <!--<button class="ttl"><b>Jetstar named the world's worst airline.</b></button>-->
+                <!--<a href="flights.html"><button class="txt">Jetstar has been branded the worst airline in the world, after receiving one star...</button></a>-->
+                <!--<br><br>-->
+                <!--<button class="ttl"><b>Southend Airport offers free flights?</b></button>-->
+                <!--<a href="flights.html"><button class="txt">Southend Airport offers free flights to passengers delayed at Heathrow or Gatwick...</button></a>-->
+            <!--</div>-->
             <div class="column middle">
                 <h2 id="element-test">Map</h2>
                 <div id="map"></div><br><br>
-                <div class="add-container">
-                    <div class="add-box"><p><b>Buy tickets here and get free parking</b></p></div>
-                    <img src="pictures/car-parking.jpg" style="width: 100%" height="150px">
-                    <div class="add2-box"><p>Buy tickets from us and get free parking. Sounds good? Click here for more...</p></div>
-                </div>
             </div>
             <div class="column right">
-                <h3>More info</h3>
                 <p id="moreInfo"></p>
                 <div class="fakeimg" id="info" style="display: none; min-height:60px;"></div>
-                <div class="polaroid">
-                    <img src="pictures/weather.jpg" style="width: 100%">
-                    <div class="box"><p><b>Check weather before flying</b></p></div>
-                </div>
-                <br><br>
-                <h3>Folow us on Facebook</h3>
-                <a href="https://hr-hr.facebook.com/"><img src="pictures/fb.png" style="width: 50px;"></a>
     
             </div>
         </div>
           
     </div>
         <script type="text/javascript" src="./Js/Map.js"></script>    
-        <script>
-           let slideIndex = 0;
-           showSlides();
+        <!--<script>-->
+           <!--let slideIndex = 0;-->
+           <!--showSlides();-->
 
-            function showSlides() {
-              let i;
-              let slides = document.getElementsByClassName("mySlides");
-              for (i = 0; i < slides.length; i++) {
-                 slides[i].style.display = "none";  
-              }
-              slideIndex++;
-              if (slideIndex > slides.length) {slideIndex = 1} 
-              slides[slideIndex-1].style.display = "block"; 
-              setTimeout(showSlides, 3000); 
-            }
-         </script>
+            <!--function showSlides() {-->
+              <!--let i;-->
+              <!--let slides = document.getElementsByClassName("mySlides");-->
+              <!--for (i = 0; i < slides.length; i++) {-->
+                 <!--slides[i].style.display = "none";  -->
+              <!--}-->
+              <!--slideIndex++;-->
+              <!--if (slideIndex > slides.length) {slideIndex = 1} -->
+              <!--slides[slideIndex-1].style.display = "block"; -->
+              <!--setTimeout(showSlides, 3000); -->
+            <!--}-->
+         <!--</script>-->
 		
 	</body>
 </html>
