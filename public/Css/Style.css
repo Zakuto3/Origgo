@@ -113,17 +113,16 @@ h1 {
 .drpdwn a:hover {background-color: #ddd;}
 
 .button2 {
-    display: inline;
+    display: none;
     padding-top: 5%;
     border-radius: 2px;
 }
 
 .button1 {
-    display: inline;
-    padding-top: 5%;
-    padding-right: 1%;
-    padding-left: 1%;
-
+    position: relative;
+    top: 0%;
+    margin: 1% 1% 0% 0%;
+    height: 10%;
 }
 
 button {
@@ -470,6 +469,13 @@ button:hover {
         font-size: 2em;
     }
 
+    .button1{
+        display: none;
+    }
+
+     .button2{
+        display: inline;
+    }
 
 }
 
