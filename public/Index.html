@@ -20,7 +20,7 @@
             <div class="searchbar"  style="flex-grow: 7">
                 <div class="dropdown">
                     <input type="text"  id="search" placeholder="Search for flights..." onkeyup="searchPlanes(this.value)">
-                    <input type="button" value="Track" onclick="track(document.getElementById('search').value)"><br>
+                    <input type="button" value="Track" onclick="track(document.getElementById('search').name)"><br>
                     <div id="drop" class="drpdwn-content">
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
