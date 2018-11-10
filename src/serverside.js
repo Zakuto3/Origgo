@@ -53,7 +53,10 @@ app.post('/loginbtn',(req, res) =>{
     }
   console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass); 
   res.send(req.session.login);
-  })  
+  }).catch((err) => {
+    console.log("login err: ",err);
+    res.send("");
+  })
 });
 
 app.post('/signupForm', (req, res) =>{
@@ -63,6 +66,9 @@ app.post('/signupForm', (req, res) =>{
 
   DatabaseConn(QueryString).then(function(data){
     res.send(data.affectedRows.toString());
+  }).catch((err)=>{
+    console.log("signup error: ",err);
+    res.send("");
   })
 });
 
@@ -77,7 +83,8 @@ app.post('/check',(req, res) =>{
           res.send(userData);
         }
         else res.send(req.session.name);
-      }).catch(function(){
+      }).catch((err) => {
+        console.log("check error: ", err);
         res.send(false);
       })
       }
@@ -131,7 +138,6 @@ app.get('/login.html',(req, res) =>{
 /*Sends all current non-null airplanes to client*/
 app.get('/addAirplanes', (req, res) => {
   var url = req.query.icao24 ? "https://opensky-network.org/api/states/all?icao24="+req.query.icao24 : "https://opensky-network.org/api/states/all";
-  console.log("is url working? ", url);
   request(url, function(data){
     var states = data.states || undefined;
     var planes = [];
@@ -221,7 +227,8 @@ app.get('/flightToDB', (req, res) => {
     const query = "INSERT INTO origgo.usersavedplanes (UID, Icao24) VALUES ('"+req.session.userId+"', '"+req.query.icao24+"');";
     DatabaseConn(query).then(function(){
       res.send(true);
-    }).catch(function(){
+    }).catch((err) => {
+      console.log("flightToDB error: ", err);
       res.send(false);
     })
   }
@@ -231,9 +238,10 @@ app.get('/flightToDB', (req, res) => {
 app.get('/updateFlightToDB', (req, res) => {
   if(req.session.login){
     const query = "UPDATE origgo.usersavedplanes SET icao24 = '"+req.query.icao24+"' WHERE UID = '"+req.session.userId+"';";
-    DatabaseConn(query).then(function(){
+    DatabaseConn(query).then(() => {
       res.send(true);
-    }).catch(function(){
+    }).catch((err) => {
+      console.log("updateFlightToDB error: ",err);
       res.send(false);
     })
   }
@@ -243,10 +251,11 @@ app.get('/updateFlightToDB', (req, res) => {
 app.get('/checkUserSaved', (req, res) => {
   if(req.session.login){
     const query = "SELECT * FROM origgo.usersavedplanes WHERE UID = '"+req.session.userId+"';";
-    DatabaseConn(query).then(function(rows){
+    DatabaseConn(query).then((rows) => {
       if(rows.length > 0) res.send(true);
       else res.send(false);
-    }).catch(function(){
+    }).catch((err) => {
+      console.log("checkUserSaved error: ", err);
       res.send(false);
     })
   }
@@ -259,15 +268,12 @@ app.get('/getIcao24', (req, res) => {
     DatabaseConn(query).then(function(rows){
       console.log("rows: ",rows);
       if(rows.length > 0){
-        var plane = { 
-          icao24: rows[0].icao24,
-          callsign: rows[0].callsign 
-        };
-        console.log("icao24? ", rows[0].icao24);
         res.send(rows[0].icao24);
       }
       else{ res.send("no results"); }
-    }).catch((err) => {console.log("err: ", err);})
+    }).catch((err) => {
+      console.log("getIcao24 err: ", err);
+    });
   }
   else { res.send("callsign empty"); }
 })

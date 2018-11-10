@@ -1,43 +1,15 @@
 
-// var planeList = [];
-//native Post/AJAX to serverside: https://blog.garstasio.com/you-dont-need-jquery/ajax/
-function loginrequest(){
-let x = document.getElementById("btn-change");
-xhr = new XMLHttpRequest();
-xhr.open('POST', 'http://localhost:3000/request');//notice we use /request, this will match in serverside
-xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-xhr.onload = function() {
-    if (xhr.status === 200) {
-        document.getElementById("element-test").innerHTML = "Welcome "+xhr.responseText; //resonsetext is result
-    }
-    else if (xhr.status !== 200) {
-        alert('Request failed.  Returned status of ' + xhr.status);
-    }
-};
-xhr.send(); 
-}
 
 function searchAirports(str){
-    let input = document.getElementById("search");
-    let jsonData ="";
-    var drp = document.getElementById("drop");
-    var a = drp.getElementsByTagName("a");
-    filter = input.value.toUpperCase();
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/search?q='+str);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    xhr.onload = function() {
-        // console.log("baum!!!!"+this.responseText);
-        if (xhr.status === 200 && this.responseText!= "") {
-            jsonData = JSON.parse(this.responseText);
-
-            console.log(this.responseText);
+    AJAXget('/search?q='+str, function(result){
+        if(result != ""){
+            var json = JSON.parse(result);
+            var drp = document.getElementById("drop");
+            var a = drp.getElementsByTagName("a");
             for (let index = 0; index < 5; index++) {
-                if (isEmpty(jsonData[index]) == false) {
-                    a[index].innerHTML = jsonData[index].iataCode + " " + jsonData[index].city;
-                    a[index].id = jsonData[index].iataCode;
+                if (isEmpty(json[index]) == false) {
+                    a[index].innerHTML = json[index].iataCode + " " + json[index].city;
+                    a[index].id = json[index].iataCode;
                     a[index].style.display = "";
                 } else {
                     a[index].innerHTML = "";
@@ -46,11 +18,42 @@ function searchAirports(str){
                 }
             }
         }
-        else if (xhr.status !== 200) {
-            console.log('Request failed.  Returned status of ' + xhr.status);
+        else{
+            console.log("Airports: no response");
         }
-    };
-    xhr.send();
+    });
+    // let input = document.getElementById("search");
+    // let jsonData ="";
+    // var drp = document.getElementById("drop");
+    // var a = drp.getElementsByTagName("a");
+    // filter = input.value.toUpperCase();
+    // xhr = new XMLHttpRequest();
+    // xhr.open('GET', 'http://localhost:3000/search?q='+str);
+    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    // xhr.onload = function() {
+    //     // console.log("baum!!!!"+this.responseText);
+    //     if (xhr.status === 200 && this.responseText!= "") {
+    //         jsonData = JSON.parse(this.responseText);
+
+    //         console.log(this.responseText);
+    //         for (let index = 0; index < 5; index++) {
+    //             if (isEmpty(jsonData[index]) == false) {
+    //                 a[index].innerHTML = jsonData[index].iataCode + " " + jsonData[index].city;
+    //                 a[index].id = jsonData[index].iataCode;
+    //                 a[index].style.display = "";
+    //             } else {
+    //                 a[index].innerHTML = "";
+    //                 a[index].style.display = "none";
+    //                 a[index].onClick = function () {};
+    //             }
+    //         }
+    //     }
+    //     else if (xhr.status !== 200) {
+    //         console.log('Request failed.  Returned status of ' + xhr.status);
+    //     }
+    // };
+    // xhr.send();
 }
 
 // function searchPlanes(str){
@@ -104,73 +107,117 @@ function searchAirports(str){
 // }
 
 function getInfo(icao24) {
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + icao24);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function () {
-        // console.log("baum!!!!"+this.responseText);
-        if (xhr.status === 200 && this.responseText != "") {
-            jsonData = JSON.parse(this.responseText);
-            let depatureAirport = jsonData["depatureAirport"] ? jsonData["depatureAirport"]["city"] : jsonData["depatureAirport"];
-            document.getElementById("info").innerHTML =
-                "Callsign:<br>"+jsonData["callsign"]+"<br><br>"+
-                "Origin country:<br>"+jsonData["origin"]+"<br><br>"+
-                "Velocity:<br>"+jsonData["velocity"]+"m/s<br><br>"+
-                "Altitude:<br>"+jsonData["altitude"]+"m<br><br>"+
+    AJAXget('/getAirplane?q=' + icao24, function(result){
+        if(result != ""){
+            var json = JSON.parse(result);
+            var depatureAirport = json["depatureAirport"] ? json["depatureAirport"]["city"] : "Unavailable";
+            document.getElementById("info").innerHTML = 
+                "Callsign:<br>"+json["callsign"]+"<br><br>"+
+                "Origin country:<br>"+json["origin"]+"<br><br>"+
+                "Velocity:<br>"+json["velocity"]+"m/s<br><br>"+
+                "Altitude:<br>"+json["altitude"]+"m<br><br>"+
                 "Departure:<br>"+depatureAirport+"<br><br>"+
-                "Arival:<br>"+jsonData["arrivalAirport"];
+                "Arival:<br>"+json["arrivalAirport"];
             document.getElementById("info").style.display = "block";
-            console.log(this.responseText);
-        }else {console.log("no response");}
-    }
-    xhr.send();
+        }
+        else{
+            console.log("getInfo: no response");
+        }
+    });
+    // xhr = new XMLHttpRequest();
+    // xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + icao24);
+    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // xhr.onload = function () {
+    //     // console.log("baum!!!!"+this.responseText);
+    //     if (xhr.status === 200 && this.responseText != "") {
+    //         jsonData = JSON.parse(this.responseText);
+    //         let depatureAirport = jsonData["depatureAirport"] ? jsonData["depatureAirport"]["city"] : jsonData["depatureAirport"];
+    //         document.getElementById("info").innerHTML =
+    //             "Callsign:<br>"+jsonData["callsign"]+"<br><br>"+
+    //             "Origin country:<br>"+jsonData["origin"]+"<br><br>"+
+    //             "Velocity:<br>"+jsonData["velocity"]+"m/s<br><br>"+
+    //             "Altitude:<br>"+jsonData["altitude"]+"m<br><br>"+
+    //             "Departure:<br>"+depatureAirport+"<br><br>"+
+    //             "Arival:<br>"+jsonData["arrivalAirport"];
+    //         document.getElementById("info").style.display = "block";
+    //         console.log(this.responseText);
+    //     }else {console.log("no response");}
+    // }
+    // xhr.send();
 }
 
 /*Add flight to a user in DB*/
 function addUserFlight(icao24){
-    let req = new XMLHttpRequest();
-    req.open('GET', '/flightToDB?icao24=' + icao24);
-    req.onload = function(){
-        if(req.status = 200){
-            if(this.responseText == "true") {
-                //addFlightToSide();
-            }
-            else { console.log("Could not add");}
+    AJAXget('/flightToDB?icao24=' + icao24, function(result){
+        if(result == "true"){
+            console.log("Flight added to user");
         }
-    }
-    req.send();
+        else{
+            console.log("Could not add flight to user");
+        }
+    });
+    // let req = new XMLHttpRequest();
+    // req.open('GET', '/flightToDB?icao24=' + icao24);
+    // req.onload = function(){
+    //     if(req.status = 200){
+    //         if(this.responseText == "true") {
+    //             //addFlightToSide();
+    //         }
+    //         else { console.log("Could not add");}
+    //     }
+    // }
+    // req.send();
 }
 
 /*Save or update user flight in DB depending
- if it user has save one already*/
-function saveUserFlight(){
-    let icao24 = document.getElementById("search").name;
-    let req = new XMLHttpRequest();
-    req.open('GET', '/checkUserSaved?icao24=' + icao24);
-    req.onload = function(){
-        if(req.status = 200){
-            if(this.responseText == "true") {
-                updateUserFlight(icao24);
-            }
-            else { addUserFlight(icao24); }
+ if user has saved one already*/
+function saveUserFlight(icao24){
+    AJAXget('/checkUserSaved?icao24=' + icao24, function(result){
+        console.log("save result: ", result);
+        if(result == "true"){
+            updateUserFlight(icao24);
         }
-    }
-    req.send();
+        else{
+            addUserFlight(icao24);
+        }
+    });
+
+    // let icao24 = document.getElementById("search").name;
+    // let req = new XMLHttpRequest();
+    // req.open('GET', '/checkUserSaved?icao24=' + icao24);
+    // req.onload = function(){
+    //     if(req.status = 200){
+    //         if(this.responseText == "true") {
+    //             updateUserFlight(icao24);
+    //         }
+    //         else { addUserFlight(icao24); }
+    //     }
+    // }
+    // req.send();
 }
 
 /*updates users saved flight*/
 function updateUserFlight(icao24){
-    let req = new XMLHttpRequest();
-    req.open('GET', '/updateFlightToDB?icao24=' + icao24);
-    req.onload = function(){
-        if(req.status == 200){
-            if(this.responseText == "true") {
-                //addFlightToSide();
-            }
-            else { console.log("Could not update");}
+    AJAXget('/updateFlightToDB?icao24=' + icao24, function(result){
+        console.log("update result: ", result);
+        if(result == "true"){
+            console.log("userFlight updated");
         }
-    }
-    req.send();
+        else{
+            console.log("Could not update");
+        }
+    });
+    // let req = new XMLHttpRequest();
+    // req.open('GET', '/updateFlightToDB?icao24=' + icao24);
+    // req.onload = function(){
+    //     if(req.status == 200){
+    //         if(this.responseText == "true") {
+    //             //addFlightToSide();
+    //         }
+    //         else { console.log("Could not update");}
+    //     }
+    // }
+    // req.send();
 }
 
 function track(callSign){
@@ -181,6 +228,7 @@ function track(callSign){
             saveUserFlight(icao24);
         } 
         else{
+            alert("Plane not found")
             console.log("Icao24 not found");
         }
     })

@@ -22,7 +22,7 @@ function signupRequest(){
 
 let runPost = function postSignup(){	
 	req = new XMLHttpRequest();
-	req.open('post','http://localhost:3000/signupForm');
+	req.open('post','/signupForm');
 	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	req.send(param(elobj));
 	
