@@ -26,7 +26,7 @@ req.onreadystatechange = function(){
 		}
 		if (typeof userData != "string") { //logged in user with tracking plane
 			isLoggedIn(userData.username);
-			getInfo(userData.plane);
+			addInfoByIcao24(userData.plane);
 
 		}
 		else if(userData != ""){ 	//logged in without tracking plane

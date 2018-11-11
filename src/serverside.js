@@ -6,6 +6,7 @@ var db = require('./DBinfo');
 var https = require('https');
 var session = require('express-session');
 var app = express();
+var APIkey= "ee173e-9af648";
 
 var crypto;
 try {
@@ -171,50 +172,46 @@ app.get('/addAirplanes', (req, res) => {
   });
 });
 
-//gets a bunch of info on a plane
-app.get('/getAirplane', (req, res) => {
+app.get('/getAirplane', (req,res) => {
   let data = {};
-      request("https://opensky-network.org/api/states/all?icao24="+req.query.q, function(statesData) {
-        if(statesData.states){
-            let plane = statesData.states[0];
-            //Time in unix stamp, 43200 is 12 hours
-            let currentTime = Math.floor(Date.now()/1000);
-            let begin =  currentTime - 43200;
-            let end = currentTime + 43200;
-            request("https://opensky-network.org/api/flights/aircraft?icao24="+req.query.q+"&begin="+begin+"&end="+end, function(flightsData){ 
-              data = { 
-                icao24 : plane[0],
-                estArrival : unixTimeToNormal(flightsData[0].lastSeen),
-                estDeparture : unixTimeToNormal(flightsData[0].firstSeen),
-                callsign : flightsData[0].callsign.trim(),
-                velocity : plane[9],
-                origin : plane[2],
-                altitude : plane[7]
-              };   
-              DatabaseConn("SELECT * FROM origgo.airport WHERE icaoCode = '"+flightsData[0].estDepartureAirport+"'").then(function(airport){
-                if(airport.length > 0) { 
-                  data.depatureAirport = { 
-                      iataCode : airport[0].iataCode, 
-                      city : airport[0].city,
-                      country : airport[0].country }
-                }else 
-                  data.depatureAirport = flightsData[0].estDepartureAirport;       
-                DatabaseConn("SELECT * FROM origgo.airport WHERE icaoCode = '"+flightsData[0].estArrivalAirport+"'").then(function(airport){
-                  if(airport.length > 0) { 
-                    data.arrivalAirport = { 
-                      iataCode : airport[0].iataCode, 
-                      city : airport[0].city,
-                      country : airport[0].country }
-                  }else 
-                    data.arrivalAirport = flightsData[0].estArrivalAirport;
-                  console.log("DATA: \n", data);
-                  res.send(data);
-                });
-              });          
-            });
+  let url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;
+  if(req.query.callsign){
+    url += "&flightIcao="+req.query.callsign;
+  }
+  else{
+    url += "&aircraftIcao24="+req.query.icao24;
+  }
+  request(url, (planeInfo) => {
+    console.log("getAirplane: ", planeInfo);
+    if(planeInfo.length > 0){
+      let plane = planeInfo[0];
+      data.altitude = plane.geography.altitude;
+      data.icao24 = plane.aircraft.icao24.toLowerCase();
+      data.airline = plane.airline.icaoCode;
+      data.callsign = plane.flight.icaoNumber;
+      DatabaseConn("SELECT * FROM origgo.airport WHERE iataCode = '"+plane.departure.iataCode+"'").then((airport) => {
+        if(airport.length > 0) { 
+          data.depatureAirport = { 
+              iataCode : airport[0].iataCode, 
+              city : airport[0].city,
+              country : airport[0].country }
+        }
+        else { data.depatureAirport = "Unavailable"; }   
+        DatabaseConn("SELECT * FROM origgo.airport WHERE iataCode = '"+plane.arrival.iataCode+"'").then((airport) => {
+          if(airport.length > 0) { 
+            data.arrivalAirport = { 
+              iataCode : airport[0].iataCode, 
+              city : airport[0].city,
+              country : airport[0].country }
           }
-          else {res.send("")}
+          else { data.arrivalAirport = "Unavailable"; }
+          //console.log("DATA: \n", data);
+          res.send(data);
+        });
       });
+    }
+    else{ res.send(""); }
+  })
 });
 
 function unixTimeToNormal(unix){

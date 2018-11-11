@@ -146,6 +146,7 @@ function keepCentered(plane){
 function addPlaneByIcao24(icao24){
   AJAXget("/addAirplanes?icao24="+icao24, function(data){
     var plane = JSON.parse(data);
+    console.log("addPlane icao24: ",icao24);
     if(plane.length > 0){
       loadPlane(plane[0]);
       flyToPlane(icao24)
