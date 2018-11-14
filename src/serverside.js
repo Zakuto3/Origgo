@@ -41,7 +41,7 @@ var DatabaseConn = function(queryString){
     });
   });
 };
-  
+
 app.post('/loginbtn',(req, res) =>{
   const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
   const QueryString = "SELECT userID, name FROM origgo.users WHERE Name = '"+req.body.Name+"' AND Password = '"+hash+"';";
@@ -157,7 +157,6 @@ app.get('/addAirplanes', (req, res) => {
           };
           planes.push(planeObject);
         }
-        //console.log("plane: ", plane);
       });
       console.log("addAirplanes: Planes found.");
     }
@@ -178,29 +177,49 @@ app.get('/getAirplane', (req,res) => {
       data.airline = plane.airline.icaoCode;
       data.callsign = plane.flight.icaoNumber;
       //Should store all airports data in airports table in DB, INCOMPLETE
-      request("https://aviation-edge.com/v2/public/airportDatabase?key="+APIkey+"&codeIataAirport="+ plane.arrival.iataCode, (airport) =>{
-        if(airport.length > 0){
-          console.log("arr airport: ", airport);
+      DatabaseConn("SELECT * FROM airport WHERE iataCode = '"+plane.arrival.iataCode+"';").then((port)=>{
+        if(port.length > 0){
+          console.log("airport: ", port[0]);
           data.arrivalAirport = {
-            airportIata : airport[0].codeIataAirport,
-            name : airport[0].nameAirport,
-            country : airport[0].nameCountry,
-            cityIata : airport[0].codeIataCity
+            name : port[0].name,
+            country : port[0].country,
+            city : port[0].city
           }
         }
-        request("https://aviation-edge.com/v2/public/airportDatabase?key="+APIkey+"&codeIataAirport="+ plane.departure.iataCode, (airport) =>{
-          if(airport.length > 0){
-            console.log("dep airport: ", airport);
+        DatabaseConn("SELECT * FROM airport WHERE iataCode = '"+plane.departure.iataCode+"';").then((port)=>{
+          if(port.length > 0){
             data.depatureAirport = {
-              airportIata : airport[0].codeIataAirport,
-              name : airport[0].nameAirport,
-              country : airport[0].nameCountry,
-              cityIata : airport[0].codeIataCity
+              name : port[0].name,
+              country : port[0].country,
+              city : port[0].city
             }
           }
           res.send(data);
-        });
-      });
+        }).catch((err) => {console.log("depatureAirport err: ", err);}); 
+      }).catch((err) => {console.log("arrivalAirport err: ", err);})
+      // request("https://aviation-edge.com/v2/public/airportDatabase?key="+APIkey+"&codeIataAirport="+ plane.arrival.iataCode, (airport) =>{
+      //   if(airport.length > 0){
+      //     console.log("arr airport: ", airport);
+      //     data.arrivalAirport = {
+      //       airportIata : airport[0].codeIataAirport,
+      //       name : airport[0].nameAirport,
+      //       country : airport[0].nameCountry,
+      //       cityIata : airport[0].codeIataCity
+      //     }
+      //   }
+      //   request("https://aviation-edge.com/v2/public/airportDatabase?key="+APIkey+"&codeIataAirport="+ plane.departure.iataCode, (airport) =>{
+      //     if(airport.length > 0){
+      //       console.log("dep airport: ", airport);
+      //       data.depatureAirport = {
+      //         airportIata : airport[0].codeIataAirport,
+      //         name : airport[0].nameAirport,
+      //         country : airport[0].nameCountry,
+      //         cityIata : airport[0].codeIataCity
+      //       }
+      //     }
+      //     res.send(data);
+      //   });
+      // });
     }
     else{ res.send(""); }
   })

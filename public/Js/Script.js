@@ -67,8 +67,8 @@ function addInfo(plane) {
 
 
 /*Add flight to a user in DB*/
-function addUserFlight(icao24){
-    AJAXget('/flightToDB?icao24=' + icao24, function(result){
+function addUserFlight(regNumb){
+    AJAXget('/flightToDB?icao24=' + regNumb, function(result){
         if(result == "true"){
             console.log("Flight added to user");
         }
@@ -80,21 +80,21 @@ function addUserFlight(icao24){
 
 /*Save or update user flight in DB depending
  if user has saved one already*/
-function saveUserFlight(icao24){
-    AJAXget('/checkUserSaved?icao24=' + icao24, function(result){
+function saveUserFlight(regNumb){
+    AJAXget('/checkUserSaved?icao24=' + regNumb, function(result){
         console.log("save result: ", result);
         if(result == "true"){
-            updateUserFlight(icao24);
+            updateUserFlight(regNumb);
         }
         else{
-            addUserFlight(icao24);
+            addUserFlight(regNumb);
         }
     });
 }
 
 /*updates users saved flight*/
-function updateUserFlight(icao24){
-    AJAXget('/updateFlightToDB?icao24=' + icao24, function(result){
+function updateUserFlight(regNumb){
+    AJAXget('/updateFlightToDB?icao24=' + regNumb, function(result){
         console.log("update result: ", result);
         if(result == "true"){
             console.log("userFlight updated");
