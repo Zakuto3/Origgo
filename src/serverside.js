@@ -6,7 +6,7 @@ var db = require('./DBinfo');
 var https = require('https');
 var session = require('express-session');
 var app = express();
-var APIkey= "ee173e-9af648";
+var APIkey= "a407e4-2ee284";
 
 var crypto;
 try {
@@ -138,35 +138,28 @@ app.get('/login.html',(req, res) =>{
 
 /*Sends all current non-null airplanes to client*/
 app.get('/addAirplanes', (req, res) => {
-  var url = req.query.icao24 ? "https://opensky-network.org/api/states/all?icao24="+req.query.icao24 : "https://opensky-network.org/api/states/all";
+  var url = req.query.regNumb ? "https://aviation-edge.com/v2/public/flights?key="+APIkey+"&regNum="+req.query.regNumb : "https://aviation-edge.com/v2/public/flights?key="+APIkey;
+  //var url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;//+"&limit=1000";
   request(url, function(data){
-    var states = data.states || undefined;
     var planes = [];
-    if(states){
-      states.forEach(function(plane){
-        /*Boolean if plane is on ground*/
-        var planeGrounded = plane[8];
-        /*Indexes 5,6 contains coordinates for the plane*/
-        var lat = plane[6];
-        var lon = plane[5];
-        if(!planeGrounded && lat && lon && plane[1]!=""){
-
-          /*Index 10 contains plane rotation in degrees
-          North is 0 degrees. Index 0 has unique icao24 code*/
-          var planeObject = { 
-            icao24: plane[0],
-            callsign: plane[1].trim(),
-            lat: lat,
-            lon: lon,
-            direction: plane[10],
-             };
+    if(data){
+      data.forEach((plane) => {
+        var lat = plane.geography.latitude;
+        var lon = plane.geography.longitude;
+        var regNum = plane.aircraft.regNumber;
+        var direction = plane.geography.direction; 
+        if(lat && lon && direction && regNum){
+          var planeObject = {
+            planeReg : regNum,
+            lat : lat,
+            lon : lon,
+            direction : direction
+          };
           planes.push(planeObject);
         }
+        //console.log("plane: ", plane);
       });
-      console.log("States true");
-    }
-    else{
-      console.log("States null");
+      console.log("addAirplanes: Planes found.");
     }
     res.send(planes);
   });
@@ -175,37 +168,36 @@ app.get('/addAirplanes', (req, res) => {
 app.get('/getAirplane', (req,res) => {
   let data = {};
   let url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;
-  if(req.query.callsign){
-    url += "&flightIcao="+req.query.callsign;
-  }
-  else{
-    url += "&aircraftIcao24="+req.query.icao24;
-  }
+  if (req.query.callsign) url += "&flightIcao="+req.query.callsign;
   request(url, (planeInfo) => {
     console.log("getAirplane: ", planeInfo);
     if(planeInfo.length > 0){
       let plane = planeInfo[0];
       data.altitude = plane.geography.altitude;
-      data.icao24 = plane.aircraft.icao24.toLowerCase();
+      data.regNumb = plane.aircraft.regNumber;
       data.airline = plane.airline.icaoCode;
       data.callsign = plane.flight.icaoNumber;
-      DatabaseConn("SELECT * FROM origgo.airport WHERE iataCode = '"+plane.departure.iataCode+"'").then((airport) => {
-        if(airport.length > 0) { 
-          data.depatureAirport = { 
-              iataCode : airport[0].iataCode, 
-              city : airport[0].city,
-              country : airport[0].country }
-        }
-        else { data.depatureAirport = "Unavailable"; }   
-        DatabaseConn("SELECT * FROM origgo.airport WHERE iataCode = '"+plane.arrival.iataCode+"'").then((airport) => {
-          if(airport.length > 0) { 
-            data.arrivalAirport = { 
-              iataCode : airport[0].iataCode, 
-              city : airport[0].city,
-              country : airport[0].country }
+      //Should store all airports data in airports table in DB, INCOMPLETE
+      request("https://aviation-edge.com/v2/public/airportDatabase?key="+APIkey+"&codeIataAirport="+ plane.arrival.iataCode, (airport) =>{
+        if(airport.length > 0){
+          console.log("arr airport: ", airport);
+          data.arrivalAirport = {
+            airportIata : airport[0].codeIataAirport,
+            name : airport[0].nameAirport,
+            country : airport[0].nameCountry,
+            cityIata : airport[0].codeIataCity
           }
-          else { data.arrivalAirport = "Unavailable"; }
-          //console.log("DATA: \n", data);
+        }
+        request("https://aviation-edge.com/v2/public/airportDatabase?key="+APIkey+"&codeIataAirport="+ plane.departure.iataCode, (airport) =>{
+          if(airport.length > 0){
+            console.log("dep airport: ", airport);
+            data.depatureAirport = {
+              airportIata : airport[0].codeIataAirport,
+              name : airport[0].nameAirport,
+              country : airport[0].nameCountry,
+              cityIata : airport[0].codeIataCity
+            }
+          }
           res.send(data);
         });
       });

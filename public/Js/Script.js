@@ -30,15 +30,9 @@ function track(callSign){
         if(result != ""){
             var plane = JSON.parse(result);
             console.log("plane: ", plane);
-            if(plane.icao24){
-                flyToPlane(plane.icao24);
-                addInfo(plane);
-                saveUserFlight(plane.icao24);
-            }
-            else{
-                console.log("track: no icao24");
-                alert("Plane not found");
-            }
+            flyToPlane(plane.regNumb);
+            addInfo(plane);
+            saveUserFlight(plane.regNumb);
         }
         else{
             alert("Plane not found");
@@ -47,8 +41,8 @@ function track(callSign){
     });
 }
 
-function addInfoByIcao24(icao24){
-    AJAXget('/getAirplane?icao24='+icao24, function(data){
+function addInfoByFlightIcao(flightIcao){
+    AJAXget('/getAirplane?flightIcao='+flightIcao, function(data){
         if(data != ""){
             let plane = JSON.parse(data);
             addInfo(plane);
@@ -58,8 +52,9 @@ function addInfoByIcao24(icao24){
 }
 
 function addInfo(plane) {
-    var depatureAirport = plane.depatureAirport.city +", "+ plane.depatureAirport.country || plane.depatureAirport;
-    var arrivalAirport = plane.arrivalAirport.city +", "+ plane.arrivalAirport.country || plane.arrivalAirport;
+    console.log("addInfo: ",plane);
+    var depatureAirport = plane.depatureAirport.cityIata +", "+ plane.depatureAirport.country || plane.depatureAirport;
+    var arrivalAirport = plane.arrivalAirport.cityIata +", "+ plane.arrivalAirport.country || plane.arrivalAirport;
     document.getElementById("info").innerHTML = 
         "Callsign:<br>"+plane.callsign+"<br><br>"+
         //"Origin country:<br>"+plane.depatureAirport.country+"<br><br>"+
