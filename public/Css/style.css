@@ -295,6 +295,16 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     margin: 2em;
 }
 
+.person .overlay{
+    filter: blur(4px);
+    opacity: 0;
+    transition: 0.5s ease;
+}
+
+.person:hover .overlay{
+    opacity: 1;
+}
+
 .person h2{
     text-align: center;
 }
