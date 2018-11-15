@@ -270,7 +270,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 .cd-scrolling-bg__content {
   width: 90%;
-  max-width: 768px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -286,13 +286,17 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 .flex {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
+    width: 90%;
 }
 
 .flex .person{
     border: solid 1px white;
     padding: 3em 1.5em;
     margin: 2em;
+}
+
+.person h2{
+    text-align: center;
 }
 
 .person img{
