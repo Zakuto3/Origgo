@@ -15,7 +15,7 @@ const map = new ol.Map({
 
 let planeLayer; //moved, needed access in flyToPlane()
 
-initAirplanes("/addAirplanes", { limit : 50 });
+initAirplanes("/addAirplanes", { limit : 200 });
 
 //Adds planes to the map
 function initAirplanes(url, options){
@@ -25,7 +25,7 @@ function initAirplanes(url, options){
     layer: planeLayer,
     limit : options.limit || 1000,
     updates : options.updates || true,
-    updateInterval: options.updateInterval || 10000
+    updateInterval: options.updateInterval || 60000
   };
   /*loader takes a function that loads the source*/
   var planeSource = new ol.source.Vector({
@@ -61,33 +61,13 @@ function loadLayer(options, loader){
 Adds specified amount of airplanes to a source
 for a layer and adds that layer*/
 function planeLoader(planes, layer, limit){
-  
   let source = layer.getSource();
   for(let i = 0; i < planes.length && i < limit; i++){
-    /*Convert the coordinates to our system*/
-    let coords = ol.proj.transform([planes[i].lon, planes[i].lat], 'EPSG:4326', 'EPSG:3857');
-    /*Create a point for the plane*/
-    let newPlane = new ol.Feature({
-      geometry: new ol.geom.Point([coords[0], coords[1]])
-    });
-    /*Set the image of the plane*/
-    newPlane.setStyle(new ol.style.Style({
-      image: new ol.style.Icon({
-        scale: 0.03,
-        src: 'pictures/vector-plane.png',
-        /*Openlayers wants radians*/
-        rotation: toRadians(planes[i].direction)
-      })
-    }));
-    /*set Id for point to be able to find it later*/
-    newPlane.setId(planes[i].icao24);
-    planeList.push(planes[i]);
-    /*Add plane to the source connected to the layer*/
-    source.addFeature(newPlane);
+    loadPlane(planes[i]);
   }
-    /*After all planes are added to the source, add the layer
-    connected to source to the map*/
-    map.addLayer(layer);
+  /*After all planes are added to the source, add the layer
+  connected to source to the map*/
+  map.addLayer(layer);
 }
 
 /*Similar to airplaneloader but updates
@@ -100,8 +80,9 @@ function updateAirplanesCoords(url, layer){
       let source = layer.getSource();
       for (let i = 0; i < planes.length; i++) {
         /*Plane need to exist in layer already, we can't update a nonexisting plane*/
-        let existingPlane = source.getFeatureById(planes[i].icao24) || undefined;
+        let existingPlane = source.getFeatureById(planes[i].planeReg) || undefined;
         if(existingPlane){
+          //console.log("planes[i]: ",planes[i]);
           /*Convert the coordinates to our system before updating*/
           let newCoords = ol.proj.transform([planes[i].lon, planes[i].lat], 'EPSG:4326', 'EPSG:3857');
           let geom = existingPlane.getGeometry().setCoordinates(newCoords);
@@ -120,10 +101,10 @@ let intervalId; //needed to cancel intervals
 
 /*takes a planes icao24 number that is plane
 id in map. Then zooms on it and keeps centered*/
-function flyToPlane(icao24){
+function flyToPlane(regNumb){
   let view = map.getView();
   let source = planeLayer.getSource();
-  let plane = source.getFeatureById(icao24);
+  let plane = source.getFeatureById(regNumb);
 
   //If searched plane exists
   if(plane) {
@@ -133,7 +114,7 @@ function flyToPlane(icao24){
       duration: 1000
     },
     { center: coords,
-      zoom: 12,
+      zoom: 10,
       duration: 1000
     });
     //clear any ongoing intervals before setting new
@@ -148,6 +129,7 @@ function flyToPlane(icao24){
   }
   else{
     console.log("Plane not found on map");
+    addPlaneByRegNumb(regNumb);
   }
 }
 
@@ -158,4 +140,41 @@ function keepCentered(plane){
     center: coords,
     duration: 100
   });
+}
+
+
+function addPlaneByRegNumb(regNumb){
+  AJAXget("/addAirplanes?regNumb="+regNumb, function(data){
+    var plane = JSON.parse(data);
+    console.log("addPlane regNumb: ",regNumb);
+    if(plane.length > 0){
+      loadPlane(plane[0]);
+      flyToPlane(regNumb);
+    }
+    else { console.log("Plane not found from API")}
+
+  })
+}
+
+//loads a plane to a layer
+function loadPlane(plane){
+  /*Convert the coordinates to our system*/
+  let coords = ol.proj.transform([plane.lon, plane.lat], 'EPSG:4326', 'EPSG:3857');
+  /*Create a point for the plane*/
+  let newPlane = new ol.Feature({
+    geometry: new ol.geom.Point([coords[0], coords[1]])
+  });
+  /*Set the image of the plane*/
+  newPlane.setStyle(new ol.style.Style({
+    image: new ol.style.Icon({
+      scale: 0.03,
+      src: 'pictures/vector-plane.png',
+      /*Openlayers wants radians*/
+      rotation: toRadians(plane.direction)
+    })
+  }));
+  /*set Id for point to be able to find it later*/
+  newPlane.setId(plane.planeReg);
+  /*Add plane to the source connected to the layer*/
+  planeLayer.getSource().addFeature(newPlane);
 }

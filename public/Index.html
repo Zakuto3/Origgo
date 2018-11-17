@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="Css/Style.css">
         <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
         <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
-        <script type="text/javascript">var planeList = [];</script>
+        <!-- <script type="text/javascript">var planeList = [];</script> -->
         <script type="text/javascript" src="./Js/index.js"></script>
         <script type="text/javascript" src="./Js/Script.js"></script>
     </head>
@@ -19,15 +19,15 @@
             <h1>Flight tracking</h1>
             <div class="searchbar"  style="flex-grow: 7">
                 <div class="dropdown">
-                    <input type="text"  id="search" placeholder="Search for flights..." onkeyup="searchPlanes(this.value)">
-                    <button type="submit" onclick="track(document.getElementById('search').name)">Track</button><br>
-                    <div id="drop" class="drpdwn-content">
+                    <input type="text"  id="search" placeholder="Search for flights..." >
+                    <button type="submit" onclick="track(document.getElementById('search').value)">Track</button><br>
+                    <!-- <div id="drop" class="drpdwn-content">
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
                         <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="button"><button onclick="reDir()" id="loginIndex">Login</button></div>

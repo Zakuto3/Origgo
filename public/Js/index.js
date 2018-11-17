@@ -1,6 +1,6 @@
 function reDir() {
 	req = new XMLHttpRequest();
-	req.open('post','http://localhost:3000/check');
+	req.open('post','/check');
 	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	req.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){
@@ -15,7 +15,7 @@ function reDir() {
 }
 //check if user is loged in to show proper UI
 req = new XMLHttpRequest();
-req.open('post','http://localhost:3000/check');
+req.open('post','/check');
 req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 req.onreadystatechange = function(){
 	if(this.readyState == 4 && this.status == 200){
@@ -26,7 +26,7 @@ req.onreadystatechange = function(){
 		}
 		if (typeof userData != "string") { //logged in user with tracking plane
 			isLoggedIn(userData.username);
-			getInfo(userData.plane);
+			addInfoByIcao24(userData.plane);
 
 		}
 		else if(userData != ""){ 	//logged in without tracking plane
