@@ -53,7 +53,8 @@ function loadLayer(options, loader){
       }
     }
   }
-  req.open("GET", options.url);
+  console.log("url: ", options.url);
+  req.open("GET", options.url+"?limit="+options.limit);
   req.send();
 };
 

@@ -138,7 +138,10 @@ app.get('/login.html',(req, res) =>{
 
 /*Sends all current non-null airplanes to client*/
 app.get('/addAirplanes', (req, res) => {
-  var url = req.query.regNumb ? "https://aviation-edge.com/v2/public/flights?key="+APIkey+"&regNum="+req.query.regNumb : "https://aviation-edge.com/v2/public/flights?key="+APIkey;
+  var url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;
+  if(req.query.regNumb) { url += ("&regNum="+req.query.regNumb); }
+  if(req.query.limit) {url += ("&limit="+req.query.limit);}
+  //var url = req.query.regNumb ? "https://aviation-edge.com/v2/public/flights?key="+APIkey+"&regNum="+req.query.regNumb : "https://aviation-edge.com/v2/public/flights?key="+APIkey;
   //var url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;//+"&limit=1000";
   request(url, function(data){
     var planes = [];
