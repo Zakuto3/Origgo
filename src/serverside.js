@@ -141,11 +141,9 @@ app.get('/addAirplanes', (req, res) => {
   var url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;
   if(req.query.regNumb) { url += ("&regNum="+req.query.regNumb); }
   if(req.query.limit) {url += ("&limit="+req.query.limit);}
-  //var url = req.query.regNumb ? "https://aviation-edge.com/v2/public/flights?key="+APIkey+"&regNum="+req.query.regNumb : "https://aviation-edge.com/v2/public/flights?key="+APIkey;
-  //var url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;//+"&limit=1000";
   request(url, function(data){
     var planes = [];
-    if(data){
+    if(data.constructor === Array){
       data.forEach((plane) => {
         var lat = plane.geography.latitude;
         var lon = plane.geography.longitude;
@@ -179,7 +177,6 @@ app.get('/getAirplane', (req,res) => {
       data.regNumb = plane.aircraft.regNumber;
       data.airline = plane.airline.icaoCode;
       data.callsign = plane.flight.icaoNumber;
-      //Should store all airports data in airports table in DB, INCOMPLETE
       DatabaseConn("SELECT * FROM airport WHERE iataCode = '"+plane.arrival.iataCode+"';").then((port)=>{
         if(port.length > 0){
           console.log("airport: ", port[0]);
@@ -200,29 +197,6 @@ app.get('/getAirplane', (req,res) => {
           res.send(data);
         }).catch((err) => {console.log("depatureAirport err: ", err);}); 
       }).catch((err) => {console.log("arrivalAirport err: ", err);})
-      // request("https://aviation-edge.com/v2/public/airportDatabase?key="+APIkey+"&codeIataAirport="+ plane.arrival.iataCode, (airport) =>{
-      //   if(airport.length > 0){
-      //     console.log("arr airport: ", airport);
-      //     data.arrivalAirport = {
-      //       airportIata : airport[0].codeIataAirport,
-      //       name : airport[0].nameAirport,
-      //       country : airport[0].nameCountry,
-      //       cityIata : airport[0].codeIataCity
-      //     }
-      //   }
-      //   request("https://aviation-edge.com/v2/public/airportDatabase?key="+APIkey+"&codeIataAirport="+ plane.departure.iataCode, (airport) =>{
-      //     if(airport.length > 0){
-      //       console.log("dep airport: ", airport);
-      //       data.depatureAirport = {
-      //         airportIata : airport[0].codeIataAirport,
-      //         name : airport[0].nameAirport,
-      //         country : airport[0].nameCountry,
-      //         cityIata : airport[0].codeIataCity
-      //       }
-      //     }
-      //     res.send(data);
-      //   });
-      // });
     }
     else{ res.send(""); }
   })
