@@ -9,7 +9,9 @@ req.onreadystatechange = function(){
 			if (req.responseText == 'true') {
 				window.location.href="/Index.html";
 			}
-			else{
+			else if(req.responseText == 'goPass'){
+				alert("go to pass site");
+			}else{
 				document.getElementById("errormsg").innerHTML = "Wrong username and/or password"
 			}
 	}
@@ -18,6 +20,8 @@ req.onreadystatechange = function(){
 	}
 };
 let name = document.getElementById("uname").value, pass = document.getElementById("pswd").value;
-req.send(encodeURI('Name=' + name) + "&" +encodeURI('Pass=' + pass)); //sends this to serverside
+let emptype = (document.getElementById("box1").checked) ? "employer" : "employee";
+console.log(emptype);
+req.send(encodeURI('Name=' + name) + "&" +encodeURI('Pass=' + pass)+ "&" +encodeURI('emptype=' + emptype)); //sends this to serverside
 };
 

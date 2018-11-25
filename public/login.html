@@ -4,7 +4,6 @@
 		<meta charset="utf-8">
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
         <link rel="stylesheet" href="Css/forms.css" type="text/css">
-        <script type="text/javascript" src="./Js/login.js"></script>
         <title>Project for Web application</title>
 	</head>
 	<body>
@@ -21,6 +20,18 @@
     <label for="psw"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="psw" id="pswd" required>
         
+<div id='uncheck'>
+<input type="radio" name='emChoice' id="box0"  />
+<input type="radio" name='emChoice' id="box1" checked /> 
+Empoyer
+<label for='box1'>&#9678;</label> 
+<label for='box0'>&#9673;</label>
+<input type="radio" name='emChoice' id="box2" /> 
+Employee
+<label for='box2'>&#9678;</label> 
+<label for='box0'>&#9673;</label>
+</div>
+
   </div>
     <button id="submit" onclick="loginrequest()">Login</button>
 
@@ -35,7 +46,8 @@
       if (event.keyCode === 13) {
     document.getElementById("submit").click();
     }
-  });
+  });  
   </script>
+        <script type="text/javascript" src="./Js/login.js"></script>
 	</body>
 </html>
