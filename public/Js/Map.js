@@ -16,6 +16,7 @@ const map = new ol.Map({
 let planeLayer; //moved, needed access in flyToPlane()
 
 initAirplanes("/addAirplanes", { limit : 200 });
+initHover();
 
 //Adds planes to the map
 function initAirplanes(url, options){
@@ -178,4 +179,30 @@ function loadPlane(plane){
   newPlane.setId(plane.planeReg);
   /*Add plane to the source connected to the layer*/
   planeLayer.getSource().addFeature(newPlane);
+}
+
+function initHover(){
+  var hover = new ol.interaction.Select({
+        condition: ol.events.condition.pointerMove
+  });
+
+  map.addInteraction(hover);
+
+  hover.on("select", (e) => {
+    let plane = map.forEachFeatureAtPixel(e.mapBrowserEvent.pixel, function (feat){return feat;})
+    let features = planeLayer.getSource().getFeatures();
+      features.forEach((feat) => {
+        let planeId = plane ? plane.getId() : undefined;
+        src = (feat.getId() === planeId) ? 'pictures/vector-plane-highlight.png' : 'pictures/vector-plane.png';
+        let oldImage = feat.getStyle().getImage();
+        feat.setStyle(new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: oldImage.getScale(),
+          src: src,
+          /*Openlayers wants radians*/
+          rotation: oldImage.getRotation()
+        })
+      }))
+      })
+  })
 }
