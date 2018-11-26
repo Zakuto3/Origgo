@@ -296,12 +296,13 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 }
 
 .person .overlay{
-    filter: blur(4px);
-    opacity: 0;
+    /*filter: blur(4px);*/
+    opacity: 0.5;
     transition: 0.5s ease;
 }
 
 .person:hover .overlay{
+    filter: none;
     opacity: 1;
 }
 
