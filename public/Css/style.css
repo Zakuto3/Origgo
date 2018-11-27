@@ -146,6 +146,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 @media only screen and (min-width: 768px) {
   .cd-main-nav {
     /* reset style */
+      text-align: center;
     width: auto;
     height: auto;
     background: none;
@@ -154,9 +155,6 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   .cd-main-nav__list {
     /* reset style */
     position: static;
-      margin-right:auto;
-      margin-left: auto;
-      width: 50%;
     -webkit-transform: translateY(0);
         -ms-transform: translateY(0);
             transform: translateY(0);
@@ -299,7 +297,10 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 .flex {
     display: flex;
     flex-wrap: wrap;
-    width: 90%;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .flex .person{
