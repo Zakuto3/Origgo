@@ -18,10 +18,9 @@
     <title>Alternate Fixed And Scroll Backgrounds</title>
 </head>
 <body>
-<header class="cd-main-header">
-    <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" alt="Logo"></a></div>
+<header class="cd-main-header" id="navbar">
 
-    <nav class="cd-main-nav js-main-nav">
+    <nav class="cd-main-nav js-main-nav" id="menu">
         <ul class="cd-main-nav__list">
             <!-- inser more links here -->
             <li><a href="#0">Home</a></li>
@@ -31,6 +30,8 @@
             <li><a href="#0">Contact</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
+    <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
+
 </header>
 <main>
     <button id="upBtn" onclick=topFunction()>UP</button>
@@ -133,6 +134,19 @@
             document.getElementById("upBtn").style.display = "block";
         } else {
             document.getElementById("upBtn").style.display = "none";
+        }
+
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("navbar").style.height = "70px";
+            document.getElementById("navbar").style.background = "rgba(255, 255, 255, 0.95)";
+            document.getElementById("logo").style.float = "left";
+            document.getElementById("logo").style.margin = "10px 0 0 5%";
+            document.getElementById("logo").style.height = "50px";
+            document.getElementById("logo").style.width = "auto";
+            document.getElementById("menu").style.height = "auto";
+            document.getElementById("menu").style.float = "right";
+            document.getElementById("menu").style.marginRight = "5%";
+
         }
     }
 

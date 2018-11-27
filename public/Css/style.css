@@ -30,15 +30,29 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 -------------------------------- */
 .cd-main-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50px;
-  background: rgba(255, 255, 255, 0.95);
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  z-index: 3;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0,0,0,0);
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+}
+
+@media only screen and (max-width: 767px) {
+    .cd-main-header {
+        height: 50px !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+    }
+
+    .cd-main-header__logo img {
+        display: block;
+        height: 50px !important;
+        margin: 5% !important;
+        transition: 0.4s !important;
+        width: auto !important;
+    }
 }
 
 .map {
@@ -77,28 +91,25 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   clear: both;
 }
 
-.cd-main-header__logo {
-  float: left;
-  margin: 0 0 0 5%;
-}
 
 .cd-main-header__logo img {
   display: block;
-  height: 50px;
+    margin-right:auto;
+    margin-left: auto;
+
+    width: 50%;
+    transition: 0.8s;
 }
 
 @media only screen and (min-width: 768px) {
   .cd-main-header {
-    height: 70px;
+    height: 100%;
+      transition: 0.4s;
   }
-  .cd-main-header__logo {
-    margin: 23px 0 0 5%;
-  }
+
 }
 
 .cd-main-nav {
-  float: right;
-  margin-right: 5%;
   width: 44px;
   height: 100%;
   background: url("../pictures/menu.svg") no-repeat center center;
@@ -143,7 +154,9 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   .cd-main-nav__list {
     /* reset style */
     position: static;
-    width: auto;
+      margin-right:auto;
+      margin-left: auto;
+      width: 50%;
     -webkit-transform: translateY(0);
         -ms-transform: translateY(0);
             transform: translateY(0);
