@@ -9,15 +9,19 @@ function loginrequest(){
 			if (req.responseText == 'true') {
 				window.location.href="/Index.html";
 			}
-			else{
+			else if(req.responseText == 'goPass'){
+				alert("go to pass site");
+			}else{
 				document.getElementById("errormsg").innerHTML = "Wrong username and/or password"
 			}
-		}
-		else if (this.status !== 200 && this.readyState != 4) {
-		alert('Request failed.  Returned status of ' + req.status);
-		}
-	};
-	let name = document.getElementById("uname").value, pass = document.getElementById("pswd").value;
-	req.send(encodeURI('Name=' + name) + "&" +encodeURI('Pass=' + pass)); //sends this to serverside
+	}
+	else if (this.status !== 200 && this.readyState != 4) {
+	alert('Request failed.  Returned status of ' + req.status);
+	}
+};
+let name = document.getElementById("uname").value, pass = document.getElementById("pswd").value;
+let emptype = (document.getElementById("box1").checked) ? "employer" : "employee";
+console.log(emptype);
+req.send(encodeURI('Name=' + name) + "&" +encodeURI('Pass=' + pass)+ "&" +encodeURI('emptype=' + emptype)); //sends this to serverside
 };
 
