@@ -54,7 +54,6 @@ function loadLayer(options, loader){
       }
     }
   }
-  console.log("url: ", options.url);
   req.open("GET", options.url+"?limit="+options.limit);
   req.send();
 };
@@ -82,7 +81,7 @@ function updateAirplanesCoords(url, layer){
       let source = layer.getSource();
       for (let i = 0; i < planes.length; i++) {
         /*Plane need to exist in layer already, we can't update a nonexisting plane*/
-        let existingPlane = source.getFeatureById(planes[i].planeReg) || undefined;
+        let existingPlane = source.getFeatureById(planes[i].flightIcao) || undefined;
         if(existingPlane){
           //console.log("planes[i]: ",planes[i]);
           /*Convert the coordinates to our system before updating*/
@@ -103,10 +102,10 @@ let intervalId; //needed to cancel intervals
 
 /*takes a planes icao24 number that is plane
 id in map. Then zooms on it and keeps centered*/
-function flyToPlane(regNumb){
+function flyToPlane(flightIcao){
   let view = map.getView();
   let source = planeLayer.getSource();
-  let plane = source.getFeatureById(regNumb);
+  let plane = source.getFeatureById(flightIcao);
 
   //If searched plane exists
   if(plane) {
@@ -131,7 +130,7 @@ function flyToPlane(regNumb){
   }
   else{
     console.log("Plane not found on map");
-    addPlaneByRegNumb(regNumb);
+    addPlaneByFlight(flightIcao);
   }
 }
 
@@ -145,13 +144,13 @@ function keepCentered(plane){
 }
 
 
-function addPlaneByRegNumb(regNumb){
-  AJAXget("/addAirplanes?regNumb="+regNumb, function(data){
+function addPlaneByFlight(flightIcao){
+  AJAXget("/addAirplanes?flightIcao="+flightIcao, function(data){
     var plane = JSON.parse(data);
-    console.log("addPlane regNumb: ",regNumb);
+    console.log("addPlane flightIcao: ",flightIcao);
     if(plane.length > 0){
       loadPlane(plane[0]);
-      flyToPlane(regNumb);
+      flyToPlane(flightIcao);
     }
     else { console.log("Plane not found from API")}
 
@@ -176,7 +175,7 @@ function loadPlane(plane){
     })
   }));
   /*set Id for point to be able to find it later*/
-  newPlane.setId(plane.planeReg);
+  newPlane.setId(plane.flightIcao);
   /*Add plane to the source connected to the layer*/
   planeLayer.getSource().addFeature(newPlane);
 }

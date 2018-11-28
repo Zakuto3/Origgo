@@ -25,14 +25,14 @@ function searchAirports(str){
 }
 
 
-function track(callSign){
-    AJAXget('/getAirplane?callsign=' + callSign, function(result){
+function track(flightIcao){
+    AJAXget('/getAirplane?flightIcao=' + flightIcao, function(result){
         if(result != ""){
             var plane = JSON.parse(result);
             console.log("plane: ", plane);
-            flyToPlane(plane.regNumb);
+            flyToPlane(plane.flightIcao);
             addInfo(plane);
-            saveUserFlight(plane.regNumb);
+            saveUserFlight(plane.flightIcao);
         }
         else{
             alert("Plane not found");
@@ -56,7 +56,7 @@ function addInfo(plane) {
     var depatureAirport = plane.depatureAirport.cityIata +", "+ plane.depatureAirport.country || plane.depatureAirport;
     var arrivalAirport = plane.arrivalAirport.cityIata +", "+ plane.arrivalAirport.country || plane.arrivalAirport;
     document.getElementById("info").innerHTML = 
-        "Callsign:<br>"+plane.callsign+"<br><br>"+
+        "Callsign:<br>"+plane.flightIcao+"<br><br>"+
         //"Origin country:<br>"+plane.depatureAirport.country+"<br><br>"+
         //"Velocity:<br>"+json["velocity"]+"m/s<br><br>"+
         "Altitude:<br>"+plane.altitude+"m<br><br>"+
@@ -67,8 +67,8 @@ function addInfo(plane) {
 
 
 /*Add flight to a user in DB*/
-function addUserFlight(regNumb){
-    AJAXget('/flightToDB?icao24=' + regNumb, function(result){
+function addUserFlight(flightIcao){
+    AJAXget('/flightToDB?flightIcao=' + flightIcao, function(result){
         if(result == "true"){
             console.log("Flight added to user");
         }
@@ -80,21 +80,21 @@ function addUserFlight(regNumb){
 
 /*Save or update user flight in DB depending
  if user has saved one already*/
-function saveUserFlight(regNumb){
-    AJAXget('/checkUserSaved?icao24=' + regNumb, function(result){
+function saveUserFlight(flightIcao){
+    AJAXget('/checkUserSaved?flightIcao=' + flightIcao, function(result){
         console.log("save result: ", result);
         if(result == "true"){
-            updateUserFlight(regNumb);
+            updateUserFlight(flightIcao);
         }
         else{
-            addUserFlight(regNumb);
+            addUserFlight(flightIcao);
         }
     });
 }
 
 /*updates users saved flight*/
-function updateUserFlight(regNumb){
-    AJAXget('/updateFlightToDB?icao24=' + regNumb, function(result){
+function updateUserFlight(flightIcao){
+    AJAXget('/updateFlightToDB?flightIcao=' + flightIcao, function(result){
         console.log("update result: ", result);
         if(result == "true"){
             console.log("userFlight updated");

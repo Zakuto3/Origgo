@@ -139,7 +139,7 @@ app.get('/login.html',(req, res) =>{
 /*Sends all current non-null airplanes to client*/
 app.get('/addAirplanes', (req, res) => {
   var url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;
-  if(req.query.regNumb) { url += ("&regNum="+req.query.regNumb); }
+  if(req.query.flightIcao) { url += ("&flightIcao="+req.query.flightIcao); }
   if(req.query.limit) {url += ("&limit="+req.query.limit);}
   request(url, function(data){
     var planes = [];
@@ -147,11 +147,12 @@ app.get('/addAirplanes', (req, res) => {
       data.forEach((plane) => {
         var lat = plane.geography.latitude;
         var lon = plane.geography.longitude;
-        var regNum = plane.aircraft.regNumber;
+        var flightIcao = plane.flight.icaoNumber;
         var direction = plane.geography.direction; 
-        if(lat && lon && direction && regNum){
+        var inAir = (plane.status == "en-route" || plane.status == "started") ? true : false;
+        if(lat && lon && direction && flightIcao && inAir){
           var planeObject = {
-            planeReg : regNum,
+            flightIcao : flightIcao,
             lat : lat,
             lon : lon,
             direction : direction
@@ -168,7 +169,7 @@ app.get('/addAirplanes', (req, res) => {
 app.get('/getAirplane', (req,res) => {
   let data = {};
   let url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;
-  if (req.query.callsign) url += "&flightIcao="+req.query.callsign;
+  if (req.query.flightIcao) url += "&flightIcao="+req.query.flightIcao;
   request(url, (planeInfo) => {
     console.log("getAirplane: ", planeInfo);
     if(planeInfo.length > 0){
@@ -176,7 +177,7 @@ app.get('/getAirplane', (req,res) => {
       data.altitude = plane.geography.altitude;
       data.regNumb = plane.aircraft.regNumber;
       data.airline = plane.airline.icaoCode;
-      data.callsign = plane.flight.icaoNumber;
+      data.flightIcao = plane.flight.icaoNumber;
       DatabaseConn("SELECT * FROM airport WHERE iataCode = '"+plane.arrival.iataCode+"';").then((port)=>{
         if(port.length > 0){
           console.log("airport: ", port[0]);
@@ -209,7 +210,7 @@ function unixTimeToNormal(unix){
 
 app.get('/flightToDB', (req, res) => {
   if(req.session.login){
-    const query = "INSERT INTO origgo.usersavedplanes (UID, Icao24) VALUES ('"+req.session.userId+"', '"+req.query.icao24+"');";
+    const query = "INSERT INTO origgo.usersavedplanes (UID, Icao24) VALUES ('"+req.session.userId+"', '"+req.query.flightIcao+"');";
     DatabaseConn(query).then(function(){
       res.send(true);
     }).catch((err) => {
@@ -222,7 +223,7 @@ app.get('/flightToDB', (req, res) => {
 
 app.get('/updateFlightToDB', (req, res) => {
   if(req.session.login){
-    const query = "UPDATE origgo.usersavedplanes SET icao24 = '"+req.query.icao24+"' WHERE UID = '"+req.session.userId+"';";
+    const query = "UPDATE origgo.usersavedplanes SET icao24 = '"+req.query.flightIcao+"' WHERE UID = '"+req.session.userId+"';";
     DatabaseConn(query).then(() => {
       res.send(true);
     }).catch((err) => {
@@ -247,21 +248,22 @@ app.get('/checkUserSaved', (req, res) => {
   else { res.send(false); }
 });
 
-app.get('/getIcao24', (req, res) => {
-  if(req.query.callSign){
-    const query = "SELECT icao24 FROM origgo.airplane WHERE callsign = '"+req.query.callSign+"';";
-    DatabaseConn(query).then(function(rows){
-      console.log("rows: ",rows);
-      if(rows.length > 0){
-        res.send(rows[0].icao24);
-      }
-      else{ res.send("no results"); }
-    }).catch((err) => {
-      console.log("getIcao24 err: ", err);
-    });
-  }
-  else { res.send("callsign empty"); }
-})
+//NOT USED
+// app.get('/getIcao24', (req, res) => {
+//   if(req.query.callSign){
+//     const query = "SELECT icao24 FROM origgo.airplane WHERE callsign = '"+req.query.callSign+"';";
+//     DatabaseConn(query).then(function(rows){
+//       console.log("rows: ",rows);
+//       if(rows.length > 0){
+//         res.send(rows[0].icao24);
+//       }
+//       else{ res.send("no results"); }
+//     }).catch((err) => {
+//       console.log("getIcao24 err: ", err);
+//     });
+//   }
+//   else { res.send("callsign empty"); }
+// })
 
 /*function for accessing WEB API through https module,
 see it as serverside making requests to services*/
