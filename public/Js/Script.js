@@ -1,8 +1,9 @@
-
+var interId = "";
 // var planeList = [];
 //native Post/AJAX to serverside: https://blog.garstasio.com/you-dont-need-jquery/ajax/
 function loginrequest(){
 let x = document.getElementById("btn-change");
+
 xhr = new XMLHttpRequest();
 xhr.open('POST', 'http://localhost:3000/request');//notice we use /request, this will match in serverside
 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -87,44 +88,54 @@ function searchPlanes(str){
 
 
 /*Get info on a flight*/
-function getFlight(icao24) {
-    //let data = document.getElementById("search").name;
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + icao24);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function () {
+// function getFlight() {
+//     //let data = document.getElementById("search").name;
+//     xhr = new XMLHttpRequest();
+//     xhr.open('GET', 'http://localhost:3000/addHeatmap');
+//     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+//     xhr.onload = function () {
+//         if (xhr.status === 200) {
+//             console.log(this.responseText);
+//         }else {console.log("no response");}
+//     }
+//     xhr.send();
+// }
 
-        if (xhr.status === 200) {
-            var jsonData = JSON.parse(this.responseText);
-            //console.log(jsonData);git
-            return jsonData;
-        }else {console.log("no response");}
-    }
-    xhr.send();
-}
 
 
 function getInfo(icao24) {
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + icao24);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function () {
-        // console.log("baum!!!!"+this.responseText);
-        if (xhr.status === 200 && this.responseText != "") {
-            jsonData = JSON.parse(this.responseText);
-            let depatureAirport = jsonData["depatureAirport"] ? jsonData["depatureAirport"]["city"] : jsonData["depatureAirport"];
-            document.getElementById("info").innerHTML =
-                "Callsign:<br>"+jsonData["callsign"]+"<br><br>"+
-                "Origin country:<br>"+jsonData["origin"]+"<br><br>"+
-                "Velocity:<br>"+jsonData["velocity"]+"m/s<br><br>"+
-                "Altitude:<br>"+jsonData["altitude"]+"m<br><br>"+
-                "Departure:<br>"+depatureAirport+"<br><br>"+
-                "Arival:<br>"+jsonData["arrivalAirport"];
-            document.getElementById("info").style.display = "block";
-            console.log(this.responseText);
-        }else {console.log("no response");}
-    }
-    xhr.send();
+
+    if (interId !== "") clearInterval(interId);
+    interId = setInterval(function ()
+    {
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:3000/getAirplane?q=' + icao24);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            // console.log("baum!!!!"+this.responseText);
+            if (xhr.status === 200 && this.responseText != "") {
+                jsonData = JSON.parse(this.responseText);
+                let depatureAirport = jsonData["depatureAirport"] ? jsonData["depatureAirport"]["city"] : jsonData["depatureAirport"];
+                let arrivalAirport = "No Destination found";
+                if (!jsonData["arrivalAirport"]) {
+                    arrivalAirport = jsonData["arrivalAirport"];
+                }
+                document.getElementById("info").innerHTML =
+                    "Callsign:<br>" + jsonData["callsign"] + "<br><br>" +
+                    "Origin country:<br>" + jsonData["origin"] + "<br><br>" +
+                    "Velocity:<br>" + jsonData["velocity"] + "m/s<br><br>" +
+                    "Altitude:<br>" + jsonData["altitude"] + "m<br><br>" +
+                    "Departure:<br>" + depatureAirport + "<br><br>" +
+                    "Arrival:<br>" + arrivalAirport;
+                document.getElementById("info").style.display = "block";
+                console.log(this.responseText);
+            } else {
+                console.log("no response");
+            }
+        }
+        xhr.send();
+
+    }, 5000);
 }
 
 /*Add flight to a user in DB*/

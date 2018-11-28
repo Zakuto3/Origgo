@@ -182,6 +182,36 @@ app.get('/addAirplanes', (req, res) => {
   });
 });
 
+// app.get('/addHeatmap', (req, res) => {
+//     request("https://opensky-network.org/api/states/all", function(data){
+//
+//         var planeObject = "{ \"type\": \"MultiPoint\",\"coordinates\": ["
+//         if(data){
+//             data["states"].forEach(function(plane){
+//                 /*Boolean if plane is on ground*/
+//                 var planeGrounded = plane[8];
+//                 /*Indexes 5,6 contains coordinates for the plane*/
+//                 var lat = plane[6];
+//                 var lon = plane[5];
+//                 if(!planeGrounded && lat && lon && plane[1]!=""){
+//                     console.log(lat);
+//                     /*Index 10 contains plane rotation in degrees
+//                     North is 0 degrees. Index 0 has unique icao24 code*/
+//                     planeObject = planeObject + "[" + lat + "," + lon + "],";
+//                 }
+//             });
+//             planeObject = planeObject.slice(0,-1) + "]";
+//             planeObject = planeObject + "}";
+//
+//             console.log(planeObject);
+//         }
+//         else{
+//             console.log("States null");
+//         }
+//         res.send(planeObject);
+//     });
+// });
+
 //gets a bunch of info on a plane
 app.get('/getAirplane', (req, res) => {
   let data = {};
