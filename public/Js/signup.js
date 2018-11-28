@@ -1,8 +1,19 @@
 let elobj;
 let check;
 
+(()=>{
+    let selector = ''+
+    '<select id="CompSelector">'+
+    '<option value="google">Google</option>'+
+    '<option value="intel">Intel</option>'+
+    '<option value="microsoft">Microsoft</option>'+
+    '<option value="imb">IMB</option>'+
+    '</select>';
+   document.getElementById("comp").innerHTML += selector;
+})();
+
 function signupRequest(){
-	const el = ['Username', 'Password', 'Mail', 'Company'];
+	const el = ['Username', 'Password', 'Mail', 'keycode'];
 	elobj = {};
 	check = true;
 	el.forEach((elems) => {
@@ -18,6 +29,7 @@ function signupRequest(){
 		check = false;
 	}
 	if (check) {runPost();}
+	console.log(param(elobj));
 };	
 
 let runPost = function postSignup(){	
@@ -50,5 +62,12 @@ function param(object) {
             encodedString += encodeURI(prop + '=' + object[prop]);
         }
     }
-    return encodedString;
+    return encodedString + '&' + encodeURI("CompSelector" + '=' + grabcomp());
+}
+
+
+function grabcomp() {
+    var e = document.getElementById("CompSelector");
+	var compstring = e.options[e.selectedIndex].text;
+	return compstring;
 }

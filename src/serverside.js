@@ -7,6 +7,8 @@ var https = require('https');
 var session = require('express-session');
 var app = express();
 var APIkey= "a407e4-2ee284";
+const uuidv4 = require('uuid/v4');
+uuidv4(); //⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
 
 var crypto;
 try {
@@ -32,6 +34,7 @@ app.use(function (req, res, next) {
     next();
 });
 
+
 //makes a promise for sequential execution for database
 var DatabaseConn = function(queryString){
   return new Promise(function(resolve, reject) { 
@@ -43,16 +46,26 @@ var DatabaseConn = function(queryString){
 };
 
 app.post('/loginbtn',(req, res) =>{
+  console.log(req.body.emptype);
+  if (req.body.emptype == "employee") { //check if its first time emoplyee logs in
+    DatabaseConn("SELECT origgo.employee.password FROM origgo.employee WHERE name= '"+req.body.Name+"';").then(function(data){
+      if (data[0].password == null) {
+        res.send("goPass");
+      }
+    });
+  }
   const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
-  const QueryString = "SELECT userID, name FROM origgo.users WHERE Name = '"+req.body.Name+"' AND Password = '"+hash+"';";
-
+  const QueryString = (req.body.emptype == "employer") ? "SELECT origgo.employer.UID, origgo.employer.name, origgo.employer.password FROM origgo.employer WHERE name= '"+req.body.Name+"' AND password='"+hash+"'" : "SELECT origgo.employee.UID, origgo.employee.name, origgo.employee.password FROM origgo.employee WHERE name= '"+req.body.Name+"' AND password = '"+req.body.Pass+"';";//_-------- CHANGE PASS TO HASH AFTER DEBUGGING IS DONE
+  console.log(QueryString);
   DatabaseConn(QueryString).then(function(data){
+    console.log("DATA: ",data);
     if (data.length > 0){
      req.session.login = true;
      req.session.name = data[0].name;
-     req.session.userId = data[0].userID;
+     req.session.userId = data[0].UID;
+     req.session.usertype = req.body.emptype;
     }
-  console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass); 
+  console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass, req.body.emptype); 
   res.send(req.session.login);
   }).catch((err) => {
     console.log("login err: ",err);
@@ -61,17 +74,20 @@ app.post('/loginbtn',(req, res) =>{
 });
 
 app.post('/signupForm', (req, res) =>{
-
   const hash = crypto.createHmac('sha256', req.body.Password).digest('hex');
-  const QueryString = 'INSERT INTO `origgo`.`users` (`Name`, `Password`, `eMail`, `compName`) VALUES ('+'"'+req.body.Username+'"'+', '+'"'+hash+'"'+', '+'"'+req.body.Mail+'"'+', '+'"'+req.body.Company+'"'+');';
-
-  DatabaseConn(QueryString).then(function(data){
-    res.send(data.affectedRows.toString());
-  }).catch((err)=>{
-    console.log("signup error: ",err);
-    res.send("");
-  })
+  const QueryString = 'INSERT INTO `origgo`.`employer` (`name`, `password`, `email`, `companyName`, `certifiedKey`) VALUES ('+'"'+req.body.Username+'"'+', '+'"'+hash+'"'+', '+'"'+req.body.Mail+'"'+', '+'"'+req.body.CompSelector+'"'+', '+'"'+req.body.keycode+'"'+');';
+  const QueryStringCheck = "SELECT count(*) AS HITS FROM origgo.company_code WHERE company = '"+req.body.CompSelector+"' AND code = '"+req.body.keycode+"';"
+  DatabaseConn(QueryStringCheck).then(function(data){
+    if (data[0].HITS) {
+      DatabaseConn(QueryString).then(function(row){
+      res.send(row.affectedRows.toString());
+      }).catch(function(error){console.log(error);}) 
+    }else{
+      res.send(data[0].HITS.toString())
+    }
+  }).catch(function(error){console.log(error);})
 });
+
 
 app.post('/check',(req, res) =>{
     if(req.session.login) {
