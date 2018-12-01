@@ -26,7 +26,7 @@ req.onreadystatechange = function(){
 		}
 		if (typeof userData != "string") { //logged in user with tracking plane
 			isLoggedIn(userData.username);
-			addInfoByIcao24(userData.plane);
+			addInfoByFlightIcao(userData.plane);
 
 		}
 		else if(userData != ""){ 	//logged in without tracking plane
@@ -40,5 +40,6 @@ function isLoggedIn(username){
 	document.getElementById("moreInfo").innerHTML = "Logged in as " + username;
 	document.getElementById("loginIndex").innerHTML = "Logout";
 	document.getElementById("signupIndex").style.visibility="hidden";
-	document.getElementsByClassName("column right")[0].style.display="block";
+	//messed up mouse coordinates on map for some reason, wtf
+	//document.getElementsByClassName("column right")[0].style.display="block";
 }

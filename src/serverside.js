@@ -90,21 +90,22 @@ app.post('/signupForm', (req, res) =>{
 
 
 app.post('/check',(req, res) =>{
-    if(req.session.login) {
-      const query = "SELECT * FROM origgo.usersavedplanes WHERE UID = '"+req.session.userId+"';";
-      DatabaseConn(query).then(function(rows){
-        console.log("rows: ", rows);
+    if(req.session.login) //{
+      // const query = "SELECT * FROM origgo.usersavedplanes WHERE UID = '"+req.session.userId+"';";
+      // DatabaseConn(query).then(function(rows){
+      //   console.log("rows: ", rows);
 
-        if(rows.length > 0){
-          let userData = { plane : rows[0].Icao24, username : req.session.name };
-          res.send(userData);
-        }
-        else res.send(req.session.name);
-      }).catch((err) => {
-        console.log("check error: ", err);
-        res.send(false);
-      })
-      }
+      //   if(rows.length > 0){
+      //     let userData = { plane : rows[0].Icao24, username : req.session.name };
+      //     res.send(userData);
+      //   }
+        //else 
+        res.send(req.session.name);
+      // }).catch((err) => {
+      //   console.log("check error: ", err);
+      //   res.send(false);
+      // })
+      // }
     else res.send("");
 });
 
@@ -226,7 +227,7 @@ function unixTimeToNormal(unix){
 
 app.get('/flightToDB', (req, res) => {
   if(req.session.login){
-    const query = "INSERT INTO origgo.usersavedplanes (UID, Icao24) VALUES ('"+req.session.userId+"', '"+req.query.flightIcao+"');";
+    const query = `UPDATE ${req.session.usertype} SET trackingIcao24 = '${req.query.flightIcao}' WHERE UID = '${req.session.userId}';`;
     DatabaseConn(query).then(function(){
       res.send(true);
     }).catch((err) => {
@@ -237,32 +238,33 @@ app.get('/flightToDB', (req, res) => {
   else { res.send(false); }
 });
 
-app.get('/updateFlightToDB', (req, res) => {
-  if(req.session.login){
-    const query = "UPDATE origgo.usersavedplanes SET icao24 = '"+req.query.flightIcao+"' WHERE UID = '"+req.session.userId+"';";
-    DatabaseConn(query).then(() => {
-      res.send(true);
-    }).catch((err) => {
-      console.log("updateFlightToDB error: ",err);
-      res.send(false);
-    })
-  }
-  else { res.send(false); }
-});
+//check and update not necessary with new database setup
+// app.get('/updateFlightToDB', (req, res) => {
+//   if(req.session.login){
+//     const query = "UPDATE origgo.usersavedplanes SET icao24 = '"+req.query.flightIcao+"' WHERE UID = '"+req.session.userId+"';";
+//     DatabaseConn(query).then(() => {
+//       res.send(true);
+//     }).catch((err) => {
+//       console.log("updateFlightToDB error: ",err);
+//       res.send(false);
+//     })
+//   }
+//   else { res.send(false); }
+// });
 
-app.get('/checkUserSaved', (req, res) => {
-  if(req.session.login){
-    const query = "SELECT * FROM origgo.usersavedplanes WHERE UID = '"+req.session.userId+"';";
-    DatabaseConn(query).then((rows) => {
-      if(rows.length > 0) res.send(true);
-      else res.send(false);
-    }).catch((err) => {
-      console.log("checkUserSaved error: ", err);
-      res.send(false);
-    })
-  }
-  else { res.send(false); }
-});
+// app.get('/checkUserSaved', (req, res) => {
+//   if(req.session.login){
+//     const query = `SELECT trackingIcao24 from ${req.session.usertype} WHERE UID == '${req.session.userId}'`;
+//     DatabaseConn(query).then((rows) => {
+//       if(rows.length > 0) res.send(true);
+//       else res.send(false);
+//     }).catch((err) => {
+//       console.log("checkUserSaved error: ", err);
+//       res.send(false);
+//     })
+//   }
+//   else { res.send(false); }
+// });
 
 //NOT USED
 // app.get('/getIcao24', (req, res) => {

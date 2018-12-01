@@ -32,7 +32,7 @@ function track(flightIcao){
             console.log("plane: ", plane);
             flyToPlane(plane.flightIcao);
             addInfo(plane);
-            saveUserFlight(plane.flightIcao);
+            addUserFlight(plane.flightIcao);
         }
         else{
             alert("Plane not found");
@@ -78,32 +78,32 @@ function addUserFlight(flightIcao){
     });
 }
 
-/*Save or update user flight in DB depending
- if user has saved one already*/
-function saveUserFlight(flightIcao){
-    AJAXget('/checkUserSaved?flightIcao=' + flightIcao, function(result){
-        console.log("save result: ", result);
-        if(result == "true"){
-            updateUserFlight(flightIcao);
-        }
-        else{
-            addUserFlight(flightIcao);
-        }
-    });
-}
+// /*Save or update user flight in DB depending
+//  if user has saved one already*/
+// function saveUserFlight(flightIcao){
+//     AJAXget('/checkUserSaved?flightIcao=' + flightIcao, function(result){
+//         console.log("save result: ", result);
+//         if(result == "true"){
+//             updateUserFlight(flightIcao);
+//         }
+//         else{
+//             addUserFlight(flightIcao);
+//         }
+//     });
+// }
 
-/*updates users saved flight*/
-function updateUserFlight(flightIcao){
-    AJAXget('/updateFlightToDB?flightIcao=' + flightIcao, function(result){
-        console.log("update result: ", result);
-        if(result == "true"){
-            console.log("userFlight updated");
-        }
-        else{
-            console.log("Could not update");
-        }
-    });
-}
+// /*updates users saved flight*/
+// function updateUserFlight(flightIcao){
+//     AJAXget('/updateFlightToDB?flightIcao=' + flightIcao, function(result){
+//         console.log("update result: ", result);
+//         if(result == "true"){
+//             console.log("userFlight updated");
+//         }
+//         else{
+//             console.log("Could not update");
+//         }
+//     });
+// }
 
 function selectAirport(city, code) {
     document.getElementById("search").name = code;
