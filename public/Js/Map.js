@@ -205,3 +205,66 @@ function initHover(){
       })
   })
 }
+
+
+initPopUp();
+function initPopUp(){
+  let closePop = document.createElement("button");
+  closePop.classList.add("popup-close");
+  closePop.innerHTML = "X";
+  closePop.addEventListener("click", function(evt) { overlay.setPosition(undefined); click.getFeatures().clear(); });
+
+  let pop = document.createElement("div");
+  pop.classList.add("popup");
+
+  let popText = document.createElement("p");
+  popText.classList.add("popup-paragraph");
+
+  let popTitle = document.createElement("span");
+  popTitle.classList.add("popup-title");
+
+  let overlay = new ol.Overlay({
+    element: pop
+  });
+
+  map.addOverlay(overlay);
+
+  let click = new ol.interaction.Select({
+    condition : ol.events.condition.click
+  });
+
+  map.addInteraction(click);
+
+  click.on("select", function(e){
+    let plane = map.forEachFeatureAtPixel(e.mapBrowserEvent.pixel, function (feat){return feat;});
+    if(plane){
+      let coords = plane.getGeometry().getCoordinates();
+      let flightIcao = plane.getId();
+      AJAXget("/getAirplane?flightIcao="+flightIcao, (planeInfo) => {
+        if(planeInfo != ""){
+          planeInfo = JSON.parse(planeInfo);
+          let arrivalAirport = planeInfo.arrivalAirport ? `&emsp; <b>Country:</b> ${planeInfo.arrivalAirport.country}<br>
+            &emsp; <b>City:</b> ${planeInfo.arrivalAirport.city}<br>
+            &emsp; <b>Airport:</b> ${planeInfo.arrivalAirport.name}` : "&emsp;Unavailable";
+
+          let depatureAirport = planeInfo.depatureAirport ? `&emsp; <b>Country:</b> ${planeInfo.depatureAirport.country}<br>
+            &emsp; <b>City:</b> ${planeInfo.depatureAirport.city}<br>
+            &emsp; <b>Airport:</b> ${planeInfo.depatureAirport.name}` : "&emsp;Unavailable";
+
+          popTitle.innerHTML = `<b>Flight:</b> ${planeInfo.flightIcao}`
+          popText.innerHTML = `<b>Arriving at:</b><br> ${arrivalAirport}.<br>
+          <b>Departed from:</b><br> ${depatureAirport}.`;
+          pop.appendChild(popTitle);
+          pop.appendChild(closePop);
+          pop.appendChild(popText);
+          overlay.setPosition(coords);
+        }
+        else { 
+          pop.innerHTML = "Unavailable";
+          pop.appendChild(closePop);
+          overlay.setPosition(coords); 
+        }
+      })
+    }
+  })
+}

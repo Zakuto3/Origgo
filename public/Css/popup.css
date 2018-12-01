@@ -1,0 +1,42 @@
+.popup-close {
+    width: 20px !important;
+    height: 20px;
+    float: right;
+    border-radius: 4px;
+    margin-top: 3%;
+    margin-right: 5%;
+    padding-left: 2.5%;
+    padding-top: 1%;
+    border: none;
+    background-color: rgb(102, 179, 255);
+    color: aliceblue;
+    box-shadow: none;
+}
+
+.popup{
+    width: 14em;
+    border: 1.5px solid #a8a8f1;
+    background: aliceblue;
+    border-radius: 9%;
+    font-family: sans-serif;
+}
+
+.popup-paragraph{
+    margin: 5% 5% 5%;
+    font-size: .6em;
+    padding-left: 5%;
+    padding-top: 12%;
+    text-align: left;
+}
+
+.popup-title{
+    margin: 3% 0 0 8%;
+    float: left;
+    width: 70%;
+    text-indent: 0%;
+    background: rgba(57, 177, 252, 0.19);
+    font-size: .9em;
+    border-radius: 4px;
+    padding: 2%;
+    text-align: center;
+}
