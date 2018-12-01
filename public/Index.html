@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>var planeList = []; </script>
+    <script type="text/javascript" src="./Js/Script.js"></script>
+    
 
     <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
     <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
-    <script>var planeList = []; </script>
-    <script type="text/javascript" src="./Js/Script.js"></script>
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
 
@@ -23,7 +24,7 @@
     <nav class="cd-main-nav js-main-nav" id="menu">
         <ul class="cd-main-nav__list">
             <!-- inser more links here -->
-            <li><a href="#0">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="#0">About</a></li>
             <li><a href="#0">Pricing</a></li>
             <li><a href="#0">Gallery</a></li>
@@ -38,16 +39,17 @@
     <div class="cd-fixed-bg cd-fixed-bg--1">
         <div class="cd-fixed-bg__content">
             <h1>Alternate Fixed &amp; Scroll Backgrounds</h1>
-            <a class="cd-nugget-info" onclick=fullmap()>
+            <a class="cd-nugget-info" href="/login.html">
 					<span>
-						<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
-							<style type="text/css">
-								.cd-nugget-info-arrow{fill:#383838;}
-							</style>
-							<polygon class="cd-nugget-info-arrow" points="15,7 4.4,7 8.4,3 7,1.6 0.6,8 0.6,8 0.6,8 7,14.4 8.4,13 4.4,9 15,9 "/>
-						</svg>
+						
 					</span>
-                Article &amp; Download
+                Login
+            </a>
+            <a class="cd-nugget-info" href="signup.html" >
+                    <span>
+                        
+                    </span>
+                Signup
             </a>
         </div>
     </div> <!-- cd-fixed-bg -->
