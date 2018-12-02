@@ -42,4 +42,4 @@ function isLoggedIn(username){
 	document.getElementById("signupIndex").style.visibility="hidden";
 	//messed up mouse coordinates on map for some reason, wtf
 	//document.getElementsByClassName("column right")[0].style.display="block";
-}
+}  

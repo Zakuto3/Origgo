@@ -2,13 +2,15 @@
 // var planeList = [];
 const map = new ol.Map({
   target: 'map',
+  interactions: ol.interaction.defaults({mouseWheelZoom:false}),
+
   layers: [
     new ol.layer.Tile({
        source: new ol.source.OSM()
     })
   ],
   view: new ol.View({
-    center: [0, 0],
+    center: [0, 100],
     zoom: 3
   })
 });	
@@ -142,7 +144,6 @@ function keepCentered(plane){
     duration: 100
   });
 }
-
 
 function addPlaneByFlight(flightIcao){
   AJAXget("/addAirplanes?flightIcao="+flightIcao, function(data){

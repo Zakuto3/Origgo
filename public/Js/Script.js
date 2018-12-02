@@ -1,5 +1,3 @@
-
-
 function searchAirports(str){
     AJAXget('/search?q='+str, function(result){
         if(result != ""){
