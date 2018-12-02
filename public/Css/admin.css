@@ -1,0 +1,67 @@
+.admin-cell{
+	margin: 0 .3em;
+	flex: 1 1;
+    flex-direction: column;
+    display: flex;
+    height: -webkit-fill-available;
+    padding: .7em;
+    font-size: 1.4em;
+}
+.admin-cell div{
+	display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.admin-cell .info{
+    font-size: .6em;
+    background-color: #D4E7CE;
+    margin: 2% 0;
+    padding: 0 4%;
+}
+
+.admin-cell .double-btn{
+	margin-top: -6%;
+}
+
+.flex p{
+	margin: 0 !important;
+    font-size: .6em;
+}
+
+.flex div{
+	font-family: sans-serif;
+}
+
+.flex button{
+	width: 30%;
+    margin: 2% 0;
+    padding: 2%;
+    color: white;
+    background-color: #5E994B;
+    border-style: hidden;
+}
+
+.flex button:hover{
+	background: #325228;
+	cursor: pointer;
+}
+
+.flex select{
+	margin: 2% 0;
+    padding: 2%;
+    border-radius: 4px;
+    background-color: #EFF5ED;
+    border-color: #EFF5ED;
+}
+
+.flex select:hover{
+	cursor: pointer;
+}
+
+.flex input{
+	margin: 1% 0;
+    padding: 2%;
+    border-radius: 4px;
+    border: none;
+}
