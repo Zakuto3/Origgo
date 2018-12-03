@@ -1,9 +1,17 @@
+#admin-page{
+    align-items: stretch;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .admin-cell{
 	margin: 0 .3em;
 	flex: 1 1;
     flex-direction: column;
     display: flex;
-    height: -webkit-fill-available;
     padding: .7em;
     font-size: 1.4em;
 }
