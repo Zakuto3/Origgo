@@ -66,7 +66,7 @@
                         <span id="company-code" class="info">
                             Selected company's code.
                         </span>
-                        <button>
+                        <button id="delete-company" disabled>
                             Delete
                         </button>
                     </div>
@@ -74,7 +74,7 @@
                         <p>Add new employer to company</p>
                         <input id="new-empName" type="text" placeholder="New employer name...">
                         <input id="new-empMail" type="text" placeholder="New employer e-mail...">
-                        <button id="add-employer">
+                        <button id="add-employer" disabled>
                             Add
                         </button>
                     </div>
@@ -99,10 +99,10 @@
                             Info about selected employer
                         </span>
                         <span class="double-btn">
-                            <button>
+                            <button id="delete-employer" disabled>
                                 Delete
                             </button>
-                            <button id="reset-employer">
+                            <button id="reset-employer" disabled>
                                 Reset pass
                             </button>
                         </span>
@@ -111,16 +111,16 @@
                         <p>Add new employee to employer</p>
                         <input id="new-empeeName" type="text" placeholder="New employee name...">
                         <input id="new-empeeMail" type="text" placeholder="New employee e-mail...">
-                        <button id="add-employee">
+                        <button id="add-employee" disabled>
                             Add
                         </button>
                     </div>
                     <div>
                         <p>Transfer to another company</p>
-                        <select id="company-transfer-selector">
+                        <select id="company-transfer-selector" disabled>
                             <option value="" disabled selected>Select a company...</option>
                         </select>
-                        <button id="transfer-employer">
+                        <button id="transfer-employer" disabled>
                             Transfer
                         </button>
                     </div>
@@ -135,20 +135,20 @@
                             Info about selected employee
                         </span>
                         <span class="double-btn">
-                            <button id="delete-employee">
+                            <button id="delete-employee" disabled>
                                 Delete
                             </button>
-                            <button id="reset-employee">
+                            <button id="reset-employee" disabled>
                                 Reset pass
                             </button>
                         </span>
                     </div>
                     <div>
                          <p>Transfer to another employer</p>
-                        <select id="employer-transfer-selector">
+                        <select id="employer-transfer-selector" disabled>
                             <option value="" disabled selected>Select an employer...</option>
                         </select>
-                        <button id="transfer-employee">
+                        <button id="transfer-employee" disabled>
                             Transfer
                         </button>
                     </div>

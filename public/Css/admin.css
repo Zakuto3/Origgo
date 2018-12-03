@@ -50,6 +50,17 @@
     border-style: hidden;
 }
 
+.flex button:disabled:hover{
+    background: #76947b8f;
+    color: #535d53;
+    cursor: default;
+}
+
+.flex button:disabled{
+    background: #76947b8f;
+    color: #535d53;
+}
+
 .flex button:hover{
 	background: #325228;
 	cursor: pointer;
@@ -72,4 +83,11 @@
     padding: 2%;
     border-radius: 4px;
     border: none;
+}
+
+.errormsg {
+    font-size: .5em;
+    text-indent: 2%;
+    background: #ba3535c2;
+    color: whitesmoke;
 }

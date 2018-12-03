@@ -29,10 +29,31 @@ function checkMail(mail){
 	return validator.test(mail);
 }
 
+function showError(msg, elementToAppend, errId){
+	let errormsg = document.createElement("span");
+	errormsg.classList.add("errormsg");
+	errormsg.id = errId;
+	errormsg.innerHTML = msg;
+	elementToAppend.appendChild(errormsg);
+	setTimeout(()=>{
+		errormsg.remove();
+	}, 3000);
+}
+
 function addEmployer(employer, company){
 	let mailChecked = checkMail(employer.mail);
-	if(!mailChecked) { console.log("Not a valid E-mail"); }
-	else if (employer.name.length < 1) { console.log("Need to have a name"); }
+	if(!mailChecked) {
+		if(!document.getElementById("employer-mail-fail")){
+			showError("Not a valid E-mail", document.getElementById("add-employer").parentNode, "employer-mail-fail");
+	 		console.log("Not a valid E-mail"); 
+		}
+	}
+	else if (employer.name.length < 1) {
+		if(!document.getElementById("employer-short")){
+			showError("Needs to have a name", document.getElementById("add-employer").parentNode, "employer-short");
+		 	console.log("Need to have a name"); 
+		}
+	}
 	else {
 		AJAXget(`/addEmployer?empName=${employer.name}&empMail=${employer.mail}&compCode=${company.code}&compName=${company.name}`, (response)=>{
 			if(response == "success"){
@@ -41,10 +62,15 @@ function addEmployer(employer, company){
 				opt.textContent = employer.name;
 				document.getElementById("employer-selector").appendChild(opt);
 			}
-			else if(response == "ER_DUP_ENTRY") 
-				console.log("Employer already exists");
-			else 
+			else if(response == "ER_DUP_ENTRY") {
+				if(!document.getElementById("ER_DUP_ENTRY-employer")){
+					showError("Employer already exists", document.getElementById("add-employer").parentNode, "ER_DUP_ENTRY-employer");
+					console.log("Employer already exists");
+				}
+			}
+			else {
 				console.log("Employer not added");
+			}
 		});
 	}
 		
@@ -62,8 +88,18 @@ document.getElementById("add-employee").addEventListener("click", (e)=> {
 
 function addEmployee(employee, employer){
 	let mailChecked = checkMail(employee.mail);
-	if(!mailChecked) { console.log("Not a valid E-mail"); }
-	else if (employee.name.length < 1) { console.log("Need to have a name"); }
+	if(!mailChecked) {
+		if(!document.getElementById("employee-mail-fail")){
+			showError("Not a valid E-mail", document.getElementById("add-employee").parentNode, "employee-mail-fail");
+	 		console.log("Not a valid E-mail"); 
+		}
+	}
+	else if (employee.name.length < 1) {
+		if(!document.getElementById("employee-short")){
+			showError("Needs to have a name", document.getElementById("add-employee").parentNode, "employee-short");
+		 	console.log("Need to have a name"); 
+		}
+	}
 	else {
 		AJAXget(`/addEmployee?empName=${employee.name}&empMail=${employee.mail}&employer=${employer}`, (response)=>{
 			if(response == "success"){
@@ -74,7 +110,10 @@ function addEmployee(employee, employer){
 
 			}
 			else if(response == "ER_DUP_ENTRY") 
-				console.log("Employee already exists");
+				if(!document.getElementById("employee-exists")){
+					showError("Employee already exists", document.getElementById("add-employee").parentNode, "employee-exists");
+					console.log("Employee already exists");
+				}
 			else 
 				console.log("Employee not added");
 		});
@@ -108,6 +147,14 @@ function resetPass(user, userType){
 		else console.log("Could not reset password");
 	})
 }
+
+document.getElementById("employer-transfer-selector").addEventListener("change", (e) => {
+	document.getElementById("transfer-employee").disabled = false;
+});
+
+document.getElementById("company-transfer-selector").addEventListener("change", (e) =>{
+	document.getElementById("transfer-employer").disabled = false;
+})
 
 document.getElementById("transfer-employee").addEventListener("click", (e)=>{
 	let employerDropdown = document.getElementById("employer-transfer-selector");
@@ -176,6 +223,9 @@ function deleteCompany(company){
 }
 
 document.getElementById("employee-selector").addEventListener("change", (e) => {
+	document.getElementById("employer-transfer-selector").disabled = false;
+	document.getElementById("delete-employee").disabled = false;
+	document.getElementById("reset-employee").disabled = false;
 	let dropdown = e.srcElement;
 	let current = dropdown.options[dropdown.selectedIndex].text;
 	getEmployeeInfo(current);
@@ -195,6 +245,10 @@ function getEmployeeInfo(employee) {
 }
 
 document.getElementById("employer-selector").addEventListener("change", (e) => {
+	document.getElementById("company-transfer-selector").disabled = false;
+	document.getElementById("add-employee").disabled = false;
+	document.getElementById("delete-employer").disabled = false;
+	document.getElementById("reset-employer").disabled = false;
 	let dropdown = e.srcElement;
 	let current = dropdown.options[dropdown.selectedIndex].text;
 	getEmployerInfo(current);
@@ -253,6 +307,8 @@ function getEmployees() {
 }
 
 document.getElementById("company-selector").addEventListener("change", (e)=>{
+	document.getElementById("delete-company").disabled = false;
+	document.getElementById("add-employer").disabled = false;
 	let dropdown = e.srcElement;
 	let current = dropdown.options[dropdown.selectedIndex].text;
 	getCompanyCode(current);
