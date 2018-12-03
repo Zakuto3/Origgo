@@ -29,6 +29,18 @@ function checkMail(mail){
 	return validator.test(mail);
 }
 
+function showSuccess(msg, elementToAppend, successId){
+	let successMsg = document.createElement("span");
+	successMsg.classList.add("success-msg");
+	successMsg.id = successId;
+	successMsg.innerHTML = msg;
+	elementToAppend.appendChild(successMsg);
+	setTimeout(()=>{
+		successMsg.remove();
+	}, 3000);
+
+}
+
 function showError(msg, elementToAppend, errId){
 	let errormsg = document.createElement("span");
 	errormsg.classList.add("errormsg");
@@ -61,6 +73,7 @@ function addEmployer(employer, company){
 				let opt = document.createElement("option");
 				opt.textContent = employer.name;
 				document.getElementById("employer-selector").appendChild(opt);
+				showSuccess(`${employer.name} was added`, document.getElementById("add-employer").parentNode, "added-employer");
 			}
 			else if(response == "ER_DUP_ENTRY") {
 				if(!document.getElementById("ER_DUP_ENTRY-employer")){
@@ -107,6 +120,7 @@ function addEmployee(employee, employer){
 				let opt = document.createElement("option");
 				opt.textContent = employee.name;
 				document.getElementById("employee-selector").appendChild(opt);
+				showSuccess(`${employee.name} was added`, document.getElementById("add-employee").parentNode, "added-employee");
 
 			}
 			else if(response == "ER_DUP_ENTRY") 
@@ -143,8 +157,14 @@ function resetPass(user, userType){
 	AJAXget(`/resetPass?user=${user}&usertype=${userType}`, (response) =>{
 		if(response == "success"){
 			console.log("pass resetted");
+			if(!document.getElementById("reset-success"))
+				showSuccess("Password resetted for "+user, document.getElementById(userType+"-selector").parentNode, "reset-success");
 		}
-		else console.log("Could not reset password");
+		else{
+			if(!document.getElementById("reset-fail"))
+				showError("Could not reset password", document.getElementById(userType+"-selector").parentNode, "reset-fail");
+			console.log("Could not reset password");
+		} 
 	})
 }
 
@@ -169,8 +189,14 @@ function changeEmployer(employee, employer){
 		if(response == "success") {
 			console.log(employee + " transfered to " + employer);
 			getEmployeeInfo(employee);
+			if(!document.getElementById("employee-transfered"))
+				showSuccess(employee + " transfered to " + employer, document.getElementById("transfer-employee").parentNode, "employee-transfered");
 		}
-		else console.log("could not transfer");
+		else {
+			if(!document.getElementById("employee-transErr"))
+				showError("Could not transfer", document.getElementById("transfer-employee").parentNode, "employee-transErr");
+			console.log("could not transfer");
+		}
 	})
 }
 
@@ -187,8 +213,14 @@ function changeCompany(employer, company) {
 		if(response == "success") {
 			console.log(employer + " transfered to " + company);
 			getEmployerInfo(employer);
+			if(!document.getElementById("employer-transfered"))
+				showSuccess(employer + " transfered to " + company, document.getElementById("transfer-employer").parentNode, "employer-transfered");
 		}
-		else console.log("could not transfer");
+		else{
+		 	console.log("could not transfer");
+		 	if(!document.getElementById("employer-transErr"))
+		 		showError("Could not transfer", document.getElementById("transfer-employer").parentNode, "employer-transErr");
+		}
 	})
 }
 
@@ -196,8 +228,22 @@ function addCompany(company){
 
 }
 
+//Work in progress
 function deleteEmployer(employer){
-
+	AJAXget(`/deleteEmployer?employer=${employer}`, (response)=>{
+		if(response == "success"){
+			console.log("Deletion of employer success");
+			let employers = document.getElementById("employer-selector");
+			employers.remove(employers.selectedIndex);
+			getEmployeeInfo(employers.options[employers.selectedIndex].text)
+			showSuccess(employer+" deleted", document.getElementById("delete-employer").parentNode, "employer-deleted");
+		} 
+		else {
+			console.log("Could not delete employer");
+			if(!document.getElementById("employer-deleteErr"))
+				showError("Could not delete "+employer, document.getElementById("delete-employer").parentNode, "employer-deleteErr");
+		}
+	})
 }
 
 document.getElementById("delete-employee").addEventListener("click", (e)=>{
@@ -213,8 +259,13 @@ function deleteEmployee(employee){
 			let employees = document.getElementById("employee-selector");
 			employees.remove(employees.selectedIndex);
 			getEmployeeInfo(employees.options[employees.selectedIndex].text)
+			showSuccess(employee+" deleted", document.getElementById("delete-employee").parentNode.parentNode, "employee-deleted");
 		} 
-		else console.log("Could not delete employee");
+		else {
+			console.log("Could not delete employee");
+			if(!document.getElementById("employee-deleteErr"))
+				showError("Could not delete "+employee, document.getElementById("delete-employee").parentNode.parentNode, "employee-deleteErr");
+		} 
 	})
 }
 

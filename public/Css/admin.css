@@ -91,3 +91,11 @@
     background: #ba3535c2;
     color: whitesmoke;
 }
+
+.success-msg {
+    font-size: .5em;
+    color: #000000a6;
+    text-indent: 2%;
+    background: #3dbe3dc4;
+    margin: 1% 0;
+}
