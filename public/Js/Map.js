@@ -17,7 +17,8 @@ const map = new ol.Map({
 
 let planeLayer; //moved, needed access in flyToPlane()
 
-initAirplanes("/addAirplanes", { limit : 50 });
+initAirplanes("/addAirplanes", { limit : 200 });
+initHover();
 
 //Adds planes to the map
 function initAirplanes(url, options){
@@ -27,7 +28,7 @@ function initAirplanes(url, options){
     layer: planeLayer,
     limit : options.limit || 1000,
     updates : options.updates || true,
-    updateInterval: options.updateInterval || 10000
+    updateInterval: options.updateInterval || 60000
   };
   /*loader takes a function that loads the source*/
   var planeSource = new ol.source.Vector({
@@ -55,7 +56,7 @@ function loadLayer(options, loader){
       }
     }
   }
-  req.open("GET", options.url);
+  req.open("GET", options.url+"?limit="+options.limit);
   req.send();
 };
 
@@ -63,33 +64,13 @@ function loadLayer(options, loader){
 Adds specified amount of airplanes to a source
 for a layer and adds that layer*/
 function planeLoader(planes, layer, limit){
-  
   let source = layer.getSource();
   for(let i = 0; i < planes.length && i < limit; i++){
-    /*Convert the coordinates to our system*/
-    let coords = ol.proj.transform([planes[i].lon, planes[i].lat], 'EPSG:4326', 'EPSG:3857');
-    /*Create a point for the plane*/
-    let newPlane = new ol.Feature({
-      geometry: new ol.geom.Point([coords[0], coords[1]])
-    });
-    /*Set the image of the plane*/
-    newPlane.setStyle(new ol.style.Style({
-      image: new ol.style.Icon({
-        scale: 0.03,
-        src: 'pictures/vector-plane.png',
-        /*Openlayers wants radians*/
-        rotation: toRadians(planes[i].direction)
-      })
-    }));
-    /*set Id for point to be able to find it later*/
-    newPlane.setId(planes[i].icao24);
-    planeList.push(planes[i]);
-    /*Add plane to the source connected to the layer*/
-    source.addFeature(newPlane);
+    loadPlane(planes[i]);
   }
-    /*After all planes are added to the source, add the layer
-    connected to source to the map*/
-    map.addLayer(layer);
+  /*After all planes are added to the source, add the layer
+  connected to source to the map*/
+  map.addLayer(layer);
 }
 
 /*Similar to airplaneloader but updates
@@ -102,8 +83,9 @@ function updateAirplanesCoords(url, layer){
       let source = layer.getSource();
       for (let i = 0; i < planes.length; i++) {
         /*Plane need to exist in layer already, we can't update a nonexisting plane*/
-        let existingPlane = source.getFeatureById(planes[i].icao24) || undefined;
+        let existingPlane = source.getFeatureById(planes[i].flightIcao) || undefined;
         if(existingPlane){
+          //console.log("planes[i]: ",planes[i]);
           /*Convert the coordinates to our system before updating*/
           let newCoords = ol.proj.transform([planes[i].lon, planes[i].lat], 'EPSG:4326', 'EPSG:3857');
           let geom = existingPlane.getGeometry().setCoordinates(newCoords);
@@ -122,10 +104,10 @@ let intervalId; //needed to cancel intervals
 
 /*takes a planes icao24 number that is plane
 id in map. Then zooms on it and keeps centered*/
-function flyToPlane(icao24){
+function flyToPlane(flightIcao){
   let view = map.getView();
   let source = planeLayer.getSource();
-  let plane = source.getFeatureById(icao24);
+  let plane = source.getFeatureById(flightIcao);
 
   //If searched plane exists
   if(plane) {
@@ -135,7 +117,7 @@ function flyToPlane(icao24){
       duration: 1000
     },
     { center: coords,
-      zoom: 12,
+      zoom: 10,
       duration: 1000
     });
     //clear any ongoing intervals before setting new
@@ -150,6 +132,7 @@ function flyToPlane(icao24){
   }
   else{
     console.log("Plane not found on map");
+    addPlaneByFlight(flightIcao);
   }
 }
 
@@ -162,3 +145,128 @@ function keepCentered(plane){
   });
 }
 
+
+function addPlaneByFlight(flightIcao){
+  AJAXget("/addAirplanes?flightIcao="+flightIcao, function(data){
+    var plane = JSON.parse(data);
+    console.log("addPlane flightIcao: ",flightIcao);
+    if(plane.length > 0){
+      loadPlane(plane[0]);
+      flyToPlane(flightIcao);
+    }
+    else { console.log("Plane not found from API")}
+
+  })
+}
+
+//loads a plane to a layer
+function loadPlane(plane){
+  /*Convert the coordinates to our system*/
+  let coords = ol.proj.transform([plane.lon, plane.lat], 'EPSG:4326', 'EPSG:3857');
+  /*Create a point for the plane*/
+  let newPlane = new ol.Feature({
+    geometry: new ol.geom.Point([coords[0], coords[1]])
+  });
+  /*Set the image of the plane*/
+  newPlane.setStyle(new ol.style.Style({
+    image: new ol.style.Icon({
+      scale: 0.03,
+      src: 'pictures/vector-plane.png',
+      /*Openlayers wants radians*/
+      rotation: toRadians(plane.direction)
+    })
+  }));
+  /*set Id for point to be able to find it later*/
+  newPlane.setId(plane.flightIcao);
+  /*Add plane to the source connected to the layer*/
+  planeLayer.getSource().addFeature(newPlane);
+}
+
+function initHover(){
+  var hover = new ol.interaction.Select({
+        condition: ol.events.condition.pointerMove
+  });
+
+  map.addInteraction(hover);
+
+  hover.on("select", (e) => {
+    let plane = map.forEachFeatureAtPixel(e.mapBrowserEvent.pixel, function (feat){return feat;})
+    let features = planeLayer.getSource().getFeatures();
+      features.forEach((feat) => {
+        let planeId = plane ? plane.getId() : undefined;
+        src = (feat.getId() === planeId) ? 'pictures/vector-plane-highlight.png' : 'pictures/vector-plane.png';
+        let oldImage = feat.getStyle().getImage();
+        feat.setStyle(new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: oldImage.getScale(),
+          src: src,
+          /*Openlayers wants radians*/
+          rotation: oldImage.getRotation()
+        })
+      }))
+      })
+  })
+}
+
+
+initPopUp();
+function initPopUp(){
+  let closePop = document.createElement("button");
+  closePop.classList.add("popup-close");
+  closePop.innerHTML = "X";
+  closePop.addEventListener("click", function(evt) { overlay.setPosition(undefined); click.getFeatures().clear(); });
+
+  let pop = document.createElement("div");
+  pop.classList.add("popup");
+
+  let popText = document.createElement("p");
+  popText.classList.add("popup-paragraph");
+
+  let popTitle = document.createElement("span");
+  popTitle.classList.add("popup-title");
+
+  let overlay = new ol.Overlay({
+    element: pop
+  });
+
+  map.addOverlay(overlay);
+
+  let click = new ol.interaction.Select({
+    condition : ol.events.condition.click
+  });
+
+  map.addInteraction(click);
+
+  click.on("select", function(e){
+    let plane = map.forEachFeatureAtPixel(e.mapBrowserEvent.pixel, function (feat){return feat;});
+    if(plane){
+      let coords = plane.getGeometry().getCoordinates();
+      let flightIcao = plane.getId();
+      AJAXget("/getAirplane?flightIcao="+flightIcao, (planeInfo) => {
+        if(planeInfo != ""){
+          planeInfo = JSON.parse(planeInfo);
+          let arrivalAirport = planeInfo.arrivalAirport ? `&emsp; <b>Country:</b> ${planeInfo.arrivalAirport.country}<br>
+            &emsp; <b>City:</b> ${planeInfo.arrivalAirport.city}<br>
+            &emsp; <b>Airport:</b> ${planeInfo.arrivalAirport.name}` : "&emsp;Unavailable";
+
+          let depatureAirport = planeInfo.depatureAirport ? `&emsp; <b>Country:</b> ${planeInfo.depatureAirport.country}<br>
+            &emsp; <b>City:</b> ${planeInfo.depatureAirport.city}<br>
+            &emsp; <b>Airport:</b> ${planeInfo.depatureAirport.name}` : "&emsp;Unavailable";
+
+          popTitle.innerHTML = `<b>Flight:</b> ${planeInfo.flightIcao}`
+          popText.innerHTML = `<b>Arriving at:</b><br> ${arrivalAirport}.<br>
+          <b>Departed from:</b><br> ${depatureAirport}.`;
+          pop.appendChild(popTitle);
+          pop.appendChild(closePop);
+          pop.appendChild(popText);
+          overlay.setPosition(coords);
+        }
+        else { 
+          pop.innerHTML = "Unavailable";
+          pop.appendChild(closePop);
+          overlay.setPosition(coords); 
+        }
+      })
+    }
+  })
+}

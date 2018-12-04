@@ -6,6 +6,9 @@ var db = require('./DBinfo');
 var https = require('https');
 var session = require('express-session');
 var app = express();
+var APIkey= "a407e4-2ee284";
+const uuidv4 = require('uuid/v4');
+uuidv4(); //⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
 
 var crypto;
 try {
@@ -31,6 +34,7 @@ app.use(function (req, res, next) {
     next();
 });
 
+
 //makes a promise for sequential execution for database
 var DatabaseConn = function(queryString){
   return new Promise(function(resolve, reject) { 
@@ -40,47 +44,68 @@ var DatabaseConn = function(queryString){
     });
   });
 };
-  
-app.post('/loginbtn',(req, res) =>{
-  const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
-  const QueryString = "SELECT userID, name FROM origgo.users WHERE Name = '"+req.body.Name+"' AND Password = '"+hash+"';";
 
+app.post('/loginbtn',(req, res) =>{
+  console.log(req.body.emptype);
+  if (req.body.emptype == "employee") { //check if its first time emoplyee logs in
+    DatabaseConn("SELECT origgo.employee.password FROM origgo.employee WHERE name= '"+req.body.Name+"';").then(function(data){
+      if (data[0].password == null) {
+        res.send("goPass");
+      }
+    });
+  }
+  const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
+  const QueryString = (req.body.emptype == "employer") ? "SELECT origgo.employer.UID, origgo.employer.name, origgo.employer.password FROM origgo.employer WHERE name= '"+req.body.Name+"' AND password='"+hash+"'" : "SELECT origgo.employee.UID, origgo.employee.name, origgo.employee.password FROM origgo.employee WHERE name= '"+req.body.Name+"' AND password = '"+req.body.Pass+"';";//_-------- CHANGE PASS TO HASH AFTER DEBUGGING IS DONE
+  console.log(QueryString);
   DatabaseConn(QueryString).then(function(data){
+    console.log("DATA: ",data);
     if (data.length > 0){
      req.session.login = true;
      req.session.name = data[0].name;
-     req.session.userId = data[0].userID;
+     req.session.userId = data[0].UID;
+     req.session.usertype = req.body.emptype;
     }
-  console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass); 
+  console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass, req.body.emptype); 
   res.send(req.session.login);
-  })  
-});
-
-app.post('/signupForm', (req, res) =>{
-
-  const hash = crypto.createHmac('sha256', req.body.Password).digest('hex');
-  const QueryString = 'INSERT INTO `origgo`.`users` (`Name`, `Password`, `eMail`, `compName`) VALUES ('+'"'+req.body.Username+'"'+', '+'"'+hash+'"'+', '+'"'+req.body.Mail+'"'+', '+'"'+req.body.Company+'"'+');';
-
-  DatabaseConn(QueryString).then(function(data){
-    res.send(data.affectedRows.toString());
+  }).catch((err) => {
+    console.log("login err: ",err);
+    res.send("");
   })
 });
 
-app.post('/check',(req, res) =>{
-    if(req.session.login) {
-      const query = "SELECT * FROM origgo.usersavedplanes WHERE UID = '"+req.session.userId+"';";
-      DatabaseConn(query).then(function(rows){
-        console.log("rows: ", rows);
+app.post('/signupForm', (req, res) =>{
+  const hash = crypto.createHmac('sha256', req.body.Password).digest('hex');
+  const QueryString = 'INSERT INTO `origgo`.`employer` (`name`, `password`, `email`, `companyName`, `certifiedKey`) VALUES ('+'"'+req.body.Username+'"'+', '+'"'+hash+'"'+', '+'"'+req.body.Mail+'"'+', '+'"'+req.body.CompSelector+'"'+', '+'"'+req.body.keycode+'"'+');';
+  const QueryStringCheck = "SELECT count(*) AS HITS FROM origgo.company_code WHERE company = '"+req.body.CompSelector+"' AND code = '"+req.body.keycode+"';"
+  DatabaseConn(QueryStringCheck).then(function(data){
+    if (data[0].HITS) {
+      DatabaseConn(QueryString).then(function(row){
+      res.send(row.affectedRows.toString());
+      }).catch(function(error){console.log(error);}) 
+    }else{
+      res.send(data[0].HITS.toString())
+    }
+  }).catch(function(error){console.log(error);})
+});
 
-        if(rows.length > 0){
-          let userData = { plane : rows[0].Icao24, username : req.session.name };
-          res.send(userData);
-        }
-        else res.send(req.session.name);
-      }).catch(function(){
-        res.send(false);
-      })
-      }
+
+app.post('/check',(req, res) =>{
+    if(req.session.login) //{
+      // const query = "SELECT * FROM origgo.usersavedplanes WHERE UID = '"+req.session.userId+"';";
+      // DatabaseConn(query).then(function(rows){
+      //   console.log("rows: ", rows);
+
+      //   if(rows.length > 0){
+      //     let userData = { plane : rows[0].Icao24, username : req.session.name };
+      //     res.send(userData);
+      //   }
+        //else 
+        res.send(req.session.name);
+      // }).catch((err) => {
+      //   console.log("check error: ", err);
+      //   res.send(false);
+      // })
+      // }
     else res.send("");
 });
 
@@ -130,34 +155,29 @@ app.get('/login.html',(req, res) =>{
 
 /*Sends all current non-null airplanes to client*/
 app.get('/addAirplanes', (req, res) => {
-  request("https://opensky-network.org/api/states/all", function(data){
-    var states = data.states || undefined;
+  var url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;
+  if(req.query.flightIcao) { url += ("&flightIcao="+req.query.flightIcao); }
+  if(req.query.limit) {url += ("&limit="+req.query.limit);}
+  request(url, function(data){
     var planes = [];
-    if(states){
-      states.forEach(function(plane){
-        /*Boolean if plane is on ground*/
-        var planeGrounded = plane[8];
-        /*Indexes 5,6 contains coordinates for the plane*/
-        var lat = plane[6];
-        var lon = plane[5];
-        if(!planeGrounded && lat && lon && plane[1]!=""){
-
-          /*Index 10 contains plane rotation in degrees
-          North is 0 degrees. Index 0 has unique icao24 code*/
-          var planeObject = { 
-            icao24: plane[0],
-            callsign: plane[1].trim(),
-            lat: lat,
-            lon: lon,
-            direction: plane[10],
-             };
+    if(data.constructor === Array){
+      data.forEach((plane) => {
+        var lat = plane.geography.latitude;
+        var lon = plane.geography.longitude;
+        var flightIcao = plane.flight.icaoNumber;
+        var direction = plane.geography.direction; 
+        var inAir = (plane.status == "en-route" || plane.status == "started") ? true : false;
+        if(lat && lon && direction && flightIcao && inAir){
+          var planeObject = {
+            flightIcao : flightIcao,
+            lat : lat,
+            lon : lon,
+            direction : direction
+          };
           planes.push(planeObject);
         }
       });
-      console.log("States true");
-    }
-    else{
-      console.log("States null");
+      console.log("addAirplanes: Planes found.");
     }
     res.send(planes);
   });
@@ -196,47 +216,39 @@ app.get('/addAirplanes', (req, res) => {
 //gets a bunch of info on a plane
 app.get('/getAirplane', (req, res) => {
   let data = {};
-      request("https://opensky-network.org/api/states/all?icao24="+req.query.q, function(statesData) {
-        if(statesData.states){
-            let plane = statesData.states[0];
-            //Time in unix stamp, 43200 is 12 hours
-            let currentTime = Math.floor(Date.now()/1000);
-            let begin =  currentTime - 43200;
-            let end = currentTime + 43200;
-            request("https://opensky-network.org/api/flights/aircraft?icao24="+req.query.q+"&begin="+begin+"&end="+end, function(flightsData){ 
-              data = { 
-                icao24 : plane[0],
-                estArrival : unixTimeToNormal(flightsData[0].lastSeen),
-                estDeparture : unixTimeToNormal(flightsData[0].firstSeen),
-                callsign : flightsData[0].callsign.trim(),
-                velocity : plane[9],
-                origin : plane[2],
-                altitude : plane[7]
-              };   
-              DatabaseConn("SELECT * FROM origgo.airport WHERE icaoCode = '"+flightsData[0].estDepartureAirport+"'").then(function(airport){
-                if(airport.length > 0) { 
-                  data.depatureAirport = { 
-                      iataCode : airport[0].iataCode, 
-                      city : airport[0].city,
-                      country : airport[0].country }
-                }else 
-                  data.depatureAirport = flightsData[0].estDepartureAirport;       
-                DatabaseConn("SELECT * FROM origgo.airport WHERE icaoCode = '"+flightsData[0].estArrivalAirport+"'").then(function(airport){
-                  if(airport.length > 0) { 
-                    data.arrivalAirport = { 
-                      iataCode : airport[0].iataCode, 
-                      city : airport[0].city,
-                      country : airport[0].country }
-                  }else 
-                    data.arrivalAirport = flightsData[0].estArrivalAirport;
-                  console.log("DATA: \n", data);
-                  res.send(data);
-                });
-              });          
-            });
+  let url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;
+  if (req.query.flightIcao) url += "&flightIcao="+req.query.flightIcao;
+  request(url, (planeInfo) => {
+    console.log("getAirplane: ", planeInfo);
+    if(planeInfo.length > 0){
+      let plane = planeInfo[0];
+      data.altitude = plane.geography.altitude;
+      data.regNumb = plane.aircraft.regNumber;
+      data.airline = plane.airline.icaoCode;
+      data.flightIcao = plane.flight.icaoNumber;
+      DatabaseConn("SELECT * FROM airport WHERE iataCode = '"+plane.arrival.iataCode+"';").then((port)=>{
+        if(port.length > 0){
+          console.log("airport: ", port[0]);
+          data.arrivalAirport = {
+            name : port[0].name,
+            country : port[0].country,
+            city : port[0].city
           }
-          else {res.send("")}
-      });
+        }
+        DatabaseConn("SELECT * FROM airport WHERE iataCode = '"+plane.departure.iataCode+"';").then((port)=>{
+          if(port.length > 0){
+            data.depatureAirport = {
+              name : port[0].name,
+              country : port[0].country,
+              city : port[0].city
+            }
+          }
+          res.send(data);
+        }).catch((err) => {console.log("depatureAirport err: ", err);}); 
+      }).catch((err) => {console.log("arrivalAirport err: ", err);})
+    }
+    else{ res.send(""); }
+  })
 });
 
 function unixTimeToNormal(unix){
@@ -246,41 +258,61 @@ function unixTimeToNormal(unix){
 
 app.get('/flightToDB', (req, res) => {
   if(req.session.login){
-    const query = "INSERT INTO origgo.usersavedplanes (UID, Icao24) VALUES ('"+req.session.userId+"', '"+req.query.icao24+"');";
+    const query = `UPDATE ${req.session.usertype} SET trackingIcao24 = '${req.query.flightIcao}' WHERE UID = '${req.session.userId}';`;
     DatabaseConn(query).then(function(){
       res.send(true);
-    }).catch(function(){
+    }).catch((err) => {
+      console.log("flightToDB error: ", err);
       res.send(false);
     })
   }
   else { res.send(false); }
 });
 
-app.get('/updateFlightToDB', (req, res) => {
-  if(req.session.login){
-    const query = "UPDATE origgo.usersavedplanes SET icao24 = '"+req.query.icao24+"' WHERE UID = '"+req.session.userId+"';";
-    DatabaseConn(query).then(function(){
-      res.send(true);
-    }).catch(function(){
-      res.send(false);
-    })
-  }
-  else { res.send(false); }
-});
+//check and update not necessary with new database setup
+// app.get('/updateFlightToDB', (req, res) => {
+//   if(req.session.login){
+//     const query = "UPDATE origgo.usersavedplanes SET icao24 = '"+req.query.flightIcao+"' WHERE UID = '"+req.session.userId+"';";
+//     DatabaseConn(query).then(() => {
+//       res.send(true);
+//     }).catch((err) => {
+//       console.log("updateFlightToDB error: ",err);
+//       res.send(false);
+//     })
+//   }
+//   else { res.send(false); }
+// });
 
-app.get('/checkUserSaved', (req, res) => {
-  if(req.session.login){
-    const query = "SELECT * FROM origgo.usersavedplanes WHERE UID = '"+req.session.userId+"';";
-    DatabaseConn(query).then(function(rows){
-      if(rows.length > 0) res.send(true);
-      else res.send(false);
-    }).catch(function(){
-      res.send(false);
-    })
-  }
-  else { res.send(false); }
-  
-});
+// app.get('/checkUserSaved', (req, res) => {
+//   if(req.session.login){
+//     const query = `SELECT trackingIcao24 from ${req.session.usertype} WHERE UID == '${req.session.userId}'`;
+//     DatabaseConn(query).then((rows) => {
+//       if(rows.length > 0) res.send(true);
+//       else res.send(false);
+//     }).catch((err) => {
+//       console.log("checkUserSaved error: ", err);
+//       res.send(false);
+//     })
+//   }
+//   else { res.send(false); }
+// });
+
+//NOT USED
+// app.get('/getIcao24', (req, res) => {
+//   if(req.query.callSign){
+//     const query = "SELECT icao24 FROM origgo.airplane WHERE callsign = '"+req.query.callSign+"';";
+//     DatabaseConn(query).then(function(rows){
+//       console.log("rows: ",rows);
+//       if(rows.length > 0){
+//         res.send(rows[0].icao24);
+//       }
+//       else{ res.send("no results"); }
+//     }).catch((err) => {
+//       console.log("getIcao24 err: ", err);
+//     });
+//   }
+//   else { res.send("callsign empty"); }
+// })
 
 /*function for accessing WEB API through https module,
 see it as serverside making requests to services*/

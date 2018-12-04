@@ -4,7 +4,6 @@
         <meta charset="utf-8">
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
         <link rel="stylesheet" href="Css/forms.css" type="text/css">
-        <script type="text/javascript" src="./Js/signup.js"></script>
         <title>Project for Web application</title>
 	</head>
 	<body>
@@ -12,7 +11,7 @@
         <h1>Flight tracking</h1>
          <div id="loginform">
         <!-- <form action="/signup-form/"> -->
-            <div class="container">
+            <div class="container" >
                 <label for="name"><h2>Sign up</h2></label>
                 <h3 id="errormsg"></h3>
                 <label for="name"><b>Username</b></label>
@@ -25,19 +24,25 @@
                 <input type="text" placeholder="Enter Your E-mail Address" name="mail" id="Mail" required> 
 
                 <label for="coo"><b>Company name</b></label>
-                <input type="text" placeholder="Enter Name of Your Company" name="coo" id="Company" required>
-
+                <div id="comp" name="coo" ></div>
+                
+                <label for="codes"><b>Certified key</b></label>
+                <input type="text" placeholder="Enter Name of Your Code" name="codes" id="keycode" required>
+                
                 <button id="submit" onclick="signupRequest()">Sign up</button>
         </div>         
         <!-- </form> -->
     </div>
 <script>
-    document.getElementById("Company").addEventListener("keyup", function(event) {
+    document.getElementById("keycode").addEventListener("keyup", function(event) {
         event.preventDefault();
             if (event.keyCode === 13) {
          document.getElementById("submit").click();
         }
     });
+       console.log(document.getElementById("keycode").value);
+
   </script>
+  <script type="text/javascript" src="./Js/signup.js"></script>
 	</body>
 </html>
