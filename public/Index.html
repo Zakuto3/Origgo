@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
     <script>var planeList = []; </script>
     <script type="text/javascript" src="./Js/Script.js"></script>
+    <script>var controller = new ScrollMagic.Controller()</script>
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
 
@@ -15,11 +16,10 @@
     <link rel="stylesheet" href="Css/style.css"> 
     <link rel="stylesheet" href="Css/demo.css"> 
 
-    <title>Alternate Fixed And Scroll Backgrounds</title>
+    <title>Origgo</title>
 </head>
 <body>
 <header class="cd-main-header" id="navbar">
-
     <nav class="cd-main-nav js-main-nav" id="menu">
         <ul class="cd-main-nav__list">
             <!-- inser more links here -->
@@ -37,6 +37,7 @@
     <button id="upBtn" onclick=topFunction()>UP</button>
     <div class="cd-fixed-bg cd-fixed-bg--1">
         <div class="cd-fixed-bg__content">
+            <div id="origgo" class="origgo"></div>
             <h1>Alternate Fixed &amp; Scroll Backgrounds</h1>
             <a class="cd-nugget-info" onclick=fullmap()>
 					<span>
@@ -65,37 +66,37 @@
                 <div class="person">
                     <div class="overlay">
                     <img src="pictures/Dummy-Profile.png">
-                    <h2>Hans Schmidt</h2>
+                    <h2>Konrad Adenauer</h2>
                     </div>
                 </div>
                 <div class="person">
                     <div class="overlay">
                     <img src="pictures/Dummy-Profile.png">
-                    <h2>Hans Schmidt</h2>
+                    <h2>Ludwig Erhard</h2>
                     </div>
                 </div>
                 <div class="person">
                    <div class="overlay">
                     <img src="pictures/Dummy-Profile.png">
-                    <h2>Hans Schmidt</h2>
+                    <h2>Helmut Schmidt</h2>
                     </div>
                 </div>
                 <div class="person">
                     <div class="overlay">
                         <img src="pictures/Dummy-Profile.png">
-                        <h2>Hans Schmidt</h2>
+                        <h2>Helmut Kohl</h2>
                     </div>
                 </div>
                 <div class="person">
                     <div class="overlay">
                         <img src="pictures/Dummy-Profile.png">
-                        <h2>Hans Schmidt</h2>
+                        <h2>Gerhard Schröder</h2>
                     </div>
                 </div>
                 <div class="person">
                     <div class="overlay">
                         <img src="pictures/Dummy-Profile.png">
-                        <h2>Hans Schmidt</h2>
+                        <h2>Willy Brand</h2>
                     </div>
                 </div>
             </div>
@@ -148,20 +149,23 @@
             document.getElementById("upBtn").style.display = "none";
         }
 
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
             document.getElementById("navbar").style.height = "70px";
             document.getElementById("navbar").style.background = "rgba(255, 255, 255, 0.95)";
-            document.getElementById("logo").style.float = "left";
-            document.getElementById("logo").style.margin = "10px 0 0 5%";
-            document.getElementById("logo").style.height = "50px";
-            document.getElementById("logo").style.width = "auto";
-            document.getElementById("menu").style.height = "auto";
+            document.getElementById("navbar").style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.2)";
+            document.getElementById("navbar").style.background = "rgba(255, 255, 255, 0.95)";
+
+            document.getElementById("logo").style.opacity = "1";
             document.getElementById("menu").style.float = "right";
             document.getElementById("menu").style.marginRight = "5%";
             document.getElementById("menu").style.width = "";
             document.getElementById("menu").style.margin = "";
-
-
+        } else {
+            document.getElementById("navbar").style.height = "25%";
+            document.getElementById("navbar").style.background = "";
+            document.getElementById("navbar").style.boxShadow = "";
+            document.getElementById("navbar").style.background = "";
+            document.getElementById("logo").style.opacity = "0";
         }
     }
 
@@ -171,6 +175,11 @@
         document.documentElement.scrollTop = 0;
     }
 
+    // build scene
+    var scene = new ScrollMagic.Scene({offset: 0, duration: 300})
+    // trigger a velocity opaticy animation
+        .setTween("#origgo", {backgroundSize: "70% 70%"})
+        .addTo(controller);
 </script>
 </body>
 </html>

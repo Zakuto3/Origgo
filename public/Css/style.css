@@ -35,8 +35,6 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     left: 0;
     width: 100%;
     background: rgba(0,0,0,0);
-    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     z-index: 3;
 }
 
@@ -94,24 +92,27 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 .cd-main-header__logo img {
   display: block;
-    margin-right:auto;
-    margin-left: auto;
-
-    width: 50%;
+    opacity: 0;
+    float: left;
+    margin: 10px 0 0 5%;
+    height: 50px;
+    width: auto;
+    transition-timing-function: ease-in;
     transition: 0.8s;
 }
 
 @media only screen and (min-width: 768px) {
   .cd-main-header {
-    height: 100%;
-      transition: 0.4s;
+    height: 25%;
+      transition-timing-function: ease-in;
+      transition: 0.8s;
   }
 
 }
 
 .cd-main-nav {
   width: 44px;
-  height: 100%;
+  height: 25%;
   background: url("../pictures/menu.svg") no-repeat center center;
   background-size: 44px 44px;
   cursor: pointer;
@@ -155,6 +156,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   .cd-main-nav__list {
     /* reset style */
     position: static;
+      transition: 0.8s;
     -webkit-transform: translateY(0);
         -ms-transform: translateY(0);
             transform: translateY(0);
