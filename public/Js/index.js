@@ -13,6 +13,7 @@ function reDir() {
 	};
 	req.send(); 
 }
+
 //check if user is loged in to show proper UI
 req = new XMLHttpRequest();
 req.open('post','/check');

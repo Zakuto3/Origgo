@@ -329,3 +329,23 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 .person img{
     border-radius: 100%;
 }
+
+
+/*selector in login.html*/
+select{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #e6ecff;
+}
+
+#uncheck>input { display: none }
+input:checked + label { display: none }
+input:not(:checked) + label + label{ display: none } 
+
+#uncheck label {
+  cursor: pointer; user-select: none;
+}
