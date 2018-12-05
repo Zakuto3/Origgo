@@ -133,7 +133,20 @@ app.get('/logout',function(req,res) {
 
 app.get('/signup.html',(req, res) =>{//makes sure user dont reach signup if logedin
     if (req.session.login) {
-      res.redirect('/');
+      console.log(req.session.usertype);
+      switch(req.session.usertype)
+      {
+        case "employer":
+        res.send(fs.readFileSync(__dirname + '/../public/Index_employer.html', 'utf8'));
+        console.log("came in");
+        break;
+        case "employee": 
+        res.send(fs.readFileSync(__dirname + '/../public/Index_employee.html', 'utf8'));
+        break;
+        default:
+          res.redirect('/');       
+        break;
+      }
     }else{
       res.send(fs.readFileSync(__dirname + '/../public/signup.html', 'utf8'));//go to signup
     }
@@ -141,7 +154,19 @@ app.get('/signup.html',(req, res) =>{//makes sure user dont reach signup if loge
 
 app.get('/login.html',(req, res) =>{
     if (req.session.login) {
-      res.redirect('/');
+      switch(req.session.usertype)
+      {
+        case "employer":
+        res.send(fs.readFileSync(__dirname + '/../public/Index_employer.html', 'utf8'));
+        console.log("came in");
+        break;
+        case "employee": 
+        res.send(fs.readFileSync(__dirname + '/../public/Index_employee.html', 'utf8'));
+        break;
+        default:
+          res.redirect('/');       
+        break;
+      }
     }else{
       res.send(fs.readFileSync(__dirname + '/../public/login.html', 'utf8'));
     }
