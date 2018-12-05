@@ -7,12 +7,10 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "gsap": "^2.0.2",
     "mysql": "^2.16.0",
-<<<<<<< HEAD
-    "scrollmagic": "^2.0.6"
-=======
+    "scrollmagic": "^2.0.6",
     "uuid": "^3.3.2"
->>>>>>> daca952148d12d29192aa5f9887475ce00c2702c
   },
   "devDependencies": {},
   "scripts": {

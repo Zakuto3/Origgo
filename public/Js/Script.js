@@ -40,7 +40,6 @@ function track(flightIcao){
     });
 }
 
-
 function addInfoByFlightIcao(flightIcao){
     AJAXget('/getAirplane?flightIcao='+flightIcao, function(data){
         if(data != ""){

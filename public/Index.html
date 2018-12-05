@@ -1,49 +1,88 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
 
-<!DOCTYPE html>
-<html> 
-	<head> 
-		<meta charset="utf-8">
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
-        <title>Project for Web application</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="Css/Style.css">
-        <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
-        <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
-        <!-- <script type="text/javascript">var planeList = [];</script> -->
-        <script type="text/javascript" src="./Js/index.js"></script>
-        <script type="text/javascript" src="./Js/Script.js"></script>
-    </head>
-	<body>
-      <div id="container">
-        <div class="header">
-            <div class="logo"><a href="Index.html"><img alt="logo" src="pictures/logo.jpg"></a></div>
-            <h1>Flight tracking</h1>
-            <div class="searchbar"  style="flex-grow: 7">
-                <div class="dropdown">
-                    <input type="text"  id="search" placeholder="Search for flights..." >
-                    <button type="submit" onclick="track(document.getElementById('search').value)">Track</button><br>
-                    <!-- <div id="drop" class="drpdwn-content">
-                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
-                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
-                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
-                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
-                        <a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
-                    </div> -->
-                </div>
-            </div>
-            <div class="button"><button onclick="reDir()" id="loginIndex">Login</button></div>
-            <div class="button1" id="signupIndex"><a href="signup.html"><button>Signup</button></a></div>
-        </div>
-        <div class="navigation" id="myTopnav">
-            <ul> 
-              <li><a href="index.html">Home</a></li>              
-              <li><a href="map.html">Map</a></li>
-              <li><a href="flights.html">Flights</a></li>
-              <li><a href="airports.html">Airports</a></li>
-              <li><a href="contact.html">Contact</a></li>
-              <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-              <i class="fa fa-bars"></i></a>
-             </ul>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
+    <script>var planeList = []; </script>
+    <script type="text/javascript" src="./Js/index.js"></script>
+    <script type="text/javascript" src="./Js/Script.js"></script>
+    <!--Animation scripts-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/ScrollMagic.js"></script>
+    <script>var controller = new ScrollMagic.Controller()</script>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="Css/reset.css">
+    <link rel="stylesheet" type="text/css" href="Css/style.css">
+    <link rel="stylesheet" href="Css/demo.css">
+
+    <title>Origgo</title>
+</head>
+
+<body>
+<header class="cd-main-header" id="navbar">
+    <nav class="cd-main-nav js-main-nav" id="menu">
+        <ul class="cd-main-nav__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="flights.html">Flights</a></li>
+            <li><a href="airports.html">Airports</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i></a>
+        </ul>
+    </nav> <!-- cd-main-nav -->
+<div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
+
+</header>
+<main>
+    <button id="upBtn" onclick=topFunction()>UP</button>
+    <div class="cd-fixed-bg cd-fixed-bg--1">
+        <div class="cd-fixed-bg__content">
+            <div id="origgo" class="origgo"></div>
+            <h1>Alternate Fixed &amp; Scroll Backgrounds</h1>
+            <a class="cd-nugget-info" onclick=fullmap()>
+					<span>
+						<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
+							<style type="text/css">
+								.cd-nugget-info-arrow{fill:#383838;}
+							</style>
+							<polygon class="cd-nugget-info-arrow" points="15,7 4.4,7 8.4,3 7,1.6 0.6,8 0.6,8 0.6,8 7,14.4 8.4,13 4.4,9 15,9 "/>
+						</svg>
+					</span>
+                Article &amp; Download
+            </a>
+<!--=======-->
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+	<!--<body>-->
+      <!--<div id="container">-->
+        <!--<div class="header">-->
+            <!--<div class="logo"><a href="Index.html"><img alt="logo" src="pictures/logo.jpg"></a></div>-->
+            <!--<h1>Flight tracking</h1>-->
+            <!--<div class="searchbar"  style="flex-grow: 7">-->
+                <!--<div class="dropdown">-->
+                    <!--<input type="text"  id="search" placeholder="Search for flights..." >-->
+                    <!--<button type="submit" onclick="track(document.getElementById('search').value)">Track</button><br>-->
+                    <!--&lt;!&ndash; <div id="drop" class="drpdwn-content">-->
+                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
+                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
+                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
+                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
+                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
+                    <!--</div> &ndash;&gt;-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="button"><button onclick="reDir()" id="loginIndex">Login</button></div>-->
+            <!--<div class="button1" id="signupIndex"><a href="signup.html"><button>Signup</button></a></div>-->
+        <!--</div>-->
+        <!--<div class="navigation" id="myTopnav">-->
+            <!---->
         </div>
     </div> <!-- cd-fixed-bg -->
 
