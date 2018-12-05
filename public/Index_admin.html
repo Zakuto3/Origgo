@@ -3,117 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="./Js/Script.js"></script>
+
     <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
     <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
+    <script type="text/javascript" src="./Js/Script.js"></script>
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="Css/reset.css"> 
+    <link rel="stylesheet" href="Css/admin.css">
     <link rel="stylesheet" href="Css/style.css"> 
     <link rel="stylesheet" href="Css/demo.css"> 
 
     <title>Alternate Fixed And Scroll Backgrounds</title>
 </head>
 <body>
-<header class="cd-main-header" id="navbar">
+<header class="cd-main-header" id="navbar" style="position: sticky; height: 70px; background: rgba(255, 255, 255, 0.95); box-shadow: 0 1px 47px rgba(0, 0, 0, 0.5);" >
 
-    <nav class="cd-main-nav js-main-nav" id="menu">
+    <nav class="cd-main-nav js-main-nav" id="menu" style="height: auto; float: right;">
         <ul class="cd-main-nav__list">
             <!-- inser more links here -->
-            <li><a href="/Index_employer.html">Home</a></li>
-            <li><a href="#0">About</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="map.html">Map</a></li>
             <li><a href="#0">Pricing</a></li>
-            <li><a href="#0">Gallery</a></li>
             <li><a href="#0">Contact</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
-    <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
+    <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo" style="float: left; margin: 10px 0px 0px 5%; height: 50px; width: auto;"></a></div>
 
 </header>
 <main>
     <button id="upBtn" onclick=topFunction()>UP</button>
-    <div class="cd-fixed-bg cd-fixed-bg--1">
-        <div class="cd-fixed-bg__content">
-            <h1>Alternate Fixed &amp; Scroll Backgrounds</h1>
-            <a class="cd-nugget-info" href="/login.html">
-					<span>
-						
-					</span>
-                Login
-            </a>
-            <a class="cd-nugget-info" href="signup.html" >
-                    <span>
-                        
-                    </span>
-                Signup
-            </a>
-        </div>
-    </div> <!-- cd-fixed-bg -->
+   
 
-    <div class="cd-scrolling-bg cd-scrolling-bg--color-2">
+    <div class="cd-scrolling-bg cd-scrolling-bg--color-2" style="padding: 1em 0; box-shadow: 0 0 rgba(0, 0, 0, 0) inset;">
         <div class="cd-scrolling-bg__content">
-            <h1>Build your Team...</h1>
-            <p>
-                ...and be always uptodate.<br>
-                Where they are<br>
-                When they leave<br>
-                When they arive<br>
-            </p>
-            <div class="flex">
-                <div class="person">
-                    <div class="overlay">
-                    <img src="pictures/Dummy-Profile.png">
-                    <h2>Hans Schmidt</h2>
+            <h1>Welcome Admin</h1>
+            <div id="admin-page" class="flex">
+                <div class="admin-cell">
+                    <h2>Companies</h2>
+                    <div>
+                        <select id="company-selector">
+                            <option value="" disabled selected>Select a company...</option>
+                        </select>
+                        <p>Company code: </p>
+                        <span id="company-code" class="info">
+                            Selected company's code.
+                        </span>
+                        <button id="delete-company" disabled>
+                            Delete
+                        </button>
+                    </div>
+                    <div>
+                        <p>Add new employer to company</p>
+                        <input id="new-empName" type="text" placeholder="New employer name...">
+                        <input id="new-empMail" type="text" placeholder="New employer e-mail...">
+                        <button id="add-employer" disabled>
+                            Add
+                        </button>
+                    </div>
+                    <div>
+                        <p>Generate code for new company</p>
+                        <input id="new-comp" type="text" placeholder="New company...">
+                        <button id="add-company" disabled>
+                            Generate
+                        </button>
+                        <span id="newCode" class="info">
+                            The newly generated code
+                        </span>
                     </div>
                 </div>
-                <div class="person">
-                    <div class="overlay">
-                    <img src="pictures/Dummy-Profile.png">
-                    <h2>Hans Schmidt</h2>
+                <div class="admin-cell" style="border-left: solid 0.1px whitesmoke;">
+                    <h2>Employers</h2>
+                    <div>
+                        <select id="employer-selector">
+                            <option value="" disabled selected>Select an employer...</option>
+                        </select>
+                        <span id="employer-info" class="info">
+                            Info about selected employer
+                        </span>
+                        <span class="double-btn">
+                            <button id="delete-employer" disabled>
+                                Delete
+                            </button>
+                            <button id="reset-employer" disabled>
+                                Reset pass
+                            </button>
+                        </span>
+                    </div>
+                    <div>
+                        <p>Add new employee to employer</p>
+                        <input id="new-empeeName" type="text" placeholder="New employee name...">
+                        <input id="new-empeeMail" type="text" placeholder="New employee e-mail...">
+                        <button id="add-employee" disabled>
+                            Add
+                        </button>
+                    </div>
+                    <div>
+                        <p>Transfer to another company</p>
+                        <select id="company-transfer-selector" disabled>
+                            <option value="" disabled selected>Select a company...</option>
+                        </select>
+                        <button id="transfer-employer" disabled>
+                            Transfer
+                        </button>
                     </div>
                 </div>
-                <div class="person">
-                   <div class="overlay">
-                    <img src="pictures/Dummy-Profile.png">
-                    <h2>Hans Schmidt</h2>
+                <div class="admin-cell" style="border-left: solid 0.1px whitesmoke;">
+                    <h2>Employees</h2>
+                    <div >
+                        <select id="employee-selector">
+                            <option value="" disabled selected>Select an employee...</option>
+                        </select>
+                        <span id="employee-info" class="info">
+                            Info about selected employee
+                        </span>
+                        <span class="double-btn">
+                            <button id="delete-employee" disabled>
+                                Delete
+                            </button>
+                            <button id="reset-employee" disabled>
+                                Reset pass
+                            </button>
+                        </span>
                     </div>
-                </div>
-                <div class="person">
-                    <div class="overlay">
-                        <img src="pictures/Dummy-Profile.png">
-                        <h2>Hans Schmidt</h2>
-                    </div>
-                </div>
-                <div class="person">
-                    <div class="overlay">
-                        <img src="pictures/Dummy-Profile.png">
-                        <h2>Hans Schmidt</h2>
-                    </div>
-                </div>
-                <div class="person">
-                    <div class="overlay">
-                        <img src="pictures/Dummy-Profile.png">
-                        <h2>Hans Schmidt</h2>
+                    <div>
+                         <p>Transfer to another employer</p>
+                        <select id="employer-transfer-selector" disabled>
+                            <option value="" disabled selected>Select an employer...</option>
+                        </select>
+                        <button id="transfer-employee" disabled>
+                            Transfer
+                        </button>
                     </div>
                 </div>
             </div>
+            
         </div> <!-- cd-scrolling-bg__content -->
     </div> <!-- cd-scrolling-bg -->
 
-    <div class="cd-fixed-bg cd-fixed-bg--2">
+    <!-- <div class="cd-fixed-bg cd-fixed-bg--2">
         <h2>Lorem ipsum dolor sit amet.</h2>
-    </div> <!-- cd-fixed-bg -->
+    </div>  -->
 
-    <div class="cd-scrolling-bg cd-scrolling-bg--color-3">
+<!--     <div class="cd-scrolling-bg cd-scrolling-bg--color-3">
         <div class="cd-scrolling-bg__content">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore incidunt suscipit similique, dolor corrupti cumque qui consectetur autem laborum fuga quas ipsam doloribus sequi, mollitia, repellendus sapiente repudiandae labore rerum amet culpa inventore, modi non. Quo nisi veritatis vitae nam, labore fugit. Inventore culpa iusto, officia exercitationem. Voluptates quibusdam odit odio incidunt consequatur, consectetur aspernatur optio vitae molestias, quas repellendus fugit ullam culpa, eligendi et dignissimos voluptatibus illum? Molestias aliquam nostrum quasi ipsa culpa, iusto explicabo ut error, consequuntur enim temporibus, adipisci tempora voluptate, id consequatur mollitia eveniet blanditiis. Illo quod repellendus alias? Cum rem doloremque adipisci accusantium? Saepe, necessitatibus!
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore incidunt suscipit similique, dolor corrupti cumque qui consectetur autem laborum fuga quas ipsam doloribus sequi, mollitia, repellendus sapiente repudiandae labore rerum amet culpa inventore, modi non. Quo nisi veritatis vitae nam, labore fugit. Inventore culpa iusto, officia exercitationem. Voluptates quibusdam odit odio incidunt consequatur, consectetur aspernatur optio vitae molestias, quas repellendus fugit ullam culpa, eligendi et dignissimos voluptatibus illum? Molestias aliquam nostrum quasi ipsa culpa, iusto explicabo ut error, consequuntur enim temporibus, adipisci tempora voluptate, id consequatur mollitia eveniet blanditiis. Illo quod repellendus alias? Cum rem doloremque adipisci accusantium? Saepe, necessitatibus!
             </p>
-        </div> <!-- cd-scrolling-bg__content -->
-    </div> <!-- cd-scrolling-bg -->
-
+        </div>
+    </div>
+ -->
     <div class="cndm">
         <div class="map" id="map"></div>
     </div>
@@ -132,6 +173,7 @@
 </main>
 <script src="/Js/main.js"></script> <!-- Resource JavaScript -->
 <script type="text/javascript" src="./Js/Map.js"></script>
+<script type="text/javascript" src="./Js/admin.js"></script>
 <script>
     function fullmap() {
         document.getElementById("map").style.height = "100%";
@@ -154,7 +196,6 @@
             document.getElementById("logo").style.margin = "10px 0 0 5%";
             document.getElementById("logo").style.height = "50px";
             document.getElementById("logo").style.width = "auto";
-            document.getElementById("logo").style.opacity = "1.0";
             document.getElementById("menu").style.height = "auto";
             document.getElementById("menu").style.float = "right";
             document.getElementById("menu").style.marginRight = "5%";

@@ -95,18 +95,18 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 
 .cd-main-header__logo img {
-  display: block;
-    margin-right:auto;
-    margin-left: auto;
-
-    width: 50%;
-    transition: 0.8s;
+    display: block;
+    margin :auto;
+ 
+    width: 35%;
+    opacity: 0.6;
+    transition: 1.8s;
 }
 
 @media only screen and (min-width: 768px) {
   .cd-main-header {
-    height: 100%;
-      transition: 0.4s;
+      height: 0%;
+      transition: 0.8s;
   }
 
 }

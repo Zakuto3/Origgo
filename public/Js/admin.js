@@ -70,9 +70,8 @@ function addEmployer(employer, company){
 		AJAXget(`/addEmployer?empName=${employer.name}&empMail=${employer.mail}&compCode=${company.code}&compName=${company.name}`, (response)=>{
 			if(response == "success"){
 				console.log("employer added");
-				let opt = document.createElement("option");
-				opt.textContent = employer.name;
-				document.getElementById("employer-selector").appendChild(opt);
+				addOpt(document.getElementById("employer-selector"), employer.name);
+				addOpt(document.getElementById("employer-transfer-selector"), employer.name);
 				showSuccess(`${employer.name} was added`, document.getElementById("add-employer").parentNode, "added-employer");
 			}
 			else if(response == "ER_DUP_ENTRY") {
@@ -224,26 +223,73 @@ function changeCompany(employer, company) {
 	})
 }
 
-function addCompany(company){
+document.getElementById("add-company").addEventListener("click", (e) =>{
+	let newcompany = document.getElementById("new-comp").value;
+	addCompany(newcompany);
+});
 
+document.getElementById("new-comp").addEventListener("keyup",(e) =>{
+	if(e.srcElement.value.length > 0)
+		document.getElementById("add-company").disabled = false;
+	else 
+		document.getElementById("add-company").disabled = true;
+})
+
+function addCompany(company){
+	AJAXget(`/addCompany?newcompany=${company}`, (response) =>{
+		if(response != "fail"){
+			console.log(response);
+			showSuccess(company+" was added", document.getElementById("add-company").parentNode);
+			document.getElementById("newCode").innerHTML = response;
+			addOpt(document.getElementById("company-transfer-selector"), company);
+			addOpt(document.getElementById("company-selector"), company);
+		}
+		else{
+			if(!document.getElementById("addCompErr"))
+				showError(company+" could not be added", document.getElementById("add-company").parentNode, "addCompErr");
+			console.log("Company could not be added");
+		}
+	});
 }
 
-//Work in progress
+document.getElementById("delete-employer").addEventListener("click", (e) =>{
+	let dropdown = document.getElementById("employer-selector");
+	let selected = dropdown.options[dropdown.selectedIndex].text;
+	deleteEmployer(selected);
+})
+
 function deleteEmployer(employer){
 	AJAXget(`/deleteEmployer?employer=${employer}`, (response)=>{
 		if(response == "success"){
 			console.log("Deletion of employer success");
 			let employers = document.getElementById("employer-selector");
-			employers.remove(employers.selectedIndex);
-			getEmployeeInfo(employers.options[employers.selectedIndex].text)
-			showSuccess(employer+" deleted", document.getElementById("delete-employer").parentNode, "employer-deleted");
+			deleteOpt(document.getElementById("employer-transfer-selector"), employer);
+			deleteOpt(employers, employer);
+			getEmployerInfo(employers.options[employers.selectedIndex].text);
+			let employees = document.getElementById("employee-selector");
+			getEmployeeInfo(employees.options[employees.selectedIndex].text);
+			showSuccess(employer+" deleted", document.getElementById("delete-employer").parentNode.parentNode, "employer-deleted");
 		} 
 		else {
 			console.log("Could not delete employer");
 			if(!document.getElementById("employer-deleteErr"))
-				showError("Could not delete "+employer, document.getElementById("delete-employer").parentNode, "employer-deleteErr");
+				showError("Could not delete "+employer, document.getElementById("delete-employer").parentNode.parentNode, "employer-deleteErr");
 		}
 	})
+}
+
+function deleteOpt(dropdown, opt){
+	for(let i = 0; i < dropdown.options.length; i++){
+		if(dropdown.options[i].textContent == opt){
+			dropdown.remove(i);
+		}
+	}
+}
+
+function addOpt(dropdown, opt){
+	let newOpt = document.createElement("option");
+	newOpt.textContent = opt;
+	dropdown.appendChild(newOpt);
 }
 
 document.getElementById("delete-employee").addEventListener("click", (e)=>{
@@ -269,8 +315,25 @@ function deleteEmployee(employee){
 	})
 }
 
-function deleteCompany(company){
+document.getElementById("delete-company").addEventListener("click", (e) =>{
+	let dropdown = document.getElementById("company-selector");
+	let selected = dropdown.options[dropdown.selectedIndex].text;
+	deleteCompany(selected);
+})
 
+function deleteCompany(company){
+	AJAXget(`/deleteCompany?company=${company}`, (response)=> {
+			if(response == "success"){
+				deleteOpt(document.getElementById("company-selector"),company);
+				deleteOpt(document.getElementById("company-transfer-selector"),company);
+				let currentemp = document.getElementById("employer-selector").options[document.getElementById("employer-selector").selectedIndex].text;
+				getEmployerInfo(currentemp);
+				showSuccess(company+" was deleted.",document.getElementById("delete-company").parentNode);
+			}
+			else{
+				showError(company+" could not be deleted.",document.getElementById("delete-company").parentNode);
+			}
+	})
 }
 
 document.getElementById("employee-selector").addEventListener("change", (e) => {
