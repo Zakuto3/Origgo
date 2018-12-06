@@ -1,3 +1,22 @@
+function checkAdmin(){
+	AJAXget("/checkUserType", (res) => {
+		console.log("check1",res);
+		res = JSON.parse(res);
+		if(!res.type){
+			window.location.href=`/Index.html`;
+		}
+		else if(res.type != "admin"){
+			window.location.href=`/Index_${res.type}.html`;
+		}
+		else{
+			document.getElementById("admin-welcome").innerHTML = "Welcome "+res.name;
+		}
+		console.log(res);
+		alert(res);
+	})
+}
+checkAdmin();
+
 function fillDropDown(items, dropdown){
 	for (let i = 0; i < dropdown.options.length; i++) {
 		if(dropdown.options[i].disabled != true) 

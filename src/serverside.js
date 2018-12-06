@@ -473,7 +473,11 @@ app.get("/deleteCompany", (req, res) =>{
     console.log("deleteCompany2 err: ",e);
     res.send(e);
   })
-})
+});
+
+app.get("/checkUserType", (req,res) => {
+  res.send({ name : req.session.name, type : req.session.usertype });
+});
 
 /*function for accessing WEB API through https module,
 see it as serverside making requests to services*/
