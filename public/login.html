@@ -2,15 +2,30 @@
 <html> 
 	<head> 
 		<meta charset="utf-8">
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
-        <link rel="stylesheet" href="Css/forms.css" type="text/css">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
+    <link rel="stylesheet" href="Css/reset.css"> 
+    <link rel="stylesheet" href="Css/style.css"> 
+    <link rel="stylesheet" href="Css/forms_old.css "type="text/css">
+
         <title>Project for Web application</title>
 	</head>
 	<body>
-        <a href="Index.html"><img src="pictures/logo.jpg"></a>
-        <h1>Flight tracking</h1>
-        <div id="loginform">
+    <header class="cd-main-header" id="navbar" style="position: inherit; height: 70px; background: rgba(255, 255, 255, 0.95);" >
 
+    <nav class="cd-main-nav js-main-nav" id="menu" style="height: auto; float: right;">
+        <ul class="cd-main-nav__list">
+            <!-- inser more links here -->
+            <li><a href="/">Home</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="#0">Pricing</a></li>
+            <li><a href="#0">Contact</a></li>
+        </ul>
+    </nav> <!-- cd-main-nav -->
+    <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo" style="float: left; margin: 10px 0px 0px 5%; height: 50px; width: auto;"></a></div>
+
+</header>
+       
+<div id="loginform">
   <div class="container">
     <label for="name"><h2>Login</h2></label>
     <h3 id="errormsg"></h3>
@@ -22,7 +37,7 @@
         
 <div id='uncheck'>
 <input type="radio" name='emChoice' id="box1" checked /> 
-Empoyer
+Employer
 <label for='box1'>&#9678;</label> 
 <label for='box0'>&#9673;</label>
 <input type="radio" name='emChoice' id="box2" /> 
@@ -34,8 +49,7 @@ Employee
   </div>
     <button id="submit" onclick="loginrequest()">Login</button>
 
-  <div class="container" style="background-color:#f1f1f1">
-    <span class="psw">Forgot <a href="#">password?</a></span>
+  <div class="container" style="background-color:white">
   </div>
 
 </div>

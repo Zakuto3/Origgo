@@ -9,7 +9,6 @@ var app = express();
 var APIkey= "a407e4-2ee284";
 const uuidv4 = require('uuid/v4');
 uuidv4(); //⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
-
 var crypto;
 try {
   crypto = require('crypto');
@@ -47,30 +46,34 @@ var DatabaseConn = function(queryString){
 
 app.post('/loginbtn',(req, res) =>{
   console.log(req.body.emptype);
-  if (req.body.emptype == "employee") { //check if its first time emoplyee logs in
-    DatabaseConn("SELECT origgo.employee.password FROM origgo.employee WHERE name= '"+req.body.Name+"';").then(function(data){
+  const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
+  console.log(hash);
+  let emptype = (req.body.Name.includes("adm-")) ? "admin" : req.body.emptype;
+  const QueryString = `SELECT UID, name, password FROM ${emptype} WHERE name= '${req.body.Name}' AND password='${hash}'`;
+
+    DatabaseConn(`SELECT password FROM ${emptype} WHERE name= '${req.body.Name}';`).then(function(data){
       if (data[0].password == null) {
         res.send("goPass");
-      }
-    });
-  }
-  const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
-  const QueryString = (req.body.emptype == "employer") ? "SELECT origgo.employer.UID, origgo.employer.name, origgo.employer.password FROM origgo.employer WHERE name= '"+req.body.Name+"' AND password='"+hash+"'" : "SELECT origgo.employee.UID, origgo.employee.name, origgo.employee.password FROM origgo.employee WHERE name= '"+req.body.Name+"' AND password = '"+req.body.Pass+"';";//_-------- CHANGE PASS TO HASH AFTER DEBUGGING IS DONE
-  console.log(QueryString);
-  DatabaseConn(QueryString).then(function(data){
-    console.log("DATA: ",data);
-    if (data.length > 0){
-     req.session.login = true;
-     req.session.name = data[0].name;
-     req.session.userId = data[0].UID;
-     req.session.usertype = req.body.emptype;
+      }else{
+        DatabaseConn(QueryString).then(function(data){
+        console.log("DATA: ",data);
+        if (data.length > 0){
+         req.session.login = true;
+         req.session.name = data[0].name;
+         req.session.userId = data[0].UID;
+         req.session.usertype = emptype;
+        }
+      console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass, req.body.emptype); 
+      res.send(req.session.usertype);
+      }).catch((err) => {
+        console.log("login err: ",err);
+        res.send("");
+      })
     }
-  console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass, req.body.emptype); 
-  res.send(req.session.login);
   }).catch((err) => {
-    console.log("login err: ",err);
-    res.send("");
-  })
+        console.log("passNullCheck err: ",err);
+        res.send("");
+      })
 });
 
 app.post('/signupForm', (req, res) =>{
@@ -139,7 +142,20 @@ app.get('/logout',function(req,res) {
 
 app.get('/signup.html',(req, res) =>{//makes sure user dont reach signup if logedin
     if (req.session.login) {
-      res.redirect('/');
+      console.log(req.session.usertype);
+      switch(req.session.usertype)
+      {
+        case "employer":
+        res.send(fs.readFileSync(__dirname + '/../public/Index_employer.html', 'utf8'));
+        console.log("came in");
+        break;
+        case "employee": 
+        res.send(fs.readFileSync(__dirname + '/../public/Index_employee.html', 'utf8'));
+        break;
+        default:
+          res.redirect('/');       
+        break;
+      }
     }else{
       res.send(fs.readFileSync(__dirname + '/../public/signup.html', 'utf8'));//go to signup
     }
@@ -147,7 +163,19 @@ app.get('/signup.html',(req, res) =>{//makes sure user dont reach signup if loge
 
 app.get('/login.html',(req, res) =>{
     if (req.session.login) {
-      res.redirect('/');
+      switch(req.session.usertype)
+      {
+        case "employer":
+        res.send(fs.readFileSync(__dirname + '/../public/Index_employer.html', 'utf8'));
+        console.log("came in");
+        break;
+        case "employee": 
+        res.send(fs.readFileSync(__dirname + '/../public/Index_employee.html', 'utf8'));
+        break;
+        default:
+          res.redirect('/');       
+        break;
+      }
     }else{
       res.send(fs.readFileSync(__dirname + '/../public/login.html', 'utf8'));
     }
@@ -183,7 +211,38 @@ app.get('/addAirplanes', (req, res) => {
   });
 });
 
-app.get('/getAirplane', (req,res) => {
+// app.get('/addHeatmap', (req, res) => {
+//     request("https://opensky-network.org/api/states/all", function(data){
+//
+//         var planeObject = "{ \"type\": \"MultiPoint\",\"coordinates\": ["
+//         if(data){
+//             data["states"].forEach(function(plane){
+//                 /*Boolean if plane is on ground*/
+//                 var planeGrounded = plane[8];
+//                 /*Indexes 5,6 contains coordinates for the plane*/
+//                 var lat = plane[6];
+//                 var lon = plane[5];
+//                 if(!planeGrounded && lat && lon && plane[1]!=""){
+//                     console.log(lat);
+//                     /*Index 10 contains plane rotation in degrees
+//                     North is 0 degrees. Index 0 has unique icao24 code*/
+//                     planeObject = planeObject + "[" + lat + "," + lon + "],";
+//                 }
+//             });
+//             planeObject = planeObject.slice(0,-1) + "]";
+//             planeObject = planeObject + "}";
+//
+//             console.log(planeObject);
+//         }
+//         else{
+//             console.log("States null");
+//         }
+//         res.send(planeObject);
+//     });
+// });
+
+//gets a bunch of info on a plane
+app.get('/getAirplane', (req, res) => {
   let data = {};
   let url = "https://aviation-edge.com/v2/public/flights?key="+APIkey;
   if (req.query.flightIcao) url += "&flightIcao="+req.query.flightIcao;
@@ -283,6 +342,143 @@ app.get('/flightToDB', (req, res) => {
 //   else { res.send("callsign empty"); }
 // })
 
+app.get("/getCompanies", (req,res)=>{
+  let companies = [];
+  let query = `SELECT * FROM company_code`;
+  if(req.query.company) query += ` WHERE company = '${req.query.company}'`
+  DatabaseConn(query).then((rows)=>{
+    res.send(rows);
+  }).catch((err) => {
+    console.log("getCompanies err: ", err);
+  });
+});
+
+app.get("/getEmployers", (req,res) =>{
+  let employers = [];
+  let query = `SELECT UID, name, email, companyName, trackingIcao24 FROM employer`
+  if(req.query.employer) query += ` WHERE name = '${req.query.employer}'`
+    DatabaseConn(query).then((rows) => {
+      res.send(rows);
+    })
+})
+
+app.get("/getEmployees", (req,res) =>{
+  let employers = [];
+  let query = `SELECT UID, name, email, employer, trackingIcao24 FROM employee`
+  if(req.query.employee) query += ` WHERE name = '${req.query.employee}'`;
+    DatabaseConn(query).then((rows) => {
+      console.log("getEmployees: ", rows);
+      res.send(rows);
+    })
+})
+
+app.get(`/addEmployer`, (req,res) =>{
+  const query = 
+    `INSERT INTO employer (name, email, companyName, certifiedKey) VALUES ('${req.query.empName}', '${req.query.empMail}', '${req.query.compName}', '${req.query.compCode}')`;
+  DatabaseConn(query).then(() =>{
+    res.send("success")
+  }).catch((err) => {
+    console.log("addEmployer err: ",err);
+    res.send(err.code);
+  })
+})
+
+app.get(`/addEmployee`, (req,res) =>{
+  const query = 
+    `INSERT INTO employee (name, email, employer) VALUES ('${req.query.empName}', '${req.query.empMail}', '${req.query.employer}')`;
+  DatabaseConn(query).then(() =>{
+    res.send("success")
+  }).catch((err) => {
+    console.log("addEmployer err: ",err);
+    res.send(err.code);
+  })
+})
+
+app.get('/resetPass', (req,res) => {
+  const query = `UPDATE ${req.query.usertype} SET password = NULL WHERE name = '${req.query.user}'`;
+  DatabaseConn(query).then(() => {
+    res.send("success");
+  }).catch((e)=>{
+    console.log("resetPass err: ", e);
+    res.send(e);
+  })
+});
+
+app.get('/transferEmployee', (req, res) =>{
+  const query = `UPDATE employee SET employer = '${req.query.employer}' WHERE name = '${req.query.employee}'`;
+  DatabaseConn(query).then(() => {
+    res.send("success");
+  }).catch((e) => {
+    console.log("transferEmployee err: ", e);
+    res.send(e);
+  })
+});
+
+app.get('/transferEmployer', (req,res) =>{
+  const query = `UPDATE employer SET companyName = '${req.query.company}' WHERE name = '${req.query.employer}'`;
+  DatabaseConn(query).then(() => {
+    res.send("success");
+  }).catch((e) => {
+    console.log("transferEmployer err: ", e);
+    res.send(e);
+  })
+});
+
+app.get("/deleteEmployee", (req, res) =>{
+  const query = `DELETE FROM employee WHERE name = '${req.query.employee}'`;
+  DatabaseConn(query).then(() =>{
+    res.send("success");
+  }).catch((e) => {
+    console.log("deleteEmployee err: ",e);
+    res.send(e);
+  })
+})
+
+app.get(`/addCompany`, (req, res) =>{
+  let newCode = uuidv4();
+  const query = `INSERT INTO company_code (company, code) VALUES ('${req.query.newcompany}', '${newCode}');`;
+  DatabaseConn(query).then(() =>{
+    res.send(newCode);
+  }).catch((e) =>{
+    console.log("addCompanyErr: ", e);
+    res.send("fail");
+  })
+})
+
+app.get("/deleteEmployer", (req, res) =>{
+  const query = `DELETE FROM employer WHERE name = '${req.query.employer}'`;
+  DatabaseConn(query).then(() =>{
+    DatabaseConn(`UPDATE employee SET employer = 'None' WHERE employer = '${req.query.employer}'`).then(()=>{
+      res.send("success");
+    }).catch((err) =>{
+      console.log("deleteEmployer2 err: ", err);
+      res.send(err);
+    })
+  }).catch((e) => {
+    console.log("deleteEmployer err: ",e);
+    res.send(e);
+  })
+})
+
+app.get("/deleteCompany", (req, res) =>{
+  const query = `DELETE FROM company_code WHERE company = '${req.query.company}'`;
+  DatabaseConn(query).then(() =>{
+    DatabaseConn(`UPDATE employer SET companyName = 'None', certifiedKey = 'None' WHERE companyName = '${req.query.company}'`).then(()=>{
+      res.send("success");
+    }).catch((err) =>{
+      console.log("deleteCompany err: ", err);
+      res.send(err);
+    })
+  }).catch((e) => {
+    console.log("deleteCompany2 err: ",e);
+    res.send(e);
+  })
+});
+
+app.get("/checkUserType", (req,res) => {
+  res.send({ name : req.session.name, type : req.session.usertype });
+});
+
 /*function for accessing WEB API through https module,
 see it as serverside making requests to services*/
 function request(link, func){
@@ -298,6 +494,7 @@ function request(link, func){
         datastring += data;
       });
       res.on('end', function(){
+        //console.log("request datastring: ", datastring);
         func(JSON.parse(datastring));
       })      
     }
