@@ -26,16 +26,16 @@
 </header>
        
 <div id="loginform">
-  <div class="container">
-    <label for="name"><h2>Login</h2></label>
+  <div id="container" class="container">
+    <label for="name"><h2 id = "logintitle">Login</h2></label>
     <h3 id="errormsg"></h3>
-    <label for="name"><b>Username</b></label>
+    <label for="name"><b id = "labeluser">Username</b></label>
     <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
 
-    <label for="psw"><b>Password</b></label>
+    <label for="psw"><b id = "labelpass">Password</b></label>
     <input type="password" placeholder="Enter Password" name="psw" id="pswd" required>
         
-<div id='uncheck'>
+<div id='uncheck' style="display: block;">
 <input type="radio" name='emChoice' id="box1" checked /> 
 Employer
 <label for='box1'>&#9678;</label> 

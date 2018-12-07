@@ -76,6 +76,17 @@ app.post('/loginbtn',(req, res) =>{
       })
 });
 
+app.post('/setPasswd', (req,res) => {
+   const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
+  const query = `UPDATE ${req.body.emptype} SET password = '${hash}' WHERE name = '${req.body.Name}'`;
+  DatabaseConn(query).then(() => {
+    res.send("success");
+  }).catch((e)=>{
+    console.log("resetPass err: ", e);
+    res.send(e);
+  })
+});
+
 app.post('/signupForm', (req, res) =>{
   const hash = crypto.createHmac('sha256', req.body.Password).digest('hex');
   const QueryString = 'INSERT INTO `origgo`.`employer` (`name`, `password`, `email`, `companyName`, `certifiedKey`) VALUES ('+'"'+req.body.Username+'"'+', '+'"'+hash+'"'+', '+'"'+req.body.Mail+'"'+', '+'"'+req.body.CompSelector+'"'+', '+'"'+req.body.keycode+'"'+');';
