@@ -12,7 +12,6 @@ function checkAdmin(){
 			document.getElementById("admin-welcome").innerHTML = "Welcome "+res.name;
 		}
 		console.log(res);
-		alert(res);
 	})
 }
 checkAdmin();

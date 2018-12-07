@@ -313,11 +313,22 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 .person .overlay{
     /*filter: blur(4px);*/
-    opacity: 0.5;
+    opacity: 1;
     transition: 0.5s ease;
 }
 
 .person:hover .overlay{
+    filter: none;
+    opacity: 1;
+}
+
+.personadd .overlay{
+    /*filter: blur(4px);*/
+    opacity: 0.5;
+    transition: 0.5s ease;
+}
+
+.personadd:hover .overlay{
     filter: none;
     opacity: 1;
 }
@@ -348,4 +359,10 @@ input:not(:checked) + label + label{ display: none }
 
 #uncheck label {
   cursor: pointer; user-select: none;
+}
+
+.ol-zoom{
+  top: unset;
+  bottom: .5em;
+  left: .5em;
 }

@@ -1,3 +1,4 @@
+"use strict"
 var express = require('express'); // https://expressjs.com/en/guide/routing.html
 var mysql = require('mysql');// https://www.npmjs.com/package/mysql
 var bodyParser = require('body-parser');// https://www.npmjs.com/package/body-parser
