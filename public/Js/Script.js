@@ -66,6 +66,7 @@ function addInfo(plane) {
 
 /*Add flight to a user in DB*/
 function addUserFlight(flightIcao){
+    console.log(flightIcao);
     AJAXget('/flightToDB?flightIcao=' + flightIcao, function(result){
         if(result == "true"){
             console.log("Flight added to user");
