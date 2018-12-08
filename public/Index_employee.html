@@ -2,48 +2,42 @@
 <html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>var planeList = []; </script>
+    <script type="text/javascript" src="./Js/Script.js"></script>
+    
 
     <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
-    <script>var planeList = []; </script>
-    <script type="text/javascript" src="./Js/index.js"></script>
-    <script type="text/javascript" src="./Js/Script.js"></script>
-    <!--Animation scripts-->
-    <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/ScrollMagic.js"></script>-->
-    <!--<script>var controller = new ScrollMagic.Controller()</script>-->
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" href="Css/reset.css">
-    <link rel="stylesheet" type="text/css" href="Css/style.css">
-    <link rel="stylesheet" href="Css/demo.css">
+    <link rel="stylesheet" href="Css/reset.css"> 
+    <link rel="stylesheet" href="Css/style.css"> 
+    <link rel="stylesheet" href="Css/demo.css"> 
 
-    <title>Origgo</title>
+    <title>Alternate Fixed And Scroll Backgrounds</title>
 </head>
-
 <body>
 <header class="cd-main-header" id="navbar">
+
     <nav class="cd-main-nav js-main-nav" id="menu">
         <ul class="cd-main-nav__list">
-            <li><a href="Index.html">Home</a></li>
-            <li><a href="map.html">Map</a></li>
-            <li><a href="flights.html">Flights</a></li>
-            <li><a href="airports.html">Airports</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <!-- inser more links here -->
+            <li><a href="/">Home</a></li>
+            <li><a href="#0">About</a></li>
+            <li><a href="#0">Pricing</a></li>
+            <li><a href="#0">Gallery</a></li>
+            <li><a href="#0">Contact</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
-<div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
+    <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
 
 </header>
 <main>
     <button id="upBtn" onclick=topFunction()>UP</button>
     <div class="cd-fixed-bg cd-fixed-bg--1">
         <div class="cd-fixed-bg__content">
-            <div id="origgo" class="origgo"><img src="/pictures/log.png"></div>
             <h1>Alternate Fixed &amp; Scroll Backgrounds</h1>
             <a class="cd-nugget-info" href="/login.html">
 					<span>
@@ -57,33 +51,7 @@
                     </span>
                 Signup
             </a>
-<!--=======-->
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-	<!--<body>-->
-      <!--<div id="container">-->
-        <!--<div class="header">-->
-            <!--<div class="logo"><a href="Index.html"><img alt="logo" src="pictures/logo.jpg"></a></div>-->
-            <!--<h1>Flight tracking</h1>-->
-            <!--<div class="searchbar"  style="flex-grow: 7">-->
-                <!--<div class="dropdown">-->
-                    <!--<input type="text"  id="search" placeholder="Search for flights..." >-->
-                    <!--<button type="submit" onclick="track(document.getElementById('search').value)">Track</button><br>-->
-                    <!--&lt;!&ndash; <div id="drop" class="drpdwn-content">-->
-                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
-                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
-                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
-                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
-                        <!--<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>-->
-                    <!--</div> &ndash;&gt;-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="button"><button onclick="reDir()" id="loginIndex">Login</button></div>-->
-            <!--<div class="button1" id="signupIndex"><a href="signup.html"><button>Signup</button></a></div>-->
-        <!--</div>-->
-        <!--<div class="navigation" id="myTopnav">-->
-            <!---->
-</div>
+        </div>
     </div> <!-- cd-fixed-bg -->
 
     <div class="cd-scrolling-bg cd-scrolling-bg--color-2">
@@ -99,37 +67,37 @@
                 <div class="person">
                     <div class="overlay">
                     <img src="pictures/Dummy-Profile.png">
-                    <h2>Konrad Adenauer</h2>
+                    <h2>Hans Schmidt</h2>
                     </div>
                 </div>
                 <div class="person">
                     <div class="overlay">
                     <img src="pictures/Dummy-Profile.png">
-                    <h2>Ludwig Erhard</h2>
+                    <h2>Hans Schmidt</h2>
                     </div>
                 </div>
                 <div class="person">
                    <div class="overlay">
                     <img src="pictures/Dummy-Profile.png">
-                    <h2>Helmut Schmidt</h2>
+                    <h2>Hans Schmidt</h2>
                     </div>
                 </div>
                 <div class="person">
                     <div class="overlay">
                         <img src="pictures/Dummy-Profile.png">
-                        <h2>Helmut Kohl</h2>
+                        <h2>Hans Schmidt</h2>
                     </div>
                 </div>
                 <div class="person">
                     <div class="overlay">
                         <img src="pictures/Dummy-Profile.png">
-                        <h2>Gerhard Schröder</h2>
+                        <h2>Hans Schmidt</h2>
                     </div>
                 </div>
                 <div class="person">
                     <div class="overlay">
                         <img src="pictures/Dummy-Profile.png">
-                        <h2>Willy Brand</h2>
+                        <h2>Hans Schmidt</h2>
                     </div>
                 </div>
             </div>
@@ -182,31 +150,20 @@
             document.getElementById("upBtn").style.display = "none";
         }
 
-        if (document.body.scrollTop > 250 || document.documentElement.scrollTop > 250) {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
             document.getElementById("navbar").style.height = "70px";
             document.getElementById("navbar").style.background = "rgba(255, 255, 255, 0.95)";
-            document.getElementById("navbar").style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.2)";
-            document.getElementById("navbar").style.background = "rgba(255, 255, 255, 0.95)";
-
-            document.getElementById("logo").style.opacity = "1";
             document.getElementById("logo").style.float = "left";
             document.getElementById("logo").style.margin = "10px 0 0 5%";
             document.getElementById("logo").style.height = "50px";
             document.getElementById("logo").style.width = "auto";
-            document.getElementById("logo").style.opacity = "1.0";
             document.getElementById("menu").style.height = "auto";
             document.getElementById("menu").style.float = "right";
             document.getElementById("menu").style.marginRight = "5%";
-            document.getElementById("menu").style.width = "100%";
+            document.getElementById("menu").style.width = "";
             document.getElementById("menu").style.margin = "";
-            document.getElementById("origgo").style.opacity = "0";
-        // } else {
-        //     document.getElementById("navbar").style.height = "25%";
-        //     document.getElementById("navbar").style.background = "";
-        //     document.getElementById("navbar").style.boxShadow = "";
-        //     document.getElementById("navbar").style.background = "";
-        //     document.getElementById("logo").style.opacity = "0";
-        //     document.getElementById("menu").style.float = "";
+
+
         }
     }
 
@@ -216,11 +173,6 @@
         document.documentElement.scrollTop = 0;
     }
 
-    // build scene
-    // var scene = new ScrollMagic.Scene({offset: 0, duration: 300})
-    // // trigger a velocity opaticy animation
-    //     .setTween("#origgo", {backgroundSize: "70% 70%"})
-    //     .addTo(controller);
 </script>
 </body>
 </html>

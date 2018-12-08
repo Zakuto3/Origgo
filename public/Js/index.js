@@ -13,6 +13,7 @@ function reDir() {
 	};
 	req.send(); 
 }
+
 //check if user is loged in to show proper UI
 req = new XMLHttpRequest();
 req.open('post','/check');
@@ -40,7 +41,7 @@ function isLoggedIn(username){
 	document.getElementById("moreInfo").innerHTML = "Logged in as " + username;
 	document.getElementById("loginIndex").innerHTML = "Logout";
 	document.getElementById("signupIndex").style.visibility="hidden";
-
 	//messed up mouse coordinates on map for some reason, wtf
 	//document.getElementsByClassName("column right")[0].style.display="block";
 }
+

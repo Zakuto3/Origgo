@@ -1,8 +1,9 @@
 //Creation of map with Openlayers API, requires script-tags in html
-// var planeList = [];
+let mouseZoom = (window.location.pathname == "/map.html") ? true : false;
+
 const map = new ol.Map({
   target: 'map',
-  interactions: ol.interaction.defaults({mouseWheelZoom:false}),
+  interactions: ol.interaction.defaults({mouseWheelZoom:mouseZoom}),
 
   layers: [
     new ol.layer.Tile({
@@ -111,6 +112,7 @@ function flyToPlane(flightIcao){
 
   //If searched plane exists
   if(plane) {
+
     let coords = plane.getGeometry().getCoordinates();
     view.animate({
       zoom: 3,
@@ -129,6 +131,10 @@ function flyToPlane(flightIcao){
       clearInterval(intervalId); 
       map.removeEventListener("pointerdrag");
     }); 
+    click.dispatchEvent({
+      type: 'select',
+      selected: [plane]
+    });
   }
   else{
     console.log("Plane not found on map");
@@ -144,7 +150,6 @@ function keepCentered(plane){
     duration: 100
   });
 }
-
 
 function addPlaneByFlight(flightIcao){
   AJAXget("/addAirplanes?flightIcao="+flightIcao, function(data){
@@ -208,7 +213,7 @@ function initHover(){
   })
 }
 
-
+let click;
 initPopUp();
 function initPopUp(){
   let closePop = document.createElement("button");
@@ -225,20 +230,25 @@ function initPopUp(){
   let popTitle = document.createElement("span");
   popTitle.classList.add("popup-title");
 
+  let saveBtn = document.createElement("button");
+  saveBtn.classList.add("popup-save");
+  saveBtn.innerHTML = "Save this flight";
+
   let overlay = new ol.Overlay({
     element: pop
   });
 
   map.addOverlay(overlay);
 
-  let click = new ol.interaction.Select({
+  click = new ol.interaction.Select({
     condition : ol.events.condition.click
   });
 
   map.addInteraction(click);
 
   click.on("select", function(e){
-    let plane = map.forEachFeatureAtPixel(e.mapBrowserEvent.pixel, function (feat){return feat;});
+    //let plane = map.forEachFeatureAtPixel(e.mapBrowserEvent.pixel, function (feat){return feat;});
+    let plane = e.selected[0];
     if(plane){
       let coords = plane.getGeometry().getCoordinates();
       let flightIcao = plane.getId();
@@ -256,9 +266,16 @@ function initPopUp(){
           popTitle.innerHTML = `<b>Flight:</b> ${planeInfo.flightIcao}`
           popText.innerHTML = `<b>Arriving at:</b><br> ${arrivalAirport}.<br>
           <b>Departed from:</b><br> ${depatureAirport}.`;
+
+          saveBtn.addEventListener("click", function save(e) {
+            addUserFlight(flightIcao);
+            saveBtn.removeEventListener("click", save);
+          });
+
           pop.appendChild(popTitle);
           pop.appendChild(closePop);
           pop.appendChild(popText);
+          pop.appendChild(saveBtn);
           overlay.setPosition(coords);
         }
         else { 

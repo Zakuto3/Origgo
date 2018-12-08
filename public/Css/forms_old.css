@@ -1,6 +1,5 @@
 body {
-    background-color:#00004d;
-    font-family: Verdana;
+    background-image: url("../pictures/map.png");
 }
 b {
     color:#00004d;
@@ -64,7 +63,7 @@ button:hover {
 }
 
 #loginform{
-    width: 40%;
+    width: 30%;
     margin: auto;
     margin-top: 1%;
     background-color: white;

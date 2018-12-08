@@ -3,16 +3,15 @@
 	<head> 
 		<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
 		<link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
-		<link rel="stylesheet" href="/Css/Style.css" type="text/css">
-		<script>var planeList = [];</script>
+		<link rel="stylesheet" href="/Css/map.css" type="text/css">
 		<script type="text/javascript" src="./Js/Script.js"></script>
 		<title> Map </title> 
 	</head>
 	<body class="fullscreen">
 		<div id="map" class="map-fullscreen"></div>	
 		<div class="map-searchbar">
-            <input type="text" id="search" placeholder="Search for flights..." onkeyup="searchPlanes(this.value)">
-            <input type="button" value="Track" onclick="flyToPlane(document.getElementById('search').name); saveUserFlight(document.getElementById('search').name);">
+            <input type="text" id="search" placeholder="Search for flights...">
+            <input type="button" value="Track" onclick="flyToPlane(document.getElementById('search').value);">
 			<div id="drop" class="drpdwn-content">
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
