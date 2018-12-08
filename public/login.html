@@ -10,21 +10,19 @@
         <title>Project for Web application</title>
 	</head>
 	<body>
-    <header class="cd-main-header" id="navbar" style="position: inherit; height: 70px; background: rgba(255, 255, 255, 0.95);" >
-
-    <nav class="cd-main-nav js-main-nav" id="menu" style="height: auto; float: right;">
-        <ul class="cd-main-nav__list">
-            <!-- inser more links here -->
-            <li><a href="/">Home</a></li>
-            <li><a href="map.html">Map</a></li>
-            <li><a href="#0">Pricing</a></li>
-            <li><a href="#0">Contact</a></li>
-        </ul>
-    </nav> <!-- cd-main-nav -->
-    <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo" style="float: left; margin: 10px 0px 0px 5%; height: 50px; width: auto;"></a></div>
+        <header class="cd-main-header__alt" id="navbar">
+            <nav class="cd-main-nav__alt js-main-nav" id="menu">
+                <ul class="cd-main-nav__list">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="map.html">Map</a></li>
+                    <li><a href="#0">Pricing</a></li>
+                    <li><a href="#0">Contact</a></li>
+                </ul>
+            </nav> <!-- cd-main-nav -->
+            <div class="cd-main-header__logo__alt"><a href="/Index.html"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
 
 </header>
-       
+        <br><br><br><br><br><br>
 <div id="loginform">
   <div id="container" class="container">
     <label for="name"><h2 id = "logintitle">Login</h2></label>
@@ -34,24 +32,21 @@
 
     <label for="psw"><b id = "labelpass">Password</b></label>
     <input type="password" placeholder="Enter Password" name="psw" id="pswd" required>
-        
-<div id='uncheck' style="display: block;">
-<input type="radio" name='emChoice' id="box1" checked /> 
-Employer
-<label for='box1'>&#9678;</label> 
-<label for='box0'>&#9673;</label>
-<input type="radio" name='emChoice' id="box2" /> 
-Employee
-<label for='box2'>&#9678;</label> 
-<label for='box0'>&#9673;</label>
-</div>
 
+    <div id='uncheck' style="display: block;">
+        <input type="radio" name='emChoice' id="box1" checked />
+        Employer
+        <label for='box1'>&#9678;</label>
+        <label for='box0'>&#9673;</label>
+        <input type="radio" name='emChoice' id="box2" />
+        Employee
+        <label for='box2'>&#9678;</label>
+        <label for='box0'>&#9673;</label>
+    </div>
   </div>
-    <button id="submit" onclick="loginrequest()">Login</button>
+    <a class="cd-nugget-info" id="submit" onclick="loginrequest()">Login</a>
 
-  <div class="container" style="background-color:white">
-  </div>
-
+    <div class="container" style="background-color:white"></div>
 </div>
   <script>
   document.getElementById("pswd").addEventListener("keyup", function(event) {

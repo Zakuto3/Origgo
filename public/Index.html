@@ -29,11 +29,10 @@
 <header class="cd-main-header" id="navbar">
     <nav class="cd-main-nav js-main-nav" id="menu">
         <ul class="cd-main-nav__list">
-            <li><a href="Index.html">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="map.html">Map</a></li>
-            <li><a href="flights.html">Flights</a></li>
-            <li><a href="airports.html">Airports</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#0">Pricing</a></li>
+            <li><a href="#0">Contact</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
 <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
@@ -186,27 +185,24 @@
             document.getElementById("navbar").style.height = "70px";
             document.getElementById("navbar").style.background = "rgba(255, 255, 255, 0.95)";
             document.getElementById("navbar").style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.2)";
-            document.getElementById("navbar").style.background = "rgba(255, 255, 255, 0.95)";
 
-            document.getElementById("logo").style.opacity = "1";
-            document.getElementById("logo").style.float = "left";
             document.getElementById("logo").style.margin = "10px 0 0 5%";
-            document.getElementById("logo").style.height = "50px";
-            document.getElementById("logo").style.width = "auto";
             document.getElementById("logo").style.opacity = "1.0";
-            document.getElementById("menu").style.height = "auto";
+
             document.getElementById("menu").style.float = "right";
-            document.getElementById("menu").style.marginRight = "5%";
             document.getElementById("menu").style.width = "100%";
-            document.getElementById("menu").style.margin = "";
             document.getElementById("origgo").style.opacity = "0";
-        // } else {
-        //     document.getElementById("navbar").style.height = "25%";
+        } else {
+            document.getElementById("origgo").style.opacity = "1";
+
+            //     document.getElementById("navbar").style.height = "25%";
         //     document.getElementById("navbar").style.background = "";
         //     document.getElementById("navbar").style.boxShadow = "";
         //     document.getElementById("navbar").style.background = "";
-        //     document.getElementById("logo").style.opacity = "0";
-        //     document.getElementById("menu").style.float = "";
+            document.getElementById("logo").style.opacity = "0";
+            document.getElementById("logo").style.margin = "-40px 0 0 -50px";
+
+            //     document.getElementById("menu").style.float = "";
         }
     }
 
