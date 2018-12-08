@@ -44,10 +44,15 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
         background: rgba(255, 255, 255, 0.95) !important;
     }
 
+    .cd-main-nav{
+        float: right; !important;
+        width: 50%; !important;
+    }
+
     .cd-main-header__logo img {
         display: block;
         height: 50px !important;
-        margin: 5% !important;
+        margin: 0 !important;
         transition: 0.4s !important;
         width: auto !important;
     }
@@ -92,6 +97,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 .cd-main-header__logo img {
   display: block;
+    position: absolute;
     opacity: 0;
     float: left;
     margin: 10px 0 0 5%;
@@ -112,10 +118,12 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 .cd-main-nav {
   width: 44px;
-  height: 25%;
+  height: 100%;
   background: url("../pictures/menu.svg") no-repeat center center;
   background-size: 44px 44px;
   cursor: pointer;
+    transition-timing-function: ease-in;
+    transition: 0.8s;
 }
 
 .cd-main-nav__list {
@@ -139,9 +147,9 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   height: 50px;
   line-height: 50px;
   padding-left: 5%;
-  background: #2f292a;
-  border-top: 1px solid #453c3d;
-  color: #8e7d7f;
+  background: #ffffff;
+  border-top: 1px solid #00A896;
+  color: #00A896;
 }
 
 @media only screen and (min-width: 768px) {
@@ -155,6 +163,8 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   }
   .cd-main-nav__list {
     /* reset style */
+      margin: 0 auto 0 auto;
+      width: 50%;
     position: static;
       transition: 0.8s;
     -webkit-transform: translateY(0);
@@ -328,4 +338,13 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 .person img{
     border-radius: 100%;
+}
+
+.origgo img{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    opacity: 1;
+    transition-timing-function: ease-in;
+    transition: 0.8s;
 }

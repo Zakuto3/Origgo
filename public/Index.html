@@ -12,8 +12,8 @@
     <script type="text/javascript" src="./Js/index.js"></script>
     <script type="text/javascript" src="./Js/Script.js"></script>
     <!--Animation scripts-->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/ScrollMagic.js"></script>
-    <script>var controller = new ScrollMagic.Controller()</script>
+    <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/ScrollMagic.js"></script>-->
+    <!--<script>var controller = new ScrollMagic.Controller()</script>-->
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
 
@@ -28,13 +28,11 @@
 <header class="cd-main-header" id="navbar">
     <nav class="cd-main-nav js-main-nav" id="menu">
         <ul class="cd-main-nav__list">
-            <li><a href="index.html">Home</a></li>
+            <li><a href="Index.html">Home</a></li>
             <li><a href="map.html">Map</a></li>
             <li><a href="flights.html">Flights</a></li>
             <li><a href="airports.html">Airports</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-            <i class="fa fa-bars"></i></a>
         </ul>
     </nav> <!-- cd-main-nav -->
 <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
@@ -44,7 +42,7 @@
     <button id="upBtn" onclick=topFunction()>UP</button>
     <div class="cd-fixed-bg cd-fixed-bg--1">
         <div class="cd-fixed-bg__content">
-            <div id="origgo" class="origgo"></div>
+            <div id="origgo" class="origgo"><img src="/pictures/log.png"></div>
             <h1>Alternate Fixed &amp; Scroll Backgrounds</h1>
             <a class="cd-nugget-info" onclick=fullmap()>
 					<span>
@@ -182,7 +180,7 @@
             document.getElementById("upBtn").style.display = "none";
         }
 
-        if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+        if (document.body.scrollTop > 250 || document.documentElement.scrollTop > 250) {
             document.getElementById("navbar").style.height = "70px";
             document.getElementById("navbar").style.background = "rgba(255, 255, 255, 0.95)";
             document.getElementById("navbar").style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.2)";
@@ -191,14 +189,16 @@
             document.getElementById("logo").style.opacity = "1";
             document.getElementById("menu").style.float = "right";
             document.getElementById("menu").style.marginRight = "5%";
-            document.getElementById("menu").style.width = "";
+            document.getElementById("menu").style.width = "100%";
             document.getElementById("menu").style.margin = "";
-        } else {
-            document.getElementById("navbar").style.height = "25%";
-            document.getElementById("navbar").style.background = "";
-            document.getElementById("navbar").style.boxShadow = "";
-            document.getElementById("navbar").style.background = "";
-            document.getElementById("logo").style.opacity = "0";
+            document.getElementById("origgo").style.opacity = "0";
+        // } else {
+        //     document.getElementById("navbar").style.height = "25%";
+        //     document.getElementById("navbar").style.background = "";
+        //     document.getElementById("navbar").style.boxShadow = "";
+        //     document.getElementById("navbar").style.background = "";
+        //     document.getElementById("logo").style.opacity = "0";
+        //     document.getElementById("menu").style.float = "";
         }
     }
 
@@ -209,10 +209,10 @@
     }
 
     // build scene
-    var scene = new ScrollMagic.Scene({offset: 0, duration: 300})
-    // trigger a velocity opaticy animation
-        .setTween("#origgo", {backgroundSize: "70% 70%"})
-        .addTo(controller);
+    // var scene = new ScrollMagic.Scene({offset: 0, duration: 300})
+    // // trigger a velocity opaticy animation
+    //     .setTween("#origgo", {backgroundSize: "70% 70%"})
+    //     .addTo(controller);
 </script>
 </body>
 </html>
