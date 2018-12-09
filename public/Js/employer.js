@@ -64,25 +64,7 @@ function AddPerson(){
 
 
 function showNewPerson(name, email){
-//  let empCell = document.getElementById("employer-cell");
-//  let personAdder = document.getElementById("person-adder");
-//  let newDiv = document.createElement("div");
-
-//  let newperson = `<div class="person">
-// 	                <div class="overlay">
-// 	                    <img src="pictures/Dummy-Profile.png">
-// 	                    <h2>${name}</h2>
-// 	                </div>
-// 	                <p class="person-info">
-// 				        <b>Name: </b>${name}<br>
-// 				        <b>E-mail: </b>${email}<br>
-// 				        <b>Tracking: </b>Nothing<br>
-// 				        <button>Assign flight</button>
-// 				        <button>Delete</button>
-// 				    </p>
-//                 </div>`;
-//  newDiv.innerHTML = newperson;
-// empCell.insertBefore(newDiv,personAdder);
+	loadEmpToMap({name : name, email: email});
 	loadEmployee({name : name, email: email});
 
 };
@@ -113,7 +95,7 @@ function checkMail(mail){
 function loadEmployee(empObject){
 	let empCell = document.getElementById("employer-cell");
 	let personAdder = document.getElementById("person-adder");
-	let tracking = (empObject.trackingIcao24 == null) ? "Nothing" : empObject.trackingIcao24;
+	let tracking = (empObject.trackingIcao24 == null || empObject.trackingIcao24 == "") ? "Nothing" : empObject.trackingIcao24;
 
 	let assignForm = document.createElement("div");
 	assignForm.classList.add("assignFlight");
@@ -166,6 +148,7 @@ function loadEmployees(name){
 			let employees = JSON.parse(res);
 			employees.forEach((emp) => {
 				loadEmployee(emp);
+				loadEmpToMap(emp);
 			});
 		}
 	});
@@ -193,6 +176,7 @@ function showSetFlightForm(name){
 		}
 		else{
 			document.getElementById(name+"-tracking").innerHTML = `<b>Tracking: </b>Nothing`;
+			document.getElementById(`sidebar-track-${name}`).innerHTML = "Nothing";
 		}
 		hideSetFlightForm(name);
 		cancelBtn.remove();
@@ -213,8 +197,11 @@ function hideSetFlightForm(name){
 function setFlight(employee, flightIcao){
 	AJAXget(`/flightToDB?usertype=employee&flightIcao=${flightIcao}&name=${employee}`, (res)=>{
 		if(res == "true"){
+			removePlane(document.getElementById(`sidebar-track-${employee}`).innerHTML)
 			document.getElementById(employee+"-tracking").innerHTML = `<b>Tracking: </b>${flightIcao}`;
+			document.getElementById(`sidebar-track-${employee}`).innerHTML = flightIcao;
             console.log("Flight added to user");
+            addIfPlaneAvail(employee, flightIcao);
         }
         else{
             console.log("Could not add flight to user");
@@ -226,6 +213,7 @@ function deleteEmployee(employee, empPersonEl){
 	AJAXget(`/deleteEmployee?employee=${employee}`, (response)=>{
 		if(response == "success"){
 			empPersonEl.remove();
+			document.getElementById(`sidebar-${employee}`).remove();
 			console.log("Deletion of employee success");
 		} 
 		else {
@@ -233,3 +221,43 @@ function deleteEmployee(employee, empPersonEl){
 		} 
 	})
 }
+
+function loadEmpToMap(emp){
+	let newDiv = document.createElement("div");
+	newDiv.classList.add("sidebar-person");
+	newDiv.id = `sidebar-${emp.name}`;
+	let img = document.createElement("img");
+	img.src = "pictures/Dummy-Profile.png";
+	img.classList.add("sidebar-img");
+	
+	let flight = (emp.trackingIcao24 == null || emp.trackingIcao24 == "") ? "Nothing" : emp.trackingIcao24;
+	if(flight != "Nothing"){
+		addIfPlaneAvail(emp.name, flight);
+	}
+
+	newDiv.addEventListener("click", (e) =>{
+		flyToPlane(document.getElementById(`sidebar-track-${emp.name}`).innerHTML);
+	})
+	let labels = `${emp.name}<br>Tracking:<label id="sidebar-track-${emp.name}">${flight}</label>`;
+	newDiv.appendChild(img);
+	newDiv.innerHTML += labels;
+
+	document.getElementById("map-sidebar").appendChild(newDiv);
+}
+
+function addIfPlaneAvail(emp, flightIcao){
+	AJAXget("/addAirplanes?flightIcao="+flightIcao, function(data){
+    var plane = JSON.parse(data);
+    console.log("addPlane flightIcao: ",flightIcao);
+    if(plane.length > 0){
+      loadPlane(plane[0]);
+    }
+    else { 
+    	document.getElementById(`sidebar-track-${emp}`).innerHTML += "<br><b style='color: red;'>Could not find</b>";
+    	console.log("Plane not found from API");
+    }
+
+  })
+}
+
+

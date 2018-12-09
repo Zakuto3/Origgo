@@ -18,7 +18,10 @@ const map = new ol.Map({
 
 let planeLayer; //moved, needed access in flyToPlane()
 
-initAirplanes("/addAirplanes", { limit : 200 });
+
+if(window.location.pathname == "/map.html") { initAirplanes("/addAirplanes", { limit : 200 }); }
+else initAirplanes("/addAirplanes", { limit : 0 });
+
 initHover();
 
 //Adds planes to the map
@@ -27,7 +30,7 @@ function initAirplanes(url, options){
   const planeOptions ={
     url : url,
     layer: planeLayer,
-    limit : options.limit || 1000,
+    limit : options.limit || 0,
     updates : options.updates || true,
     updateInterval: options.updateInterval || 60000
   };
@@ -36,6 +39,7 @@ function initAirplanes(url, options){
     loader: loadLayer(planeOptions, planeLoader)
   });
   planeLayer.setSource(planeSource);
+  map.addLayer(planeLayer);
 }
 
 /*Convert degrees to radians*/
@@ -47,18 +51,20 @@ function toRadians(degrees){
 options - contains url, layer, limit.
 loader - function to be called that add the layer*/
 function loadLayer(options, loader){
-  let req = new XMLHttpRequest();
-  req.onreadystatechange = function(){
-    if(this.readyState == 4 && this.status == 200){
-      let data = JSON.parse(this.responseText);
-      loader(data, options.layer, options.limit);
-      if(options.updates){
-        setInterval(function(){ updateAirplanesCoords(options.url, options.layer); }, options.updateInterval);
+  if(options.limit > 0){
+    let req = new XMLHttpRequest();
+    req.onreadystatechange = function(){
+      if(this.readyState == 4 && this.status == 200){
+        let data = JSON.parse(this.responseText);
+        loader(data, options.layer, options.limit);
+        if(options.updates){
+          setInterval(function(){ updateAirplanesCoords(options.url, options.layer); }, options.updateInterval);
+        }
       }
     }
+    req.open("GET", options.url+"?limit="+options.limit);
+    req.send();
   }
-  req.open("GET", options.url+"?limit="+options.limit);
-  req.send();
 };
 
 /*loader function for airplanes.
@@ -71,7 +77,7 @@ function planeLoader(planes, layer, limit){
   }
   /*After all planes are added to the source, add the layer
   connected to source to the map*/
-  map.addLayer(layer);
+  //map.addLayer(layer);
 }
 
 /*Similar to airplaneloader but updates
@@ -138,7 +144,7 @@ function flyToPlane(flightIcao){
   }
   else{
     console.log("Plane not found on map");
-    addPlaneByFlight(flightIcao);
+    addPlaneByFlight(flightIcao, true);
   }
 }
 
@@ -151,13 +157,13 @@ function keepCentered(plane){
   });
 }
 
-function addPlaneByFlight(flightIcao){
+function addPlaneByFlight(flightIcao, flyTo){
   AJAXget("/addAirplanes?flightIcao="+flightIcao, function(data){
     var plane = JSON.parse(data);
     console.log("addPlane flightIcao: ",flightIcao);
     if(plane.length > 0){
       loadPlane(plane[0]);
-      flyToPlane(flightIcao);
+      if(flyTo) flyToPlane(flightIcao);
     }
     else { console.log("Plane not found from API")}
 
@@ -286,4 +292,9 @@ function initPopUp(){
       })
     }
   })
+}
+
+function removePlane(flightIcao){
+  if(planeLayer.getSource().getFeatureById(flightIcao))
+    planeLayer.getSource().removeFeature(planeLayer.getSource().getFeatureById(flightIcao));
 }
