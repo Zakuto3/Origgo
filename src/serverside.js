@@ -50,7 +50,7 @@ app.post('/loginbtn',(req, res) =>{
   const hash = crypto.createHmac('sha256', req.body.Pass).digest('hex');
   console.log(hash);
   let emptype = (req.body.Name.includes("adm-")) ? "admin" : req.body.emptype;
-  const QueryString = `SELECT UID, name, password FROM ${emptype} WHERE name= '${req.body.Name}' AND password='${hash}'`;
+  const QueryString = `SELECT * FROM ${emptype} WHERE name= '${req.body.Name}' AND password='${hash}'`;
 
     DatabaseConn(`SELECT password FROM ${emptype} WHERE name= '${req.body.Name}';`).then(function(data){
       if (data[0].password == null) {
@@ -62,6 +62,9 @@ app.post('/loginbtn',(req, res) =>{
          req.session.login = true;
          req.session.name = data[0].name;
          req.session.userId = data[0].UID;
+         req.session.email = data[0].email;
+         req.session.tracking = data[0].trackingIcao24;
+         req.session.companyName = data[0].companyName;
          req.session.usertype = emptype;
         }
       console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass, req.body.emptype); 
@@ -103,6 +106,13 @@ app.post('/signupForm', (req, res) =>{
   }).catch(function(error){console.log(error);})
 });
 
+app.post('/checkuser',(req,res) => {
+  if (req.session.login) {
+    res.send(req.session);
+  }else{
+    res.send("");
+  }
+});
 
 app.post('/check',(req, res) =>{
     if(req.session.login) //{
