@@ -27,9 +27,13 @@
 }
 
 .employer-page .person{
-	border: none;
+	/*border: none;*/
+    position: relative;
     margin: 1.2em 1.1em;
-    padding: 2em 1.5em;
+    margin-bottom: .1em;
+    /* padding: 2em 1.5em; */
+    border: solid white 1px;
+    /*padding-bottom: 1em;*/
 }
 
 .employer-welcome{
@@ -48,6 +52,7 @@
 .employer-profile{
 	display: flex;
 	border-bottom: solid 1px;
+    padding-bottom: 3em;
 }
 
 .employer-info{
@@ -127,4 +132,72 @@
     padding: 15px;
     border-radius: 2em;
     margin: 14px 0;
+}
+
+.person-info{
+    background: #f5f5f5;
+    font-size: .7em;
+    position: absolute;
+    padding-left: 1em;
+    width: 100%;
+    bottom: 0%;
+    height: 50%; 
+    transition: .5s ease;
+    opacity: 0;
+    margin-left: 0 !important;
+}
+
+.person .overlay:hover + .person-info{
+    opacity: 1;
+}
+
+.person-info:hover {
+    opacity: 1;
+}
+
+.person .overlay{
+    margin: 1em;
+}
+
+.EE-btn{
+    background: #5E994B; 
+    color: white;
+    margin: 0 5%;
+    padding: 2% 5%;
+    background-color: #5E994B;
+    border-style: hidden;
+}
+
+.EE-btn:hover{
+    background: #325228;
+    cursor: pointer;
+}
+
+.assignFlight{
+    padding-left: 15%;
+    position: absolute;
+    bottom: 0px;
+    background: whitesmoke;
+    height: 60%;
+    z-index: 0;
+    opacity: 0;
+    transition: .4s ease;
+}
+
+.assignFlight label{
+    margin-left: 6%;
+    font-size: 1em;
+    font-family: sans-serif;
+}
+
+.assignFlight input[type='text']{
+    margin-left: 5%;
+    width: 70%;
+    border: 1px solid #ccc;
+    padding: 3%;
+}
+
+.showAssign{
+    z-index: 15;
+    opacity: 1;
 }

@@ -308,7 +308,14 @@ function unixTimeToNormal(unix){
 
 app.get('/flightToDB', (req, res) => {
   if(req.session.login){
-    const query = `UPDATE ${req.session.usertype} SET trackingIcao24 = '${req.query.flightIcao}' WHERE UID = '${req.session.userId}';`;
+    let query;
+    if(req.query.usertype && req.query.name) { 
+      query = `UPDATE ${req.query.usertype} SET trackingIcao24 = '${req.query.flightIcao}' WHERE NAME = '${req.query.name}';`; 
+    }
+    else{
+      query = `UPDATE ${req.session.usertype} SET trackingIcao24 = '${req.query.flightIcao}' WHERE UID = '${req.session.userId}';`;
+    }
+    
     DatabaseConn(query).then(function(){
       res.send(true);
     }).catch((err) => {
@@ -387,7 +394,8 @@ app.get("/getEmployers", (req,res) =>{
 app.get("/getEmployees", (req,res) =>{
   let employers = [];
   let query = `SELECT UID, name, email, employer, trackingIcao24 FROM employee`
-  if(req.query.employee) query += ` WHERE name = '${req.query.employee}'`;
+  if(req.query.employer) query += ` WHERE employer = '${req.query.employer}'`;
+  else if(req.query.employee) query += ` WHERE name = '${req.query.employee}'`;
     DatabaseConn(query).then((rows) => {
       console.log("getEmployees: ", rows);
       res.send(rows);

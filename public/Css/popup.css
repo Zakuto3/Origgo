@@ -19,7 +19,9 @@
     border: .1em solid #aa9fcc;
     background: aliceblue;
     border-radius: 3%;
+    color: black;
     font-family: sans-serif;
+    font: message-box;
 }
 
 .popup-paragraph{
@@ -53,4 +55,8 @@
     border-radius: 3%;
     margin-left: 8%;
     margin-right: 3%;
+}
+
+.popup b{
+    font-weight: bold;
 }

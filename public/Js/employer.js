@@ -14,7 +14,7 @@ let nameofusr;
 	req.send(); 
 })();
 
-document.getElementById("bestgoy").addEventListener("click", (e) => {
+document.getElementById("person-adder").addEventListener("click", (e) => {
 	clearform();
 	showAddForm();
 });
@@ -51,7 +51,7 @@ function AddPerson(){
 				console.log("employee added");
 				document.getElementById("addUserForm").style.display = "none";
 				clearform();
-				showNewPerson(member,mailChecked);
+				showNewPerson(member,mail);
 			}
 			else if(response == "ER_DUP_ENTRY") {
 				document.getElementById("errormsg").innerHTML = "Member already exists";
@@ -64,19 +64,26 @@ function AddPerson(){
 
 
 function showNewPerson(name, email){
- let bambi = document.getElementById("bambi");
- let persons = document.getElementById("bestgoy");
- let brn = document.createElement("div");
+//  let empCell = document.getElementById("employer-cell");
+//  let personAdder = document.getElementById("person-adder");
+//  let newDiv = document.createElement("div");
 
- let newperson = `<div class="person">
-	                <div class="overlay">
-	                    <img src="pictures/Dummy-Profile.png">
-	                    <h2>${name}</h2>
-	                    <h3>tracking: none</h3>
-	                </div>
-                </div>`;
- brn.innerHTML = newperson;
-bambi.insertBefore(brn,persons);
+//  let newperson = `<div class="person">
+// 	                <div class="overlay">
+// 	                    <img src="pictures/Dummy-Profile.png">
+// 	                    <h2>${name}</h2>
+// 	                </div>
+// 	                <p class="person-info">
+// 				        <b>Name: </b>${name}<br>
+// 				        <b>E-mail: </b>${email}<br>
+// 				        <b>Tracking: </b>Nothing<br>
+// 				        <button>Assign flight</button>
+// 				        <button>Delete</button>
+// 				    </p>
+//                 </div>`;
+//  newDiv.innerHTML = newperson;
+// empCell.insertBefore(newDiv,personAdder);
+	loadEmployee({name : name, email: email});
 
 };
 
@@ -89,6 +96,7 @@ function clearform(){
 
 function SetEmpInfo(info){
  nameofusr = info.name;
+ loadEmployees(info.name);
  document.getElementById("emp-name").innerHTML = info.name;
  document.getElementById("emp-mail").innerHTML = "E-mail: "+info.email;
  document.getElementById("emp-company").innerHTML = "Company: "+info.companyName;
@@ -100,4 +108,128 @@ function checkMail(mail){
 	//http://regexlib.com/REDetails.aspx?regexp_id=16
 	var validator = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
 	return validator.test(mail);
+}
+
+function loadEmployee(empObject){
+	let empCell = document.getElementById("employer-cell");
+	let personAdder = document.getElementById("person-adder");
+	let tracking = (empObject.trackingIcao24 == null) ? "Nothing" : empObject.trackingIcao24;
+
+	let assignForm = document.createElement("div");
+	assignForm.classList.add("assignFlight");
+	assignForm.innerHTML = 
+	`<label>Assign flight</label>
+	<input type="text" id="${empObject.name}-input" placeholder="Enter flight..."><br>`;
+
+	let newPerson = document.createElement("div");
+	newPerson.classList.add("person");
+	newPerson.id = empObject.name;
+
+	let personInfo = document.createElement("p");
+	personInfo.classList.add("person-info");
+	personInfo.innerHTML = 
+		`<b>Name: </b>${empObject.name}<br>
+	 	<b>E-mail: </b>${empObject.email}<br>
+		<label id="${empObject.name}-tracking"><b>Tracking: </b>${tracking}</label><br>`;
+
+	let deleteBtn = document.createElement("button");
+	deleteBtn.classList.add("EE-btn");
+	deleteBtn.innerHTML = "Delete";
+	deleteBtn.addEventListener("click", (e) => {
+		deleteEmployee(empObject.name, newPerson);
+	})  
+
+	let assignBtn = document.createElement("button");
+	assignBtn.classList.add("EE-btn");
+	assignBtn.innerHTML = "Assign flight";
+	assignBtn.addEventListener("click", (e) => {
+		showSetFlightForm(empObject.name);
+		console.log("assign");
+	})
+
+	newPerson.appendChild(assignForm);
+	newPerson.innerHTML += 
+		`<div class="overlay">
+            <img src="pictures/Dummy-Profile.png">
+            <h2>${empObject.name}</h2>
+        </div>`;
+
+	empCell.insertBefore(newPerson,personAdder);
+	personInfo.appendChild(assignBtn);
+	personInfo.appendChild(deleteBtn);
+	newPerson.appendChild(personInfo);
+}
+
+function loadEmployees(name){
+	AJAXget(`/getEmployees?employer=${name}`, (res) =>{
+		if(res != ""){
+			let employees = JSON.parse(res);
+			employees.forEach((emp) => {
+				loadEmployee(emp);
+			});
+		}
+	});
+}
+
+function showSetFlightForm(name){
+	let cancelBtn = document.createElement("button");
+	cancelBtn.innerHTML = "Cancel";
+	cancelBtn.classList.add("EE-btn");
+	cancelBtn.addEventListener("click", (e)=>{
+		console.log("cancel");
+		hideSetFlightForm(name);
+		cancelBtn.remove();
+		confirmBtn.remove();
+	});
+
+	let confirmBtn = document.createElement("button");
+	confirmBtn.classList.add("EE-btn");
+	confirmBtn.innerHTML = "Assign";
+	confirmBtn.addEventListener("click", (e) => {
+		let flight = document.getElementById(name+"-input").value;
+		console.log(flight);
+		if(flight != ""){
+			setFlight(name, flight);
+		}
+		else{
+			document.getElementById(name+"-tracking").innerHTML = `<b>Tracking: </b>Nothing`;
+		}
+		hideSetFlightForm(name);
+		cancelBtn.remove();
+		confirmBtn.remove();
+	});
+
+	let form = document.getElementById(name).children[0];
+	form.classList.add("showAssign");
+	form.appendChild(cancelBtn);
+	form.appendChild(confirmBtn);
+}
+
+function hideSetFlightForm(name){
+	let form = document.getElementById(name).children[0];
+	form.classList.remove("showAssign");
+}
+
+function setFlight(employee, flightIcao){
+	AJAXget(`/flightToDB?usertype=employee&flightIcao=${flightIcao}&name=${employee}`, (res)=>{
+		if(res == "true"){
+			document.getElementById(employee+"-tracking").innerHTML = `<b>Tracking: </b>${flightIcao}`;
+            console.log("Flight added to user");
+        }
+        else{
+            console.log("Could not add flight to user");
+        }
+	})
+}
+
+function deleteEmployee(employee, empPersonEl){
+	AJAXget(`/deleteEmployee?employee=${employee}`, (response)=>{
+		if(response == "success"){
+			empPersonEl.remove();
+			console.log("Deletion of employee success");
+		} 
+		else {
+			console.log("Could not delete employee");
+		} 
+	})
 }
