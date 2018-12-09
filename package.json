@@ -7,7 +7,9 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "gsap": "^2.0.2",
     "mysql": "^2.16.0",
+    "scrollmagic": "^2.0.6",
     "uuid": "^3.3.2"
   },
   "devDependencies": {},

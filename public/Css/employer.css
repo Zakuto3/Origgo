@@ -7,14 +7,15 @@
     margin-right: auto;
     flex-direction: column;
 
+    margin-top: 5%;
 }
 .employer-page .employer-cell{
 	margin: 0 .3em;
 	flex: 1 1;
 	flex-wrap: wrap;
+    justify-content: center;
     display: flex;
     padding: .7em;
-    font-size: 1.4em;
 }
 
 .addempolyee{
@@ -27,13 +28,13 @@
 }
 
 .employer-page .person{
-	/*border: none;*/
     position: relative;
     margin: 1.2em 1.1em;
     margin-bottom: .1em;
-    /* padding: 2em 1.5em; */
     border: solid white 1px;
-    /*padding-bottom: 1em;*/
+
+    
+    
 }
 
 .employer-welcome{
@@ -74,21 +75,21 @@
 }
 
 .userForm{
-   background: #addfad;
-    width: 35%;
-    height: 30%;
+   background: #ffffff;
+    width: 20%;
     position: relative;
     top: 20%;
     margin: auto;
-    border-radius: 0.5em;
+    border-radius: 0.25em;
+    color: #1;
 }
 
 
 .container{
     margin: auto;
-    width: 80%;
+    width: 90%;
     display: flow-root;
-    padding: 5% 8% 0% 5%;
+    padding: 5% 0 0 0;
 }
 
 .textinput{
@@ -98,13 +99,15 @@
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    background-color: #e6ecff;
+    background-color: #ffffff;
 }
 
 #addtext{
-    text-align: -webkit-center;
+    font: inherit;
     font-size: 2em;
-    padding: 2%;
+    padding: 5%;
+    color: #3d3536;
+    border-bottom: solid 1px #ccc;
 }
 
 .closeAddMem {
@@ -113,24 +116,26 @@
     height: 25px;
     float: right;
     border-radius: 3%;
-    margin-top: 3%;
-    margin-right: 3%;
     padding-left: 1%;
     padding-top: 1%;
     border: none;
-    background-color: #498237;
-    color: aliceblue;
+    background-color: #ffffff;
+    border-radius: 0.25em;
+    color: #3d3536;
     box-shadow: none;
 }
+.closeAddMem:hover {
+    background-color: #addfad;
+}
+
 
 .AddMemberBtn {
     border: none;
-    background-color: #498237;
-    color: aliceblue;
+    background-color: rgba(173, 223, 173, 0.57);
+    color: #3d3536;
     box-shadow: none;
     width: 100%;
     padding: 15px;
-    border-radius: 2em;
     margin: 14px 0;
 }
 
@@ -200,4 +205,19 @@
 .showAssign{
     z-index: 15;
     opacity: 1;
+}
+
+.AddMemberBtn:hover {
+    background-color: #addfad;
+}
+
+@media only screen and (max-width: 1000px) {
+    .userForm{
+        background: #ffffff;
+        width: 100%;
+        position: relative;
+        top: 20%;
+        margin-top: 10%;
+        border-radius: 0;
+    }
 }

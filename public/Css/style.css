@@ -12,12 +12,13 @@ Primary style
 
 html {
   font-size: 62.5%;
+    scroll-behavior: smooth;
 }
 
 body {
   font-size: 1.6rem;
   font-family: "Roboto", sans-serif;
-  color: #05668D;
+  color: #799371;
   background-color: white;
 }
 
@@ -37,10 +38,22 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     left: 0;
     width: 100%;
     background: rgba(0,0,0,0);
-    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+}
+
+.cd-main-header__alt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: rgba(255,255,255,0.95);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     z-index: 3;
 }
+
+
+
 
 @media only screen and (max-width: 767px) {
     .cd-main-header {
@@ -48,12 +61,38 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
         background: rgba(255, 255, 255, 0.95) !important;
     }
 
+    .cd-main-nav{
+
+        float: right !important;
+        width: 44px !important;
+    }
+
     .cd-main-header__logo img {
         display: block;
         height: 50px !important;
-        margin: 5% !important;
+        margin: 0 !important;
         transition: 0.4s !important;
         width: auto !important;
+        opacity: 1 !important;
+    }
+
+    .cd-main-header__alt {
+        height: 50px !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+    }
+
+    .cd-main-nav__alt{
+        float: right !important;
+        width: 44px !important;
+    }
+
+    .cd-main-header__logo__alt img {
+        display: block;
+        height: 50px !important;
+        margin: 0 !important;
+        transition: 0.4s !important;
+        width: auto !important;
+        opacity: 1 !important;
     }
 }
 
@@ -79,7 +118,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     font-size: 18px;
     border: none;
     outline: none;
-    background-color: #00A896;
+    background-color: rgba(121, 147, 113, 0.85);
     color: white;
     cursor: pointer;
     padding: 15px;
@@ -96,28 +135,61 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 .cd-main-header__logo img {
     display: block;
-    margin :auto;
- 
-    width: 35%;
-    opacity: 0.6;
-    transition: 1.8s;
+    position: absolute;
+    opacity: 0;
+    float: left;
+    margin: -40px 0 0 -50px;
+    height: 50px;
+    width: auto;
+    transition-timing-function: cubic-bezier(0.51, 0.46, 0.51, 0.96);
+    transition: 0.8s;
 }
 
+.cd-main-header__logo__alt img {
+    display: block;
+    position: absolute;
+    float: left;
+    margin: 10px 0 0 5%;
+    height: 50px;
+    width: auto;
+    transition-timing-function: cubic-bezier(0.51, 0.46, 0.51, 0.96);
+    transition: 0.8s;
+}
 @media only screen and (min-width: 768px) {
   .cd-main-header {
-      height: 0%;
+    height: 25%;
+      transition-timing-function: ease-in;
       transition: 0.8s;
   }
 
+    .cd-main-header__alt {
+        transition-timing-function: ease-in;
+        transition: 0.8s;
+    }
 }
 
 .cd-main-nav {
-  width: 44px;
-  height: 100%;
-  background: url("../pictures/menu.svg") no-repeat center center;
-  background-size: 44px 44px;
-  cursor: pointer;
+    width: 44px;
+    margin:0;
+    height: 100%;
+    background: url("../pictures/menu.svg") no-repeat center center;
+    background-size: 44px 44px;
+    cursor: pointer;
+    transition-timing-function: ease-in;
+    transition: 0.8s;
 }
+.cd-main-nav__alt {
+    float: right;
+    margin:0;
+    height: 100%;
+    width: 100%;
+    background: url("../pictures/menu.svg") no-repeat center center;
+    background-size: 44px 44px;
+    cursor: pointer;
+
+}
+
+
 
 .cd-main-nav__list {
   position: absolute;
@@ -140,53 +212,65 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   height: 50px;
   line-height: 50px;
   padding-left: 5%;
-  background: #2f292a;
-  border-top: 1px solid #453c3d;
-  color: #8e7d7f;
+  background: #ffffff;
+  border-top: 1px solid #00A896;
+  color: #00A896;
 }
 
 @media only screen and (min-width: 768px) {
-  .cd-main-nav {
-    /* reset style */
-      text-align: center;
-    width: auto;
-    height: auto;
-    background: none;
-    cursor: auto;
-  }
-  .cd-main-nav__list {
-    /* reset style */
-    position: static;
-    -webkit-transform: translateY(0);
+    .cd-main-nav {
+        /* reset style */
+        text-align: center;
+        width: auto;
+        height: auto;
+        background: none;
+        cursor: auto;
+    }
+    .cd-main-nav__list {
+        /* reset style */
+        margin: 0 auto 0 auto;
+        width: 50%;
+        position: static;
+        transition: 0.8s;
+        -webkit-transform: translateY(0);
         -ms-transform: translateY(0);
-            transform: translateY(0);
-    line-height: 70px;
-  }
-  .cd-main-nav__list.cd-main-nav__list--is-visible {
-    /* reset style */
-    -webkit-transform: translateY(0);
+        transform: translateY(0);
+        line-height: 70px;
+    }
+    .cd-main-nav__list.cd-main-nav__list--is-visible {
+        /* reset style */
+        -webkit-transform: translateY(0);
         -ms-transform: translateY(0);
-            transform: translateY(0);
-  }
-  .cd-main-nav__list li {
-    display: inline-block;
-    margin-left: 1em;
-  }
-  .cd-main-nav__list a {
-    display: inline-block;
-    height: auto;
-    line-height: normal;
-    background: transparent;
-    padding: .6em 1em;
-    border-top: none;
-    color: #3d3536;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 1.4rem;
-  }
-  .cd-main-nav__list a:hover {
-    color: #00A896;
-  }
+        transform: translateY(0);
+    }
+    .cd-main-nav__list li {
+        display: inline-block;
+        margin-left: 1em;
+    }
+    .cd-main-nav__list a {
+        display: inline-block;
+        height: auto;
+        line-height: normal;
+        background: transparent;
+        padding: .6em 1em;
+        border-top: none;
+        color: #3d3536;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 1.4rem;
+    }
+    .cd-main-nav__list a:hover {
+        color: #00A896;
+    }
+
+    .cd-main-nav__alt {
+        /* reset style */
+        text-align: center;
+        width: 100%;
+        height: auto;
+        background: none;
+        cursor: auto;
+    }
 }
 
 .cd-fixed-bg {
@@ -313,7 +397,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 
 .person .overlay{
     /*filter: blur(4px);*/
-    opacity: 1;
+    opacity: 0.5;
     transition: 0.5s ease;
 }
 
@@ -341,6 +425,13 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     border-radius: 100%;
 }
 
+.origgo img{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    opacity: 1;
+    transition: opacity 0.8s;
+}
 
 /*selector in login.html*/
 select{
@@ -365,4 +456,9 @@ input:not(:checked) + label + label{ display: none }
   top: unset;
   bottom: .5em;
   left: .5em;
+}
+
+
+.loginform{
+
 }
