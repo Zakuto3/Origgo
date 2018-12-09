@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f8c4917f-2457-4365-836e-1e2c1ac89dc9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/public/Css/employer.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/Css/employer.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/Index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/Index.html" afterDir="false" />
-    </list>
+    <list default="true" id="f8c4917f-2457-4365-836e-1e2c1ac89dc9" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -22,17 +19,17 @@
             <file pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/public/Index_admin.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="345">
-                    <caret line="23" column="36" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+                  <state relative-caret-position="195">
+                    <caret line="139" column="14" selection-start-line="139" selection-start-column="14" selection-end-line="139" selection-end-column="14" />
                   </state>
                 </provider>
               </entry>
             </file>
-            <file pinned="false" current-in-tab="true">
+            <file pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/public/Index_employer.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="315">
-                    <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
+                  <state relative-caret-position="865">
+                    <caret line="127" selection-start-line="127" selection-end-line="127" />
                   </state>
                 </provider>
               </entry>
@@ -42,6 +39,18 @@
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="1170">
                     <caret line="78" column="13" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="13" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/public/Index_employee.html">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="300">
+                    <caret line="20" column="6" lean-forward="true" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+                    <folding>
+                      <element signature="e#1614#1619#0" expanded="true" />
+                    </folding>
                   </state>
                 </provider>
               </entry>
@@ -130,37 +139,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/Css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+            <state relative-caret-position="822">
+              <caret line="428" column="18" selection-start-line="428" selection-start-column="18" selection-end-line="428" selection-end-column="18" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/Index_employee.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="25" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/Index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="94" column="34" selection-start-line="94" selection-start-column="34" selection-end-line="94" selection-end-column="34" />
+            <state relative-caret-position="2505">
+              <caret line="194" column="16" selection-start-line="194" selection-start-column="16" selection-end-line="194" selection-end-column="16" />
               <folding>
+                <element signature="e#1994#1999#0" expanded="true" />
                 <element signature="e#4227#4233#0" expanded="true" />
                 <element signature="e#4233#4239#0" expanded="true" />
                 <element signature="e#4239#4245#0" expanded="true" />
-                <element signature="e#4268#4274#0" expanded="true" />
+                <element signature="e#4280#4286#0" expanded="true" />
                 <element signature="e#4286#4292#0" expanded="true" />
                 <element signature="e#4292#4298#0" expanded="true" />
-                <element signature="e#4310#4316#0" expanded="true" />
+                <element signature="e#4334#4340#0" expanded="true" />
                 <element signature="e#4340#4346#0" expanded="true" />
                 <element signature="e#4346#4352#0" expanded="true" />
               </folding>
@@ -351,7 +352,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="183299000" />
+    <option name="totallyTimeSpent" value="184339000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="11" y="-9" width="944" height="1078" extended-state="0" />
@@ -492,20 +493,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/signup.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="40" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/Index_employee.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="25" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -515,15 +502,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/Index_admin.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="36" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/Css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+        <state relative-caret-position="195">
+          <caret line="139" column="14" selection-start-line="139" selection-start-column="14" selection-end-line="139" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -536,26 +516,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/Index_employer.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
+        <state relative-caret-position="865">
+          <caret line="127" selection-start-line="127" selection-end-line="127" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/Index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="94" column="34" selection-start-line="94" selection-start-column="34" selection-end-line="94" selection-end-column="34" />
+        <state relative-caret-position="2505">
+          <caret line="194" column="16" selection-start-line="194" selection-start-column="16" selection-end-line="194" selection-end-column="16" />
           <folding>
+            <element signature="e#1994#1999#0" expanded="true" />
             <element signature="e#4227#4233#0" expanded="true" />
             <element signature="e#4233#4239#0" expanded="true" />
             <element signature="e#4239#4245#0" expanded="true" />
-            <element signature="e#4268#4274#0" expanded="true" />
+            <element signature="e#4280#4286#0" expanded="true" />
             <element signature="e#4286#4292#0" expanded="true" />
             <element signature="e#4292#4298#0" expanded="true" />
-            <element signature="e#4310#4316#0" expanded="true" />
+            <element signature="e#4334#4340#0" expanded="true" />
             <element signature="e#4340#4346#0" expanded="true" />
             <element signature="e#4346#4352#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/signup.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="40" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/Index_employee.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="6" lean-forward="true" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+          <folding>
+            <element signature="e#1614#1619#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/Css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="822">
+          <caret line="428" column="18" selection-start-line="428" selection-start-column="18" selection-end-line="428" selection-end-column="18" />
         </state>
       </provider>
     </entry>
