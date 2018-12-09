@@ -70,11 +70,62 @@
 }
 
 .userForm{
-    background: #addfad;
-    width: 50%;
-    height: 50%;
+   background: #addfad;
+    width: 35%;
+    height: 30%;
     position: relative;
     top: 20%;
     margin: auto;
     border-radius: 0.5em;
+}
+
+
+.container{
+    margin: auto;
+    width: 80%;
+    display: flow-root;
+    padding: 5% 8% 0% 5%;
+}
+
+.textinput{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #e6ecff;
+}
+
+#addtext{
+    text-align: -webkit-center;
+    font-size: 2em;
+    padding: 2%;
+}
+
+.closeAddMem {
+    width: 25px !important;
+    font-size: 1em;
+    height: 25px;
+    float: right;
+    border-radius: 3%;
+    margin-top: 3%;
+    margin-right: 3%;
+    padding-left: 1%;
+    padding-top: 1%;
+    border: none;
+    background-color: #498237;
+    color: aliceblue;
+    box-shadow: none;
+}
+
+.AddMemberBtn {
+    border: none;
+    background-color: #498237;
+    color: aliceblue;
+    box-shadow: none;
+    width: 100%;
+    padding: 15px;
+    border-radius: 2em;
+    margin: 14px 0;
 }
