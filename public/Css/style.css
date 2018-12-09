@@ -229,13 +229,15 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     .cd-main-nav__list {
         /* reset style */
         margin: 0 auto 0 auto;
-        width: 50%;
+        width: fit-content;
         position: static;
         transition: 0.8s;
         -webkit-transform: translateY(0);
         -ms-transform: translateY(0);
         transform: translateY(0);
         line-height: 70px;
+        transition-timing-function: ease;
+        transition: 0.8s;
     }
     .cd-main-nav__list.cd-main-nav__list--is-visible {
         /* reset style */
@@ -426,11 +428,12 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 }
 
 .origgo img{
-    margin-left: auto;
+    margin-left: 0%;
     margin-right: auto;
     width: 50%;
     opacity: 1;
-    transition: opacity 0.8s;
+    transition-timing-function: cubic-bezier(0.97,-0.21, 0.91, 0.4);
+    transition: all 0.8s;
 }
 
 /*selector in login.html*/
