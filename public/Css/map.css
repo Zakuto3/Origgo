@@ -1,0 +1,62 @@
+@import './popup.css';
+
+.map-fullscreen {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.fullscreen{
+    margin: 0;
+}
+
+.map-btn {
+    background-color: rgba(0,60,136,.5);
+    border: none;
+    border-radius: .2em;
+    color: #fff;
+    font-family: arial;
+}
+
+.map-btn:hover {
+    background-color: rgba(0,60,136,.7);
+}
+
+#map-home {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 1%;
+    font-size: 1em;
+    padding: .5%;
+}
+
+.map-searchbar {
+    position: absolute;
+    left: 38%;
+    width: 25%;
+    top: 2%;
+    box-shadow: rgba(0,60,136,.7) 1px 0px 30px 3px;
+}
+
+.map-searchbar input[type='text']{
+    font-size: 17px;
+    float: left;
+    border: none;
+    width: 74%;
+    font-family: arial;
+    padding: 2%;
+    border-radius: 3%;
+}
+
+.map-searchbar input[type='button']{
+    width: 22%;
+    float: left;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    background-color: #66b3ff;
+    color: white;
+    padding: 2%;
+    border-radius: 3%;
+}
