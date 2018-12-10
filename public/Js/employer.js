@@ -62,6 +62,21 @@ function AddPerson(){
 	}
 }
 
+function updateTracking(flight){
+	document.getElementById("emp-tracking").innerHTML = "Tracking: "+flight;
+	addslitsener(flight);
+}
+
+function addslitsener(flight) {
+	document.getElementById("emp-tracking").style.color = "blue";
+	document.getElementById("emp-tracking").style.border = "groove";
+	console.log("did this");
+	document.getElementById("emp-tracking").addEventListener("click", (e) => {
+	document.body.scrollTop = document.body.scrollHeight;
+    document.documentElement.scrollTop = document.body.scrollHeight;
+	flyToPlane(flight);
+});
+}
 
 function showNewPerson(name, email){
 //  let empCell = document.getElementById("employer-cell");
@@ -101,7 +116,10 @@ function SetEmpInfo(info){
  document.getElementById("emp-mail").innerHTML = "E-mail: "+info.email;
  document.getElementById("emp-company").innerHTML = "Company: "+info.companyName;
  document.getElementById("emp-tracking").innerHTML = "Tracking: none";
- if (info.tracking != null) {document.getElementById("emp-tracking").innerHTML = "Tracking: "+info.tracking;}
+ if (info.tracking != null) {
+ 	document.getElementById("emp-tracking").innerHTML = "Tracking: "+info.tracking;
+ 	addslitsener(info.tracking);
+ }
 };
 
 function checkMail(mail){

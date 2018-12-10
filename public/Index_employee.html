@@ -9,15 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
-    <script>var planeList = []; </script>
-    <script type="text/javascript" src="./Js/index.js"></script>
-    <script type="text/javascript" src="./Js/Script.js"></script>
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="Css/reset.css">
     <link rel="stylesheet" type="text/css" href="Css/style.css">
     <link rel="stylesheet" href="Css/demo.css">
+    <link rel="stylesheet" href="Css/employee.css"> 
 
     <title>Employee</title>
 </head>
@@ -25,23 +23,35 @@
 <header class="cd-main-header" id="navbar">
     <nav class="cd-main-nav js-main-nav" id="menu">
         <ul class="cd-main-nav__list">
-            <li><a href="/Index.html">Home</a></li>
+            <li><a href="/Index_employee.html">Home</a></li>
             <li><a href="map.html">Map</a></li>
-            <li><a href="#0">Pricing</a></li>
             <li><a href="#0">Contact</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
-    <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
+    <div class="cd-main-header__logo"><a href="/Index_employee.html"><img src="/pictures/log.png" id="logo" alt="Logo"></a></div>
 
 </header>
 <main>
     <button id="upBtn" onclick=topFunction()>UP</button>
-    <div class="cd-scrolling-bg cd-scrolling-bg--color-3">
-        <div class="cd-scrolling-bg__content">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore incidunt suscipit similique, dolor corrupti cumque qui consectetur autem laborum fuga quas ipsam doloribus sequi, mollitia, repellendus sapiente repudiandae labore rerum amet culpa inventore, modi non. Quo nisi veritatis vitae nam, labore fugit. Inventore culpa iusto, officia exercitationem. Voluptates quibusdam odit odio incidunt consequatur, consectetur aspernatur optio vitae molestias, quas repellendus fugit ullam culpa, eligendi et dignissimos voluptatibus illum? Molestias aliquam nostrum quasi ipsa culpa, iusto explicabo ut error, consequuntur enim temporibus, adipisci tempora voluptate, id consequatur mollitia eveniet blanditiis. Illo quod repellendus alias? Cum rem doloremque adipisci accusantium? Saepe, necessitatibus!
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore incidunt suscipit similique, dolor corrupti cumque qui consectetur autem laborum fuga quas ipsam doloribus sequi, mollitia, repellendus sapiente repudiandae labore rerum amet culpa inventore, modi non. Quo nisi veritatis vitae nam, labore fugit. Inventore culpa iusto, officia exercitationem. Voluptates quibusdam odit odio incidunt consequatur, consectetur aspernatur optio vitae molestias, quas repellendus fugit ullam culpa, eligendi et dignissimos voluptatibus illum? Molestias aliquam nostrum quasi ipsa culpa, iusto explicabo ut error, consequuntur enim temporibus, adipisci tempora voluptate, id consequatur mollitia eveniet blanditiis. Illo quod repellendus alias? Cum rem doloremque adipisci accusantium? Saepe, necessitatibus!
-            </p>
+    <div class="cd-scrolling-bg cd-scrolling-bg--color-3" style="padding: 1em 0; box-shadow: 0 0 rgba(0, 0, 0, 0) inset;">
+        <div class="cd-scrolling-bg__content employee-page">
+            <div class="employee-welcome">
+                    <h1>Welcome.</h1>
+                    <div class="employee-profile">
+                        <div class="person person-employee">
+                            <div class="overlay">
+                                <img src="pictures/Dummy-Profile.png">
+                                <h2 id="emp-name">Hans Schmidt</h2>
+                            </div>
+                        </div>
+                        <div class="employee-info">
+                            <label id="emp-tracking">Tracking: </label>
+                        </div>
+                    </div>      
+            </div>              
+        </div>
+        </div>
         </div> <!-- cd-scrolling-bg__content -->
     </div> <!-- cd-scrolling-bg -->
 
@@ -87,5 +97,7 @@
     }
 
 </script>
+<script type="text/javascript" src="./Js/Script.js"></script>
+<script type="text/javascript" src="./Js/employee.js"></script>
 </body>
 </html>

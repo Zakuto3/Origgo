@@ -70,6 +70,7 @@ function addUserFlight(flightIcao){
     AJAXget('/flightToDB?flightIcao=' + flightIcao, function(result){
         if(result == "true"){
             console.log("Flight added to user");
+            updateTracking(flightIcao);
         }
         else{
             console.log("Could not add flight to user");
