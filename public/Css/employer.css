@@ -308,14 +308,16 @@
     
 #emp-fetch-failed img{
     position: absolute;
-    width: 38%;
+    width: 40%;
     height: 100%;
+    padding: 3%;
+    right: 0;
 }
 
 #emp-fetch-failed span{
     position: absolute;
-    right: 0;
-    margin: 4em;
+    left: 0;
+    margin: 4em;;
 }
 
 .employer-flight-data{
