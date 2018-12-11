@@ -32,9 +32,10 @@
     margin: 1.2em 1.1em;
     margin-bottom: .1em;
     border: solid white 1px;
+}
 
-    
-    
+.employer-page .emp{
+    border: none;
 }
 
 .employer-welcome{
@@ -52,7 +53,6 @@
 
 .employer-profile{
 	display: flex;
-	border-bottom: solid 1px;
     padding-bottom: 3em;
 }
 
@@ -238,7 +238,7 @@
     width: 9em;
     height: 100%;
     line-height: 1.1em;
-    z-index: 10;
+    z-index: 2;
     top: 0px;
     right: 0px;
     background: #b4d7a8;
