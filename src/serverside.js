@@ -187,43 +187,43 @@ function reroute(usertype, url){
 }
 
 
-app.get("/Index.html",(req, res) =>{//makes sure user dont reach signup if logedin
+app.get("/Index.html",(req, res) =>{
   console.log(req.url);
   let page = reroute(req.session.usertype, req.url);
   res.send(fs.readFileSync(page, 'utf8'));
 });
 
-app.get("/Index_admin.html",(req, res) =>{//makes sure user dont reach signup if logedin
+app.get("/Index_admin.html",(req, res) =>{
   console.log(req.url);
   let page = reroute(req.session.usertype, req.url);
   res.send(fs.readFileSync(page, 'utf8'));
 });
 
-app.get("/Index_employer.html",(req, res) =>{//makes sure user dont reach signup if logedin
+app.get("/Index_employer.html",(req, res) =>{
   console.log(req.url);
   let page = reroute(req.session.usertype, req.url);
   res.send(fs.readFileSync(page, 'utf8'));
 });
 
-app.get("/Index_employee.html",(req, res) =>{//makes sure user dont reach signup if logedin
+app.get("/Index_employee.html",(req, res) =>{
   console.log(req.url);
   let page = reroute(req.session.usertype, req.url);
   res.send(fs.readFileSync(page, 'utf8'));
 });
 
-app.get("/map.html",(req, res) =>{//makes sure user dont reach signup if logedin
+app.get("/map.html",(req, res) =>{
   console.log(req.url);
   let page = reroute(req.session.usertype, req.url);
   res.send(fs.readFileSync(page, 'utf8'));
 });
 
-app.get("/contact.html",(req, res) =>{//makes sure user dont reach signup if logedin
+app.get("/contact.html",(req, res) =>{
   console.log(req.url);
   let page = reroute(req.session.usertype, req.url);
   res.send(fs.readFileSync(page, 'utf8'));
 });
 
-app.get('/signup.html',(req, res) =>{//makes sure user dont reach signup if logedin
+app.get('/signup.html',(req, res) =>{
   console.log(req.url);
   let page = reroute(req.session.usertype, req.url);
   res.send(fs.readFileSync(page, 'utf8'));
