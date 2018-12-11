@@ -15,7 +15,7 @@
     border: none;
     border-radius: .2em;
     color: #fff;
-    font-family: arial;
+    font-family: "Roboto", sans-serif;
 }
 
 .map-btn:hover {
@@ -36,7 +36,7 @@
     left: 38%;
     width: 25%;
     top: 2%;
-    box-shadow: rgba(0,60,136,.7) 1px 0px 30px 3px;
+    box-shadow: rgba(0, 83, 213, 0.31) 0px 6px 20px 0px;
 }
 
 .map-searchbar input[type='text']{
@@ -55,7 +55,7 @@
     font-size: 17px;
     border: none;
     cursor: pointer;
-    background-color: #66b3ff;
+    background-color: #7b95b7;
     color: white;
     padding: 2%;
     border-radius: 3%;
