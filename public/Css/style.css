@@ -1,5 +1,17 @@
 @import "./popup.css";
 
+
+:root{
+    --bg-color-1:#90B494;
+    --bg-color-2:#DBCFB0;
+    --header-link:#BFC8AD;
+    --font-color: black;
+    --link-border:#545775;
+    --link-color:#718F94;
+    --linkhover-color: black;
+
+}
+
 /* -------------------------------- 
 
 Primary style
@@ -18,12 +30,12 @@ html {
 body {
   font-size: 1.6rem;
   font-family: "Roboto", sans-serif;
-  color: #799371;
+  color: #2a2a22;
   background-color: white;
 }
 
 a {
-  color: #028090;
+  color: var(--font-color);
   text-decoration: none;
 }
 
@@ -47,7 +59,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     left: 0;
     width: 100%;
     height: 70px;
-    background: rgba(255,255,255,0.95);
+    background: var(--header-link);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     z-index: 3;
 }
@@ -102,12 +114,6 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   width: 100%;
 }
 
-.cndm{
-    position: relative;
-    min-height: 95vh;
-    opacity: 0%;
-    z-index: 1;
-}
 
 #upBtn {
     display: none;
@@ -213,8 +219,8 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   line-height: 50px;
   padding-left: 5%;
   background: #ffffff;
-  border-top: 1px solid #00A896;
-  color: #00A896;
+  border-top: 1px solid var(--link-border);
+  color: var(--link-color);
 }
 
 @media only screen and (min-width: 768px) {
@@ -228,7 +234,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     }
     .cd-main-nav__list {
         /* reset style */
-        margin: 0 auto 0 auto;
+        margin: 0 0 0 auto;
         width: fit-content;
         position: static;
         transition: 0.8s;
@@ -262,7 +268,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
         font-size: 1.4rem;
     }
     .cd-main-nav__list a:hover {
-        color: #00A896;
+        color: var(--linkhover-color);
     }
 
     .cd-main-nav__alt {
@@ -270,7 +276,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
         text-align: center;
         width: 100%;
         height: auto;
-        background: none;
+        background: white;
         cursor: auto;
     }
 }
@@ -301,7 +307,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
 }
 
 .cd-fixed-bg h1, .cd-fixed-bg h2 {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   color: white;
 }
 
@@ -352,18 +358,22 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     margin-left: 50%;
 }
 
+.cd-nugget-info {
+    background-color: var(--bg-color-1) !important;
+}
+
 .cd-scrolling-bg.cd-scrolling-bg--color-1 {
   background-color: #3d3536;
   color: #a6989a;
 }
 
 .cd-scrolling-bg.cd-scrolling-bg--color-2 {
-  background-color: #b4d7a8;
+  background-color: var(--bg-color-1);
   color: #3d3536;
 }
 
 .cd-scrolling-bg.cd-scrolling-bg--color-3 {
-  background-color: #F0F3BD;
+  background-color: var(--bg-color-2);
   color: #3d3536;
 }
 
@@ -444,7 +454,7 @@ select{
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    background-color: #e6ecff;
+    background-color: rgba(173, 223, 173, 0.2);
 }
 
 #uncheck>input { display: none }
@@ -459,9 +469,4 @@ input:not(:checked) + label + label{ display: none }
   top: unset;
   bottom: .5em;
   left: .5em;
-}
-
-
-.loginform{
-
 }

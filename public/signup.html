@@ -4,19 +4,18 @@
         <meta charset="utf-8">
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
 
-        <link rel="stylesheet" href="Css/reset.css"> 
-        <link rel="stylesheet" href="Css/style.css"> 
-        <link rel="stylesheet" href="Css/forms_old.css "type="text/css">
+        <link rel="stylesheet" href="Css/reset.css">
+        <link rel="stylesheet" href="Css/style.css">
+        <link rel="stylesheet" href="Css/employer.css">
 
         <title>Project for Web application</title>
 	</head>
-	<body>
+    <body background="pictures/map.png">
     <header class="cd-main-header__alt" id="navbar">
         <nav class="cd-main-nav__alt js-main-nav" id="menu">
             <ul class="cd-main-nav__list">
                 <li><a href="/Index.html">Home</a></li>
                 <li><a href="map.html">Map</a></li>
-                <li><a href="#0">Pricing</a></li>
                 <li><a href="#0">Contact</a></li>
             </ul>
         </nav> <!-- cd-main-nav -->
@@ -25,26 +24,27 @@
     </header>
      <br><br><br><br><br><br>
 
-         <div id="loginform">
+         <div id="loginform" class="userForm">
         <!-- <form action="/signup-form/"> -->
             <div class="container" >
-                <label for="name"><h2>Sign up</h2></label>
+                <h1 id = "addtext">Sign Up!</h1>
                 <h3 id="errormsg"></h3>
+                <br>
                 <label for="name"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" id="Username" required>
+                <input type="text" placeholder="Enter Username" name="uname" id="Username" class="textinput" required>
 
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" id="Password" required>
+                <input type="password" placeholder="Enter Password" name="psw" id="Password" class="textinput" required>
 
                 <label for="mail"><b>E-mail</b></label>
-                <input type="text" placeholder="Enter Your E-mail Address" name="mail" id="Mail" required> 
+                <input type="text" placeholder="Enter Your E-mail Address" name="mail" id="Mail" class="textinput" required>
 
                 <label for="coo"><b>Company name</b></label>
                 <div id="comp" name="coo" ></div>
                 
                 <label for="codes"><b>Certified key</b></label>
-                <input type="text" placeholder="Enter Name of Your Code" name="codes" id="keycode" required>              
-                <button id="submit" onclick="signupRequest()">Sign up</button>
+                <input type="text" placeholder="Enter Name of Your Code" name="codes" id="keycode" class="textinput" required>
+                <button class="AddMemberBtn" id="submit" onclick="signupRequest()">Sign up</button>
         </div>
         <!-- </form> -->
     </div>
