@@ -6,6 +6,7 @@ let nameofusr;
 	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	req.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){		
+			console.log(req.responseText);
 			SetEmpInfo(JSON.parse(req.responseText));
 		}else if (this.status !== 200 && this.readyState != 4) {
 			alert('Request failed.  Returned status of ' + req.status);
