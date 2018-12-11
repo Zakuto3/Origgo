@@ -320,6 +320,7 @@ app.get('/flightToDB', (req, res) => {
     }
     
     DatabaseConn(query).then(function(){
+      req.session.tracking = req.query.flightIcao;
       res.send(true);
     }).catch((err) => {
       console.log("flightToDB error: ", err);

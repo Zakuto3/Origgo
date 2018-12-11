@@ -30,10 +30,6 @@ document.getElementById("addMemberBtn").addEventListener("click", (e) => {
 
 function showAddForm(){
 	document.getElementById("addUserForm").style.display = "block";
-	//create form
-	//inputX2
-	//button
-	//button.click(addperson(name, email))
 }
 
 function AddPerson(){
@@ -63,15 +59,37 @@ function AddPerson(){
 }
 
 function updateTracking(flight){
-	document.getElementById("emp-tracking").innerHTML = "Tracking: "+flight;
-	addslitsener(flight);
+
+	//document.getElementById("emp-tracking").innerHTML = "<b>Tracking: </b>"+flight;
+	//loadERplane(flight);
+	AJAXget(`/flightToDB?usertype=employer&flightIcao=${flight}&name=${nameofusr}`, (res)=>{
+			if(res == "true"){
+				let form = document.getElementsByClassName("emp-set-flight")[0];
+				form.style.opacity = 0;
+				form.style.zIndex = -1;
+				document.getElementById("emp-tracking").innerHTML = `<b>Tracking: </b>${flight}`;
+	            console.log("Flight added to user");
+	            document.getElementById("emp-fetch-failed").style.display = "none";
+	            document.getElementById("emp-fetch").style.display = "block";
+	            document.getElementById("emp-new-flight").style.display = "none";
+	            document.getElementById("ER-depart").style.display = "none";
+				document.getElementById("ER-arrive").style.display = "none";
+				document.getElementById("emp-flyToPlane").style.display = "none";
+	            loadERplane(flight);
+	            addIfPlaneAvail(null, flight);
+	        }
+	        else{
+	            console.log("Could not add flight to user");
+	        }
+		})
+	//addslitsener(flight);
 }
 
 function addslitsener(flight) {
-	document.getElementById("emp-tracking").style.color = "blue";
-	document.getElementById("emp-tracking").style.border = "groove";
-	console.log("did this");
-	document.getElementById("emp-tracking").addEventListener("click", (e) => {
+	//document.getElementById("emp-tracking").style.color = "blue";
+	//document.getElementById("emp-tracking").style.border = "groove";
+	//console.log("did this");
+	document.getElementById("emp-flyToPlane").addEventListener("click", (e) => {
 	document.body.scrollTop = document.body.scrollHeight;
     document.documentElement.scrollTop = document.body.scrollHeight;
 	flyToPlane(flight);
@@ -94,13 +112,15 @@ function clearform(){
 function SetEmpInfo(info){
  nameofusr = info.name;
  loadEmployees(info.name);
+ loadERplane(info.tracking);
+ document.getElementById("welcome-msg").innerHTML = "Welcome "+nameofusr;
  document.getElementById("emp-name").innerHTML = info.name;
- document.getElementById("emp-mail").innerHTML = "E-mail: "+info.email;
- document.getElementById("emp-company").innerHTML = "Company: "+info.companyName;
- document.getElementById("emp-tracking").innerHTML = "Tracking: none";
+ document.getElementById("emp-mail").innerHTML = "<b>E-mail:</b> "+info.email;
+ document.getElementById("emp-company").innerHTML = "<b>Company:</b> "+info.companyName;
+ document.getElementById("emp-tracking").innerHTML = "<b>Tracking:</b> none";
  if (info.tracking != null) {
- 	document.getElementById("emp-tracking").innerHTML = "Tracking: "+info.tracking;
- 	addslitsener(info.tracking);
+ 	document.getElementById("emp-tracking").innerHTML = "<b>Tracking:</b> "+info.tracking;
+ 	//addslitsener(info.tracking);
  }
 };
 
@@ -190,7 +210,7 @@ function showSetFlightForm(name){
 		let flight = document.getElementById(name+"-input").value;
 		console.log(flight);
 		if(flight != ""){
-			setFlight(name, flight);
+			setEmployeeFlight(name, flight);
 		}
 		else{
 			document.getElementById(name+"-tracking").innerHTML = `<b>Tracking: </b>Nothing`;
@@ -212,7 +232,7 @@ function hideSetFlightForm(name){
 	form.classList.remove("showAssign");
 }
 
-function setFlight(employee, flightIcao){
+function setEmployeeFlight(employee, flightIcao){
 	AJAXget(`/flightToDB?usertype=employee&flightIcao=${flightIcao}&name=${employee}`, (res)=>{
 		if(res == "true"){
 			removePlane(document.getElementById(`sidebar-track-${employee}`).innerHTML)
@@ -266,16 +286,89 @@ function loadEmpToMap(emp){
 function addIfPlaneAvail(emp, flightIcao){
 	AJAXget("/addAirplanes?flightIcao="+flightIcao, function(data){
     var plane = JSON.parse(data);
-    console.log("addPlane flightIcao: ",flightIcao);
+    console.log("addIfPlaneAvail flightIcao: ",flightIcao);
     if(plane.length > 0){
       loadPlane(plane[0]);
     }
     else { 
-    	document.getElementById(`sidebar-track-${emp}`).innerHTML += "<br><b style='color: red;'>Could not find</b>";
+    	if(emp){
+    		document.getElementById(`sidebar-track-${emp}`).innerHTML += "<br><b style='color: red;'>Could not find</b>";
+    	}
     	console.log("Plane not found from API");
     }
 
   })
 }
+
+function loadERplane(flightIcao){
+	AJAXget("/getAirplane?flightIcao="+flightIcao, (planeInfo) => {
+		if(planeInfo != ""){
+			planeInfo = JSON.parse(planeInfo);
+			let arrivalAirport = planeInfo.arrivalAirport ? `&emsp; <b>Country:</b> ${planeInfo.arrivalAirport.country}<br>
+			&emsp; <b>City:</b> ${planeInfo.arrivalAirport.city}<br>
+			&emsp; <b>Airport:</b> ${planeInfo.arrivalAirport.name}` : "&emsp;Unavailable";
+
+			let depatureAirport = planeInfo.depatureAirport ? `&emsp; <b>Country:</b> ${planeInfo.depatureAirport.country}<br>
+			&emsp; <b>City:</b> ${planeInfo.depatureAirport.city}<br>
+			&emsp; <b>Airport:</b> ${planeInfo.depatureAirport.name}` : "&emsp;Unavailable";
+
+			let depart = document.getElementById("ER-depart");
+			let arrive = document.getElementById("ER-arrive");
+			depart.innerHTML = `<b>Departed from:</b><br> ${depatureAirport}`;
+			arrive.innerHTML = `<b>Arriving at:</b><br> ${arrivalAirport}`;
+
+			addslitsener(flightIcao);
+
+			document.getElementById("emp-flyToPlane").style.display = "inline-block";
+			depart.style.display = "table-cell";
+			arrive.style.display = "table-cell";
+		}
+		else {  
+			document.getElementById("emp-fetch-failed").style.display = "block";		
+		}
+
+			document.getElementById("emp-fetch").style.display = "none";
+			document.getElementById("emp-new-flight").style.display = "inline-block";				
+	})
+}
+
+document.getElementById("emp-new-flight").addEventListener("click", (e) => {
+	let form = document.getElementsByClassName("emp-set-flight")[0];
+	form.style.opacity = 1;
+	form.style.zIndex = 5;
+})
+
+document.getElementById("confirm-new-flight").addEventListener("click", (e) =>{
+	let newFlight = document.getElementById("emp-flight-input").value.toUpperCase();
+	if(newFlight.length > 0){
+		AJAXget(`/flightToDB?usertype=employer&flightIcao=${newFlight}&name=${nameofusr}`, (res)=>{
+			if(res == "true"){
+				let form = document.getElementsByClassName("emp-set-flight")[0];
+				form.style.opacity = 0;
+				form.style.zIndex = -1;
+				document.getElementById("emp-tracking").innerHTML = `<b>Tracking: </b>${newFlight}`;
+	            console.log("Flight added to user");
+	            document.getElementById("emp-fetch-failed").style.display = "none";
+	            document.getElementById("emp-fetch").style.display = "block";
+	            document.getElementById("emp-new-flight").style.display = "none";
+	            document.getElementById("ER-depart").style.display = "none";
+				document.getElementById("ER-arrive").style.display = "none";
+				document.getElementById("emp-flyToPlane").style.display = "none";
+	            loadERplane(newFlight);
+	            addIfPlaneAvail(null, newFlight);
+	        }
+	        else{
+	            console.log("Could not add flight to user");
+	        }
+		})
+	}
+})	
+
+document.getElementById("cancel-new-flight").addEventListener("click", (e) =>{
+	let form = document.getElementsByClassName("emp-set-flight")[0];
+	form.style.opacity = 0;
+	form.style.zIndex = -1;
+})
+
 
 
