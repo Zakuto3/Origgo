@@ -1,98 +1,90 @@
-<!DOCTYPE html>
-<html> 
-	<head> 
-		<meta charset="utf-8">
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
-        <title>Project for Web application</title>
-        <link rel="stylesheet" type="text/css" href="Css/Style.css">
-        <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
-        <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
-        <script type="text/javascript" src="./Js/index.js"></script>
-	</head>
-	<body>
-      <div id="container">
-        <div class="header">
-            <div class="logo" style="flex-grow: 1"><a href="Index.html"><img alt="logo" src="pictures/logo.jpg" style="width:150px;height:150px;"></a></div>
-            <h1>Flight tracking</h1>
-            <div class="searchbar"  style="flex-grow: 7">
-                <input type="text"r placeholder="Search for flights..." name="search">
-                <button type="submit">Track</button>
-            </div>
-            <div class="button"><button onclick="reDir()" id="loginIndex">Login</button></div>
-            <div class="button1" id="signupIndex"><button>Signup</button></div>
-        </div>
-        <div class="navigation">
-            <ul> 
-              <li><a href="index.html">Home</a></li>              
-              <li><a href="map.html">Map</a></li> 
-              <li><a href="flights.html">Flights</a></li>
-              <li><a href="airports.html">Airports</a></li>
-              <li><a href="contact.html">Contact</a>
-              </li> 
-           </ul> 
-        </div>
-        <div class="section">
-            <div class="column left">
-                <h2>News</h2><br>
-                <div class="slideshow-container">
-                    <div class="mySlides fade">
-                        <img src="pictures/news1.jpg" style="width: 100%">
-                        <button class="text"><b>Emirates launches flights from Edinburgh to Dubai</b></button>
-                        
-                    </div>
-                    <div class="mySlides fade">
-                        <img src="pictures/news2.jpg" style="width: 100%">
-                        <button class="text"><b>Get discount on flight tickets </b></button>
-                    </div>
-                    <div class="mySlides fade">
-                        <img src="pictures/news3.jpg" style="width: 100%">
-                        <button class="text"><b>Raynair delayed 153 flights</b></button>
-                    </div>
-                </div><br><br>
-                <button class="ttl"><b>Four direct routes to new summer destinations from Stockholm Arlanda with SAS</b></button><a href="flights.html"><button class="txt">Scandinavian Airlines will launch four new routes this summer to the European destinations...</button></a>
-                <br><br>
-                <button class="ttl"><b>Jetstar named the world's worst airline.</b></button>
-                <a href="flights.html"><button class="txt">Jetstar has been branded the worst airline in the world, after receiving one star...</button></a>
-                <br><br>
-                <button class="ttl"><b>Southend Airport offers free flights?</b></button>
-                <a href="flights.html"><button class="txt">Southend Airport offers free flights to passengers delayed at Heathrow or Gatwick...</button></a>
-            </div>
-            <div class="column middle">
-                <h2 id="element-test">Contact list</h2>
-            <div class="column right">
-                <h3>More info</h3>
-                <p id="moreInfo"></p>
-                <div class="fakeimg" style="height:60px;">1.info</div><br>
-                <div class="fakeimg" style="height:60px;">2.info</div><br>
-                <div class="polaroid">
-                    <img src="pictures/weather.jpg" style="width: 100%">
-                    <div class="box"><p><b>Check weather before flying</b></p></div>
-                </div>
-                <br><br>
-                <h3>Folow us on Facebook</h3>
-                <a href="https://hr-hr.facebook.com/"><img src="pictures/fb.png" style="width: 50px;"></a>
-    
-            </div>
-        </div>
-          
-    </div>
-        <script type="text/javascript" src="./Js/Map.js"></script>
-        <script>
-           let slideIndex = 0;
-           showSlides();
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
 
-            function showSlides() {
-              let i;
-              let slides = document.getElementsByClassName("mySlides");
-              for (i = 0; i < slides.length; i++) {
-                 slides[i].style.display = "none";  
-              }
-              slideIndex++;
-              if (slideIndex > slides.length) {slideIndex = 1} 
-              slides[slideIndex-1].style.display = "block"; 
-              setTimeout(showSlides, 3000); 
-            }
-         </script>
-		
-	</body>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="Css/reset.css">
+    <link rel="stylesheet" type="text/css" href="Css/style.css">
+    <link rel="stylesheet" href="Css/demo.css">
+    <link rel="stylesheet" href="Css/contact.css"> 
+
+    <title>Contact</title>
+</head>
+<body>
+<header class="cd-main-header" id="navbar" style="height: 70px; background: rgba(255, 255, 255, 0.95); box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px;">
+    <nav class="cd-main-nav js-main-nav" id="menu" style="float: right; width: 100%;">
+        <ul class="cd-main-nav__list">
+            <li><a href="/Index.html">Home</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav> <!-- cd-main-nav -->
+    <div class="cd-main-header__logo"><a href="/"><img src="/pictures/log.png" id="logo" alt="Logo" style="margin: 10px 0px 0px 5%; opacity: 1;"></a></div>
+
+</header>
+<main>
+    <button id="upBtn" onclick=topFunction()>UP</button>
+    <div class="cd-scrolling-bg cd-scrolling-bg--color-3" style="padding: 8em 0; box-shadow: 0 0 rgba(0, 0, 0, 0) inset;">
+        <div class="cd-scrolling-contact" style="padding: 0% 3%;">
+            <h1 style= "border-bottom: solid 1px; width: fit-content;">Contact information</h1>
+            <p style="width: 40%;">
+             We are eager to discuss your business needs, and answer any questions you may have.   <a href="mailto:joe@example.com" "email us">contact us</a> and we'll get back to you shortly.   
+             <br>
+             <br>
+             Origgo was possible with the help from <a href="https://aviation-edge.com/" "email me">Aviation Edge</a> web API and Copyright (c) 2011-2018 Amber Creative Lab, Ltd.
+           
+            </p>
+        </div>
+        </div>
+        </div> <!-- cd-scrolling-bg__content -->
+    </div> <!-- cd-scrolling-bg -->
+
+</main>
+<script src="/Js/main.js"></script> <!-- Resource JavaScript -->
+<script type="text/javascript" src="./Js/Map.js"></script>
+<script>
+    function fullmap() {
+        document.getElementById("map").style.height = "100%";
+        document.getElementById("map").style.witdh = "100%";
+    }
+
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("upBtn").style.display = "block";
+        } else {
+            document.getElementById("upBtn").style.display = "none";
+        }
+
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("navbar").style.height = "70px";
+            document.getElementById("navbar").style.background = "rgba(255, 255, 255, 0.95)";
+            document.getElementById("navbar").style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.2)";
+
+            document.getElementById("logo").style.margin = "10px 0 0 5%";
+            document.getElementById("logo").style.opacity = "1.0";
+
+            document.getElementById("menu").style.float = "right";
+            document.getElementById("menu").style.width = "100%";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+</script>
+<script type="text/javascript" src="./Js/Script.js"></script>
+</body>
 </html>

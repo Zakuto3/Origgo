@@ -19,8 +19,7 @@ const map = new ol.Map({
 let planeLayer; //moved, needed access in flyToPlane()
 
 
-if(window.location.pathname == "/map.html") { initAirplanes("/addAirplanes", { limit : 200 }); }
-else initAirplanes("/addAirplanes", { limit : 0 });
+initAirplanes("/addAirplanes", { limit : 200 });
 
 initHover();
 
@@ -237,6 +236,7 @@ function initPopUp(){
   popTitle.classList.add("popup-title");
 
   let saveBtn = document.createElement("button");
+  saveBtn.id = "save-flight-map";
   saveBtn.classList.add("popup-save");
   saveBtn.innerHTML = "Save this flight";
 
@@ -280,7 +280,7 @@ function initPopUp(){
 
           pop.appendChild(popTitle);
           pop.appendChild(closePop);
-          pop.appendChild(popText);
+          pop.appendChild(popText);console.log(window);
           pop.appendChild(saveBtn);
           overlay.setPosition(coords);
         }

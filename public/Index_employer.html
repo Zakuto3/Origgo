@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="Css/employer.css"> 
 
     <title>Employer</title>
+
 </head>
 <body>
 <header class="cd-main-header__alt" id="navbar">
@@ -23,7 +24,6 @@
         <ul class="cd-main-nav__list">
             <li><a href="/Index_employer.html">Home</a></li>
             <li><a href="map.html">Map</a></li>
-            <li><a href="#0">Contact</a></li>
             <li><a href="/logout">Logout</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
@@ -54,8 +54,8 @@
     <div class="cd-scrolling-bg cd-scrolling-bg--color-2" style="padding: 1em 0;">
         <div class="cd-scrolling-bg__content employer-page">
             <div class="employer-welcome">
-                    <h1>Welcome</h1>
-                    <div class="employer-profile">
+                    <h1 id="welcome-msg">Welcome</h1>
+                    <div class="employer-profile" style="position: relative;">
                         <div class="person person-employer">
                             <div class="overlay">
                                 <img src="pictures/bossDummy.jpg">
@@ -63,9 +63,38 @@
                             </div>
                         </div>
                         <div class="employer-info">
-                            <label id="emp-mail">E-mail: </label><br>
-                            <label id="emp-company">Company: </label><br>
-                            <label id="emp-tracking">Tracking: </label>
+                            <div style="margin-top: 8.5em;">
+                                <label id="emp-mail"><b>E-mail:</b> </label><br>
+                                <label id="emp-company"><b>Company:</b> </label><br>
+                                <label id="emp-tracking"><b>Tracking:</b> </label>
+                            </div>
+                            <div class="employer-flight-data">
+                                <div class="emp-set-flight">
+                                    Enter new flight
+                                    <input id="emp-flight-input" type="text" placeholder="New flight...">
+                                    <button id="confirm-new-flight" class="EE-btn">Confirm</button>
+                                    <button id="cancel-new-flight" class="EE-btn">Cancel</button>
+                                </div>
+                                <div id="emp-fetch">
+                                    Fetching flight....
+                                </div>
+                                <p id="ER-arrive" style="display: none;">
+                                </p>
+                                <p id="ER-depart" style="display: none;">
+                                </p>
+                                <button id="emp-new-flight" class="EE-btn emp-btn" style="display: none;">
+                                New flight
+                                </button>
+                                <button id="emp-flyToPlane" class="EE-btn emp-btn" style="margin-left: 11em; display: none;">
+                                Fly to plane
+                                </button>
+                                <div id="emp-fetch-failed" style="display: none;">
+                                    <img src="./pictures/flight_not_found.png">
+                                    <span>
+                                        Could not find your flight...
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>  
                 <h2 class="employer-teamhead">This is your team</h2>
