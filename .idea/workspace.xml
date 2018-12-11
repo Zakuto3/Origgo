@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8c4917f-2457-4365-836e-1e2c1ac89dc9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/Css/employer.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/Css/employer.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/Index_employer.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/Index_employer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/Js/Script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/Js/Script.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -120,7 +115,7 @@
         <counts>
           <entry key="css" value="3843" />
           <entry key="html" value="5265" />
-          <entry key="js" value="6393" />
+          <entry key="js" value="6401" />
           <entry key="json" value="1" />
         </counts>
       </usages-collector>
@@ -129,7 +124,7 @@
           <entry key="CSS" value="3843" />
           <entry key="HTML" value="5265" />
           <entry key="JSON" value="1" />
-          <entry key="JavaScript" value="6393" />
+          <entry key="JavaScript" value="6401" />
         </counts>
       </usages-collector>
     </session>
@@ -217,7 +212,7 @@
         <entry file="file://$PROJECT_DIR$/public/Js/Script.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="804">
-              <caret line="119" column="16" lean-forward="true" selection-start-line="119" selection-start-column="16" selection-end-line="119" selection-end-column="16" />
+              <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
             </state>
           </provider>
         </entry>
@@ -425,7 +420,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="212515000" />
+    <option name="totallyTimeSpent" value="213155000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="11" y="-9" width="944" height="1078" extended-state="0" />
@@ -660,7 +655,7 @@
     <entry file="file://$PROJECT_DIR$/public/Js/Script.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="804">
-          <caret line="119" column="16" lean-forward="true" selection-start-line="119" selection-start-column="16" selection-end-line="119" selection-end-column="16" />
+          <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
         </state>
       </provider>
     </entry>
