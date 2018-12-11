@@ -65,6 +65,7 @@ app.post('/loginbtn',(req, res) =>{
          req.session.email = data[0].email;
          req.session.tracking = data[0].trackingIcao24;
          req.session.companyName = data[0].companyName;
+         req.session.employer = data[0].employer;
          req.session.usertype = emptype;
         }
       console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass, req.body.emptype); 
