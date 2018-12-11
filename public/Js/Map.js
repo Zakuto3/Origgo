@@ -218,9 +218,37 @@ function initHover(){
   })
 }
 
+
+(()=>{ 
+  let req = new XMLHttpRequest();
+  req.open('post','/checkuser');
+  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  req.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){ 
+      console.log(window.location.pathname)
+      if(req.responseText != ""){
+          let user = JSON.parse(req.responseText);
+          if(user.usertype == "admin" || !user.usertype){
+            initPopUp(false);
+          }
+          else{
+            initPopUp(true);
+          }
+      }
+      else {
+        initPopUp(false);}
+    }
+
+    else if (this.status !== 200 && this.readyState != 4) {
+      alert('Request failed.  Returned status of ' + req.status);
+    }
+  }
+  req.send(); 
+})();
+
+//initPopUp();
 let click;
-initPopUp();
-function initPopUp(){
+function initPopUp(includeSave = true){
   let closePop = document.createElement("button");
   closePop.classList.add("popup-close");
   closePop.innerHTML = "X";
@@ -280,8 +308,8 @@ function initPopUp(){
 
           pop.appendChild(popTitle);
           pop.appendChild(closePop);
-          pop.appendChild(popText);console.log(window);
-          pop.appendChild(saveBtn);
+          pop.appendChild(popText);
+          if(includeSave) pop.appendChild(saveBtn);
           overlay.setPosition(coords);
         }
         else { 
