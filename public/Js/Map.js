@@ -309,7 +309,10 @@ function initPopUp(includeSave = true){
           pop.appendChild(popTitle);
           pop.appendChild(closePop);
           pop.appendChild(popText);
-          if(includeSave) pop.appendChild(saveBtn);
+          if(includeSave) {
+            pop.appendChild(saveBtn);
+          }
+          else{ document.getElementsByClassName("popup-paragraph")[0].style.paddingBottom ="1em"; }
           overlay.setPosition(coords);
         }
         else { 
