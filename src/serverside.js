@@ -161,46 +161,79 @@ app.get('/logout',function(req,res) {
     });
 });
 
+function reroute(usertype, url){
+      console.log("reroute usertype: ",usertype);
+      switch(url){
+        case "/signup.html":
+        case "/login.html":
+          if(usertype) return __dirname + `/../public/Index_${usertype}.html`;
+          else return __dirname + `/../public/${url}`;
+          break;
+        case "/Index.html":
+        case "/Index_admin.html":
+        case "/Index_employer.html":
+        case "/Index_employee.html":
+          if(!usertype) return __dirname + `/../public/Index.html`;
+            else return __dirname + `/../public/Index_${usertype}.html`;
+            break;
+        case "/map.html":
+          if(usertype) return __dirname + `/../public/${url}`;
+          else return __dirname + `/../public/Index.html`;
+          break;
+        case "/contact.html":
+          return __dirname + `/../public/${url}`;
+          break;
+      }
+}
+
+
+app.get("/Index.html",(req, res) =>{//makes sure user dont reach signup if logedin
+  console.log(req.url);
+  let page = reroute(req.session.usertype, req.url);
+  res.send(fs.readFileSync(page, 'utf8'));
+});
+
+app.get("/Index_admin.html",(req, res) =>{//makes sure user dont reach signup if logedin
+  console.log(req.url);
+  let page = reroute(req.session.usertype, req.url);
+  res.send(fs.readFileSync(page, 'utf8'));
+});
+
+app.get("/Index_employer.html",(req, res) =>{//makes sure user dont reach signup if logedin
+  console.log(req.url);
+  let page = reroute(req.session.usertype, req.url);
+  res.send(fs.readFileSync(page, 'utf8'));
+});
+
+app.get("/Index_employee.html",(req, res) =>{//makes sure user dont reach signup if logedin
+  console.log(req.url);
+  let page = reroute(req.session.usertype, req.url);
+  res.send(fs.readFileSync(page, 'utf8'));
+});
+
+app.get("/map.html",(req, res) =>{//makes sure user dont reach signup if logedin
+  console.log(req.url);
+  let page = reroute(req.session.usertype, req.url);
+  res.send(fs.readFileSync(page, 'utf8'));
+});
+
+app.get("/contact.html",(req, res) =>{//makes sure user dont reach signup if logedin
+  console.log(req.url);
+  let page = reroute(req.session.usertype, req.url);
+  res.send(fs.readFileSync(page, 'utf8'));
+});
 
 app.get('/signup.html',(req, res) =>{//makes sure user dont reach signup if logedin
-    if (req.session.login) {
-      console.log(req.session.usertype);
-      switch(req.session.usertype)
-      {
-        case "employer":
-        res.send(fs.readFileSync(__dirname + '/../public/Index_employer.html', 'utf8'));
-        console.log("came in");
-        break;
-        case "employee": 
-        res.send(fs.readFileSync(__dirname + '/../public/Index_employee.html', 'utf8'));
-        break;
-        default:
-          res.redirect('/');       
-        break;
-      }
-    }else{
-      res.send(fs.readFileSync(__dirname + '/../public/signup.html', 'utf8'));//go to signup
-    }
+  console.log(req.url);
+  let page = reroute(req.session.usertype, req.url);
+  res.send(fs.readFileSync(page, 'utf8'));
 });
 
 app.get('/login.html',(req, res) =>{
-    if (req.session.login) {
-      switch(req.session.usertype)
-      {
-        case "employer":
-        res.send(fs.readFileSync(__dirname + '/../public/Index_employer.html', 'utf8'));
-        console.log("came in");
-        break;
-        case "employee": 
-        res.send(fs.readFileSync(__dirname + '/../public/Index_employee.html', 'utf8'));
-        break;
-        default:
-          res.redirect('/');       
-        break;
-      }
-    }else{
-      res.send(fs.readFileSync(__dirname + '/../public/login.html', 'utf8'));
-    }
+  console.log(req.url);
+  let page = reroute(req.session.usertype, req.url);
+  console.log("page: ",page);
+  res.send(fs.readFileSync(page, 'utf8'));
 });
 
 /*Sends all current non-null airplanes to client*/
@@ -232,36 +265,6 @@ app.get('/addAirplanes', (req, res) => {
     res.send(planes);
   });
 });
-
-// app.get('/addHeatmap', (req, res) => {
-//     request("https://opensky-network.org/api/states/all", function(data){
-//
-//         var planeObject = "{ \"type\": \"MultiPoint\",\"coordinates\": ["
-//         if(data){
-//             data["states"].forEach(function(plane){
-//                 /*Boolean if plane is on ground*/
-//                 var planeGrounded = plane[8];
-//                 /*Indexes 5,6 contains coordinates for the plane*/
-//                 var lat = plane[6];
-//                 var lon = plane[5];
-//                 if(!planeGrounded && lat && lon && plane[1]!=""){
-//                     console.log(lat);
-//                     /*Index 10 contains plane rotation in degrees
-//                     North is 0 degrees. Index 0 has unique icao24 code*/
-//                     planeObject = planeObject + "[" + lat + "," + lon + "],";
-//                 }
-//             });
-//             planeObject = planeObject.slice(0,-1) + "]";
-//             planeObject = planeObject + "}";
-//
-//             console.log(planeObject);
-//         }
-//         else{
-//             console.log("States null");
-//         }
-//         res.send(planeObject);
-//     });
-// });
 
 //gets a bunch of info on a plane
 app.get('/getAirplane', (req, res) => {
@@ -317,6 +320,7 @@ app.get('/flightToDB', (req, res) => {
     }
     
     DatabaseConn(query).then(function(){
+      req.session.tracking = req.query.flightIcao;
       res.send(true);
     }).catch((err) => {
       console.log("flightToDB error: ", err);
@@ -325,51 +329,6 @@ app.get('/flightToDB', (req, res) => {
   }
   else { res.send(false); }
 });
-
-//check and update not necessary with new database setup
-// app.get('/updateFlightToDB', (req, res) => {
-//   if(req.session.login){
-//     const query = "UPDATE origgo.usersavedplanes SET icao24 = '"+req.query.flightIcao+"' WHERE UID = '"+req.session.userId+"';";
-//     DatabaseConn(query).then(() => {
-//       res.send(true);
-//     }).catch((err) => {
-//       console.log("updateFlightToDB error: ",err);
-//       res.send(false);
-//     })
-//   }
-//   else { res.send(false); }
-// });
-
-// app.get('/checkUserSaved', (req, res) => {
-//   if(req.session.login){
-//     const query = `SELECT trackingIcao24 from ${req.session.usertype} WHERE UID == '${req.session.userId}'`;
-//     DatabaseConn(query).then((rows) => {
-//       if(rows.length > 0) res.send(true);
-//       else res.send(false);
-//     }).catch((err) => {
-//       console.log("checkUserSaved error: ", err);
-//       res.send(false);
-//     })
-//   }
-//   else { res.send(false); }
-// });
-
-//NOT USED
-// app.get('/getIcao24', (req, res) => {
-//   if(req.query.callSign){
-//     const query = "SELECT icao24 FROM origgo.airplane WHERE callsign = '"+req.query.callSign+"';";
-//     DatabaseConn(query).then(function(rows){
-//       console.log("rows: ",rows);
-//       if(rows.length > 0){
-//         res.send(rows[0].icao24);
-//       }
-//       else{ res.send("no results"); }
-//     }).catch((err) => {
-//       console.log("getIcao24 err: ", err);
-//     });
-//   }
-//   else { res.send("callsign empty"); }
-// })
 
 app.get("/getCompanies", (req,res)=>{
   let companies = [];
