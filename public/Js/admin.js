@@ -1,20 +1,19 @@
-// function checkAdmin(){
-// 	AJAXget("/checkUserType", (res) => {
-// 		console.log("check1",res);
-// 		res = JSON.parse(res);
-// 		if(!res.type){
-// 			window.location.href=`/Index.html`;
-// 		}
-// 		else if(res.type != "admin"){
-// 			window.location.href=`/Index_${res.type}.html`;
-// 		}
-// 		else{
-// 			document.getElementById("admin-welcome").innerHTML = "Welcome "+res.name;
-// 		}
-// 		console.log(res);
-// 	})
-// }
-// checkAdmin();
+(()=>{
+	req = new XMLHttpRequest();
+	req.open('post','/checkuser');
+	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	req.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200){		
+			if(req.responseText != ""){
+				let admin = JSON.parse(req.responseText);
+				document.getElementById("admin-welcome").innerHTML = "Welcome "+admin.name;
+			}
+		}else if (this.status !== 200 && this.readyState != 4) {
+			alert('Request failed.  Returned status of ' + req.status);
+		}
+	}
+	req.send(); 
+})();
 
 function fillDropDown(items, dropdown){
 	for (let i = 0; i < dropdown.options.length; i++) {

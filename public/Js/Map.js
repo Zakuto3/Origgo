@@ -1,5 +1,5 @@
 //Creation of map with Openlayers API, requires script-tags in html
-let mouseZoom = (window.location.pathname == "/map.html") ? true : false;
+let mouseZoom = (document.getElementById("search")) ? true : false;
 
 const map = new ol.Map({
   target: 'map',
@@ -142,6 +142,13 @@ function flyToPlane(flightIcao){
     });
   }
   else{
+    if(document.getElementById("map-search-err")){
+      let err = document.getElementById("map-search-err");
+      if(err.style.display != "block"){
+        err.style.display = "block";
+        setTimeout(()=>{err.style.display = "none"}, 2800);
+      }
+    }
     console.log("Plane not found on map");
     addPlaneByFlight(flightIcao, true);
   }
@@ -218,9 +225,37 @@ function initHover(){
   })
 }
 
+
+(()=>{ 
+  let req = new XMLHttpRequest();
+  req.open('post','/checkuser');
+  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  req.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){ 
+      console.log(window.location.pathname)
+      if(req.responseText != ""){
+          let user = JSON.parse(req.responseText);
+          if(user.usertype == "admin" || !user.usertype){
+            initPopUp(false);
+          }
+          else{
+            initPopUp(true);
+          }
+      }
+      else {
+        initPopUp(false);}
+    }
+
+    else if (this.status !== 200 && this.readyState != 4) {
+      alert('Request failed.  Returned status of ' + req.status);
+    }
+  }
+  req.send(); 
+})();
+
+//initPopUp();
 let click;
-initPopUp();
-function initPopUp(){
+function initPopUp(includeSave = true){
   let closePop = document.createElement("button");
   closePop.classList.add("popup-close");
   closePop.innerHTML = "X";
@@ -239,6 +274,9 @@ function initPopUp(){
   saveBtn.id = "save-flight-map";
   saveBtn.classList.add("popup-save");
   saveBtn.innerHTML = "Save this flight";
+
+  let successMsg = document.createElement("div");
+  successMsg.innerHTML = `<span style="opacity: 0" id="pop-success-msg" class="saved-flight">Flight saved</span>`;
 
   let overlay = new ol.Overlay({
     element: pop
@@ -274,14 +312,21 @@ function initPopUp(){
           <b>Departed from:</b><br> ${depatureAirport}.`;
 
           saveBtn.addEventListener("click", function save(e) {
+            console.log("BOI");
             addUserFlight(flightIcao);
+            document.getElementById("pop-success-msg").style.opacity = "1";
+            setTimeout(()=>{document.getElementById("pop-success-msg").style.opacity = "0";}, 2800)
             saveBtn.removeEventListener("click", save);
           });
 
           pop.appendChild(popTitle);
           pop.appendChild(closePop);
-          pop.appendChild(popText);console.log(window);
-          pop.appendChild(saveBtn);
+          pop.appendChild(popText);
+          if(includeSave) {
+            pop.appendChild(saveBtn);
+          }
+          else{ document.getElementsByClassName("popup-paragraph")[0].style.paddingBottom ="1em"; }
+          pop.appendChild(successMsg.firstChild);
           overlay.setPosition(coords);
         }
         else { 

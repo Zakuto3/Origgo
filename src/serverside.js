@@ -65,6 +65,7 @@ app.post('/loginbtn',(req, res) =>{
          req.session.email = data[0].email;
          req.session.tracking = data[0].trackingIcao24;
          req.session.companyName = data[0].companyName;
+         req.session.employer = data[0].employer;
          req.session.usertype = emptype;
         }
       console.log("req.session: ",req.session.login,"\nreq:",req.body.Name, req.body.Pass, req.body.emptype); 
@@ -173,6 +174,7 @@ function reroute(usertype, url){
         case "/Index_admin.html":
         case "/Index_employer.html":
         case "/Index_employee.html":
+        case "/":
           if(!usertype) return __dirname + `/../public/Index.html`;
             else return __dirname + `/../public/Index_${usertype}.html`;
             break;
@@ -186,6 +188,11 @@ function reroute(usertype, url){
       }
 }
 
+app.get("/",(req, res) =>{
+  console.log(req.url);
+  let page = reroute(req.session.usertype, req.url);
+  res.send(fs.readFileSync(page, 'utf8'));
+});
 
 app.get("/Index.html",(req, res) =>{
   console.log(req.url);

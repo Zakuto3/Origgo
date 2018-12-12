@@ -12,13 +12,14 @@
 		<div class="map-searchbar">
             <input type="text" id="search" placeholder="Search for flights...">
             <input type="button" value="Track" onclick="flyToPlane(document.getElementById('search').value.toUpperCase());">
-			<div id="drop" class="drpdwn-content">
+            <span class="map-err" id="map-search-err" style="display: none;">Flight not found</span>
+			<!-- <div id="drop" class="drpdwn-content">
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
 				<a onclick="selectPlane(this.id, this.name)" style="display: none"></a>
-			</div>
+			</div> -->
         </div>
 		<a href="./Index.html">
 			<input id="map-home" class="map-btn" type="button" value="Leave map">	
