@@ -2,12 +2,12 @@
 
 
 :root{
-    --bg-color-1:#90B494;
-    --bg-color-2:#DBCFB0;
+    --bg-color-1:#98D9C2;
+    --bg-color-2:#ABEDC6;
     --header-link:#BFC8AD;
-    --font-color: black;
+    --font-color: #403233;
     --link-border:#545775;
-    --link-color:#718F94;
+    --link-color:#B9FFB7;
     --linkhover-color: black;
 
 }
@@ -50,7 +50,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     left: 0;
     width: 100%;
     background: rgba(0,0,0,0);
-    z-index: 3;
+    z-index: 4;
 }
 
 .cd-main-header__alt {
@@ -61,7 +61,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
     height: 70px;
     background: var(--header-link);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    z-index: 3;
+    z-index: 4;
 }
 
 
@@ -346,7 +346,7 @@ Alternate Fixed & Scroll Backgrounds - by CodyHouse.co
   line-height: 1.6;
   -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
           box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  z-index: 3;
 }
 
 

@@ -48,12 +48,16 @@
 }
 
 .employer-welcome img{
-	width: 100%;
+	width: 90%;
 }
 
 .employer-profile{
 	display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     padding-bottom: 3em;
+    border-bottom: black solid 1px;
 }
 
 .employer-info{
@@ -274,7 +278,7 @@
 }
 
 .employer-info p{
-        width: fit-content;
+    width: fit-content;
     margin: 0 1em;
     padding: .5em 1em;
     display: table-cell;
@@ -324,6 +328,12 @@
     margin-bottom: 3.1em;
     width: 57%;
     bottom: 0px; height: 10em;
+}
+
+@media only screen and (max-width: 768px) {
+    h1{
+        text-align: center;
+    }
 }
 
 .emp-set-flight{
