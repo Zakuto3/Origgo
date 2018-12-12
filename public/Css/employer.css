@@ -48,7 +48,7 @@
 }
 
 .employer-welcome img{
-	width: 90%;
+	width: 100%;
 }
 
 .employer-profile{
@@ -186,7 +186,6 @@
 .EE-btn{
     background: #7db19f !important;
     color: white;
-    margin: 0 5%;
     padding: 2% 5%;
     border-style: hidden;
 }
@@ -278,7 +277,7 @@
 }
 
 .employer-info p{
-    width: fit-content;
+    width: 20em;
     margin: 0 1em;
     padding: .5em 1em;
     display: table-cell;
@@ -291,18 +290,14 @@
 
 .emp-btn{
     bottom: 0px;
-    position: absolute;
-    margin: 1em;
-    margin-right: 0;
+    margin-top: 3em;
 }
 
 #emp-fetch{
-    position: absolute;
     bottom: 4.5em;
     margin: 0 11.5em;
 }
 #emp-fetch-failed{
-    position: absolute;
     display: block;
     top: 0px;
     width: 100%;
@@ -311,45 +306,57 @@
 }
     
 #emp-fetch-failed img{
-    position: absolute;
-    width: 40%;
+    width: 30%;
     height: 100%;
     padding: 3%;
     right: 0;
 }
 
 #emp-fetch-failed span{
-    position: absolute;
     left: 0;
     margin: 4em;;
 }
 
 .employer-flight-data{
-    position: absolute;
     border: solid white 1px;
     margin-bottom: 3.1em;
-    width: 57%;
-    bottom: 0px; height: 10em;
+    width: 30em;
+    height:8em;
+    bottom: 0px;
 }
 
-@media only screen and (max-width: 768px) {
-    h1{
-        text-align: center;
-    }
-}
-
-.emp-set-flight{
+.employer-flight-data .emp-set-flight{
     position: absolute;
     background: whitesmoke;
-    height: 100.1%;
-    bottom: 0px;
-    width: 30%;
-    padding: 0 .7em;
+    width: 30em;
+    height: 8em;
+    padding:  0.5em .7em 0 .7em;
     text-indent: .5em;
-    padding-top: 1.5em;
+    text-align: center;
     opacity: 0;
     z-index: -1;
     transition: .5s all;
+}
+
+@media only screen and (max-width: 768px) {
+    h1 {
+        text-align: center;
+    }
+
+    .employer-flight-data {
+        width: 20em;
+    }
+
+    .employer-flight-data .emp-set-flight {
+        width: 20em;
+    }
+
+    .emp-btn{
+        bottom: 0px;
+        margin-top: 4em !important;
+        margin-right: 0;
+    }
+
 }
 
 .employer-flight-data input[type='text']{ 
