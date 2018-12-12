@@ -256,13 +256,13 @@ function initHover(){
 //initPopUp();
 let click;
 function initPopUp(includeSave = true){
+  let pop = document.createElement("div");
+  pop.classList.add("popup");
+
   let closePop = document.createElement("button");
   closePop.classList.add("popup-close");
   closePop.innerHTML = "X";
-  closePop.addEventListener("click", function(evt) { overlay.setPosition(undefined); click.getFeatures().clear(); });
-
-  let pop = document.createElement("div");
-  pop.classList.add("popup");
+  closePop.addEventListener("click", function(evt) { document.getElementsByClassName("popup")[0].style.display = "none";/* overlay.setPosition(undefined);*/click.getFeatures().clear(); });
 
   let popText = document.createElement("p");
   popText.classList.add("popup-paragraph");
@@ -275,8 +275,11 @@ function initPopUp(includeSave = true){
   saveBtn.classList.add("popup-save");
   saveBtn.innerHTML = "Save this flight";
 
-  let successMsg = document.createElement("div");
-  successMsg.innerHTML = `<span style="opacity: 0" id="pop-success-msg" class="saved-flight">Flight saved</span>`;
+  let successMsg = document.createElement("span");
+  successMsg.id="pop-success-msg";
+  successMsg.classList.add("saved-flight");
+  successMsg.style.opacity = "0";
+  successMsg.innerHTML = "Flight saved";
 
   let overlay = new ol.Overlay({
     element: pop
@@ -314,25 +317,34 @@ function initPopUp(includeSave = true){
           saveBtn.addEventListener("click", function save(e) {
             console.log("BOI");
             addUserFlight(flightIcao);
-            document.getElementById("pop-success-msg").style.opacity = "1";
-            setTimeout(()=>{document.getElementById("pop-success-msg").style.opacity = "0";}, 2800)
+            let msg = document.getElementById("pop-success-msg");
+            //msg.style.display = "block";
+            msg.style.opacity = "1";
+            setTimeout(()=>{msg.style.opacity = "0";
+              /*msg.style.display = "none"*/;}, 2800)
             saveBtn.removeEventListener("click", save);
           });
 
           pop.appendChild(popTitle);
           pop.appendChild(closePop);
           pop.appendChild(popText);
+
+          
           if(includeSave) {
             pop.appendChild(saveBtn);
+            pop.appendChild(successMsg);
           }
           else{ document.getElementsByClassName("popup-paragraph")[0].style.paddingBottom ="1em"; }
-          pop.appendChild(successMsg.firstChild);
+          document.getElementsByClassName("popup")[0].style.display = "block";
           overlay.setPosition(coords);
+          //pop.appendChild(successMsg.firstChild);
         }
         else { 
+
           pop.innerHTML = "Unavailable";
           pop.appendChild(closePop);
           overlay.setPosition(coords); 
+          document.getElementsByClassName("popup")[0].style.display = "block";
         }
       })
     }
