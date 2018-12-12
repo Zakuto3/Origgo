@@ -8,6 +8,7 @@
 }
 
 .admin-cell{
+    border-left: solid 0.1px whitesmoke;
 	margin: 0 .3em;
 	flex: 1 1;
     flex-direction: column;
@@ -23,7 +24,7 @@
 
 .admin-cell .info{
     font-size: .6em;
-    background-color: #D4E7CE;
+    background-color: #69bea0;
     margin: 2% 0;
     padding: 0 4%;
 }
@@ -46,12 +47,12 @@
     margin: 2% 0;
     padding: 2%;
     color: white;
-    background-color: #5E994B;
+    background-color: #7db19f !important; 
     border-style: hidden;
 }
 
 .flex button:disabled:hover{
-    background: #76947b8f;
+    background: #7db19f !important; 
     color: #535d53;
     cursor: default;
 }
@@ -62,8 +63,8 @@
 }
 
 .flex button:hover{
-	background: #325228;
 	cursor: pointer;
+    background-color: #5f8b7c !important; 
 }
 
 .flex select{

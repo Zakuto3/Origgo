@@ -129,8 +129,9 @@
     height: 25px;
     float: right;
     border-radius: 3%;
-    padding-left: 1%;
-    padding-top: 1%;
+    /* padding-left: 1%; */
+    /* padding-top: 1%; */
+    margin: 1% 1% 0 0;
     border: none;
     background-color: #ffffff;
     border-radius: 0.25em;
@@ -138,13 +139,13 @@
     box-shadow: none;
 }
 .closeAddMem:hover {
-    background-color: #addfad;
+    background-color: var(--bg-color-1) !important;
 }
 
 
 .AddMemberBtn {
     border: none;
-    background-color: rgba(173, 223, 173, 0.57);
+    background-color: var(--bg-color-1) !important;
     color: #3d3536;
     box-shadow: none;
     width: 100%;
@@ -183,11 +184,10 @@
 }
 
 .EE-btn{
-    background: #5E994B; 
+    background: #7db19f !important;
     color: white;
     margin: 0 5%;
     padding: 2% 5%;
-    background-color: #5E994B;
     border-style: hidden;
 }
 
@@ -245,7 +245,7 @@
     z-index: 2;
     top: 0px;
     right: 0px;
-    background: #b4d7a8;
+    background: var(--bg-color-1) !important;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     overflow: auto;
     padding: 1% 0%;

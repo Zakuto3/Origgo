@@ -100,11 +100,14 @@ app.post('/signupForm', (req, res) =>{
     if (data[0].HITS) {
       DatabaseConn(QueryString).then(function(row){
       res.send(row.affectedRows.toString());
-      }).catch(function(error){console.log(error);}) 
+      }).catch(function(error){console.log(error); res.send(error);}) 
     }else{
       res.send(data[0].HITS.toString())
     }
-  }).catch(function(error){console.log(error);})
+  }).catch(function(error){ 
+    console.log(error);
+    res.send(error);
+  })
 });
 
 app.post('/checkuser',(req,res) => {

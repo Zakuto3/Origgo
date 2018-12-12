@@ -42,7 +42,7 @@ function signupRequest(){
 			}		
 	});
 	if (elobj['Password'].length < 5) {
-		document.getElementById("errormsg").innerHTML = "Password is to short";
+		document.getElementById("errormsg").innerHTML = "Password is too short";
 		check = false;
 	}
 	if (check) {runPost();}
@@ -58,9 +58,13 @@ let runPost = function postSignup(){
 	req.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){
 			if (req.responseText == '1') {
-				window.location.href="/index.html";
+				window.location.href="/Index.html";
 			}else{
-				document.getElementById("errormsg").innerHTML = "Something went wrong, try again later.."		
+				let err = JSON.parse(req.responseText);
+				console.log("err:", JSON.parse(req.responseText));
+				if(err.code = "ER_DUP_ENTRY") {  document.getElementById("errormsg").innerHTML = "User already exists";	}
+				else
+				document.getElementById("errormsg").innerHTML = "Something went wrong, try again later..";	
 			}
 		}
 		else if (this.status !== 200 && this.readyState != 4) {
