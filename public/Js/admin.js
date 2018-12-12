@@ -55,7 +55,6 @@ function showSuccess(msg, elementToAppend, successId){
 	setTimeout(()=>{
 		successMsg.remove();
 	}, 3000);
-
 }
 
 function showError(msg, elementToAppend, errId){
