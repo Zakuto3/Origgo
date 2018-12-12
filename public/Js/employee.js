@@ -56,7 +56,6 @@ function addslitsener(flight) {
 	//document.getElementById("emp-tracking").style.color = "blue";
 	//document.getElementById("emp-tracking").style.border = "groove";
 	//console.log("did this");
-	
 }
 document.getElementById("emp-flyToPlane").addEventListener("click", (e) => {
 	document.body.scrollTop = document.body.scrollHeight;

@@ -68,7 +68,7 @@ function updateTracking(flight){
 				let form = document.getElementsByClassName("emp-set-flight")[0];
 				form.style.opacity = 0;
 				form.style.zIndex = -1;
-				document.getElementById("emp-tracking").innerHTML = `<b>Tracking: </b>${flight}`;
+				document.getElementById("emp-tracking").innerHTML = `<b>Tracking:</b> ${flight}`;
 	            console.log("Flight added to user");
 	            document.getElementById("emp-fetch-failed").style.display = "none";
 	            document.getElementById("emp-fetch").style.display = "block";
@@ -86,16 +86,25 @@ function updateTracking(flight){
 	//addslitsener(flight);
 }
 
-function addslitsener(flight) {
-	//document.getElementById("emp-tracking").style.color = "blue";
-	//document.getElementById("emp-tracking").style.border = "groove";
-	//console.log("did this");
-	document.getElementById("emp-flyToPlane").addEventListener("click", (e) => {
+// function addslitsener(flight) {
+// 	//document.getElementById("emp-tracking").style.color = "blue";
+// 	//document.getElementById("emp-tracking").style.border = "groove";
+// 	//console.log("did this");
+// 	document.getElementById("emp-flyToPlane").addEventListener("click", (e) => {
+// 	document.body.scrollTop = document.body.scrollHeight;
+//     document.documentElement.scrollTop = document.body.scrollHeight;
+// 	flyToPlane(flight);
+// });
+// }
+
+document.getElementById("emp-flyToPlane").addEventListener("click", (e) => {
 	document.body.scrollTop = document.body.scrollHeight;
     document.documentElement.scrollTop = document.body.scrollHeight;
-	flyToPlane(flight);
+    let track = document.getElementById("emp-tracking").innerHTML;
+    //console.log(track.substring(track.lastIndexOf(' '), track.length));
+    //document.getElementById("").
+	flyToPlane(track.substring(track.lastIndexOf(' ')+1, track.length));
 });
-}
 
 function showNewPerson(name, email){
 	loadEmpToMap({name : name, email: email});
@@ -151,7 +160,7 @@ function loadEmployee(empObject){
 	personInfo.innerHTML = 
 		`<b>Name: </b>${empObject.name}<br>
 	 	<b>E-mail: </b>${empObject.email}<br>
-		<label id="${empObject.name}-tracking"><b>Tracking: </b>${tracking}</label><br>`;
+		<label id="${empObject.name}-tracking"><b>Tracking:</b> ${tracking}</label><br>`;
 
 	let deleteBtn = document.createElement("button");
 	deleteBtn.classList.add("EE-btn");
@@ -218,7 +227,7 @@ function showSetFlightForm(name){
 			setEmployeeFlight(name, flight);
 		}
 		else{
-			document.getElementById(name+"-tracking").innerHTML = `<b>Tracking: </b>Nothing`;
+			document.getElementById(name+"-tracking").innerHTML = `<b>Tracking:</b> Nothing`;
 			document.getElementById(`sidebar-track-${name}`).innerHTML = "Nothing";
 		}
 		hideSetFlightForm(name);
@@ -241,7 +250,7 @@ function setEmployeeFlight(employee, flightIcao){
 	AJAXget(`/flightToDB?usertype=employee&flightIcao=${flightIcao}&name=${employee}`, (res)=>{
 		if(res == "true"){
 			removePlane(document.getElementById(`sidebar-track-${employee}`).innerHTML)
-			document.getElementById(employee+"-tracking").innerHTML = `<b>Tracking: </b>${flightIcao}`;
+			document.getElementById(employee+"-tracking").innerHTML = `<b>Tracking:</b> ${flightIcao}`;
 			document.getElementById(`sidebar-track-${employee}`).innerHTML = flightIcao;
             console.log("Flight added to user");
             addIfPlaneAvail(employee, flightIcao);
@@ -322,7 +331,7 @@ function loadERplane(flightIcao){
 			depart.innerHTML = `<b>Departed from:</b><br> ${depatureAirport}`;
 			arrive.innerHTML = `<b>Arriving at:</b><br> ${arrivalAirport}`;
 
-			addslitsener(flightIcao);
+			//addslitsener(flightIcao);
 
 			document.getElementById("emp-flyToPlane").style.display = "inline-block";
 			depart.style.display = "table-cell";
@@ -351,7 +360,7 @@ document.getElementById("confirm-new-flight").addEventListener("click", (e) =>{
 				let form = document.getElementsByClassName("emp-set-flight")[0];
 				form.style.opacity = 0;
 				form.style.zIndex = -1;
-				document.getElementById("emp-tracking").innerHTML = `<b>Tracking: </b>${newFlight}`;
+				document.getElementById("emp-tracking").innerHTML = `<b>Tracking:</b> ${newFlight}`;
 	            console.log("Flight added to user");
 	            document.getElementById("emp-fetch-failed").style.display = "none";
 	            document.getElementById("emp-fetch").style.display = "block";

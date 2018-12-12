@@ -260,7 +260,7 @@
 
 .sidebar-person:hover{
     cursor: pointer;
-    background: #799371;
+    background: #7db3a0 !important;
 }
 
 .sidebar-img{
