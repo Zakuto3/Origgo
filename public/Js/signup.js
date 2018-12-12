@@ -2,14 +2,31 @@ let elobj;
 let check;
 
 (()=>{
-    let selector = ''+
-    '<select id="CompSelector">'+
-    '<option value="google">Google</option>'+
-    '<option value="intel">Intel</option>'+
-    '<option value="microsoft">Microsoft</option>'+
-    '<option value="imb">IMB</option>'+
-    '</select>';
-   document.getElementById("comp").innerHTML += selector;
+	AJAXget(`/getCompanies`, (response)=>{
+		if(response != ""){				
+			let companies = JSON.parse(response);
+			let selecter = document.createElement("select");
+			selecter.id = "CompSelector";
+			companies.forEach((company) => {
+				let opt = document.createElement("option");
+				opt.value = company.company;
+				opt.textContent = company.company;
+				selecter.appendChild(opt);
+				//names.push(company.company);
+			});
+			document.getElementById("comp").appendChild(selecter);
+			//fillDropDown(names, document.getElementById("company-transfer-selector"));
+			//fillDropDown(names, document.getElementById("company-selector"));
+		}
+	})
+   //  let selector = ''+
+   //  '<select id="CompSelector">'+
+   //  '<option value="google">Google</option>'+
+   //  '<option value="intel">Intel</option>'+
+   //  '<option value="microsoft">Microsoft</option>'+
+   //  '<option value="imb">IMB</option>'+
+   //  '</select>';
+   // document.getElementById("comp").innerHTML += selector;
 })();
 
 function signupRequest(){
