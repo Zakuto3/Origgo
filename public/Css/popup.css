@@ -14,6 +14,7 @@
     color: black;
     box-shadow: none;
     font-family: "Roboto", sans-serif;
+    margin-right: 5px;
 }
 
 .popup-close:hover{
@@ -43,7 +44,7 @@
     width: 100%;
     text-indent: 0%;
     background-color: #7b95b7;
-    color: #3d3536;
+    color: whitesmoke;
     font-size: .9em;
     border-bottom: black solid 1px;
     text-align: center;
@@ -67,4 +68,17 @@
 
 .popup b{
     font-weight: bold;
+}
+
+span.saved-flight{
+    background: rgba(121, 147, 113, 0.74);
+    /* padding: .1em 1em; */
+    width: 100%;
+    font-size: 1.5em;
+    color: #201717;
+    text-align: center;
+    font-family: serif;
+    float: left;
+    transition: 1s all;
+    /* margin: 1em 0 0 1em; */
 }

@@ -35,6 +35,7 @@ function setPassword(name){
 	let PassConfirm = document.createElement("INPUT");
 	PassConfirm.setAttribute("type", "password");
 	PassConfirm.setAttribute("placeholder", "Confirm password");
+	PassConfirm.classList.add("textinput");
 	PassConfirm.id = "pswdconf";
 	document.getElementById('container').appendChild(PassConfirm);
 
@@ -42,6 +43,7 @@ function setPassword(name){
 	let submitbtn = document.createElement("button");
 	submitbtn.innerHTML = "Submit";
 	submitbtn.id = "submitpass"
+	submitbtn.classList.add("AddMemberBtn");
 	document.getElementById('container').appendChild(submitbtn);
 
 	document.getElementById("submitpass").addEventListener("click", (e)=> {
