@@ -62,7 +62,7 @@ document.getElementById("emp-flyToPlane").addEventListener("click", (e) => {
 	document.body.scrollTop = document.body.scrollHeight;
     document.documentElement.scrollTop = document.body.scrollHeight;
     let track = document.getElementById("emp-tracking").innerHTML;
-    console.log(track.substring(track.lastIndexOf(' '), track.length));
+    //console.log(track.substring(track.lastIndexOf(' '), track.length));
     //document.getElementById("").
 	flyToPlane(track.substring(track.lastIndexOf(' ')+1, track.length));
 });

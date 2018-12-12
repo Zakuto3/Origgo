@@ -156,12 +156,14 @@ function loadEmployee(empObject){
 	let deleteBtn = document.createElement("button");
 	deleteBtn.classList.add("EE-btn");
 	deleteBtn.innerHTML = "Delete";
+	deleteBtn.style.marginLeft ="1em";
 	deleteBtn.addEventListener("click", (e) => {
 		deleteEmployee(empObject.name, newPerson);
 	})  
 
 	let assignBtn = document.createElement("button");
 	assignBtn.classList.add("EE-btn");
+	assignBtn.style.marginLeft ="1em";
 	assignBtn.innerHTML = "Assign flight";
 	assignBtn.addEventListener("click", (e) => {
 		showSetFlightForm(empObject.name);
@@ -197,6 +199,7 @@ function showSetFlightForm(name){
 	let cancelBtn = document.createElement("button");
 	cancelBtn.innerHTML = "Cancel";
 	cancelBtn.classList.add("EE-btn");
+	cancelBtn.style.marginLeft ="1em";
 	cancelBtn.addEventListener("click", (e)=>{
 		console.log("cancel");
 		hideSetFlightForm(name);
@@ -207,6 +210,7 @@ function showSetFlightForm(name){
 	let confirmBtn = document.createElement("button");
 	confirmBtn.classList.add("EE-btn");
 	confirmBtn.innerHTML = "Assign";
+	confirmBtn.style.marginLeft ="1em";
 	confirmBtn.addEventListener("click", (e) => {
 		let flight = document.getElementById(name+"-input").value;
 		console.log(flight);
@@ -224,8 +228,8 @@ function showSetFlightForm(name){
 
 	let form = document.getElementById(name).children[0];
 	form.classList.add("showAssign");
-	form.appendChild(cancelBtn);
 	form.appendChild(confirmBtn);
+	form.appendChild(cancelBtn);
 }
 
 function hideSetFlightForm(name){
