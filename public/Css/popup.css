@@ -9,7 +9,7 @@
     border-radius: 3%;
     padding-left: 2.5%;
     padding-top: 1%;
-    background-color: white;
+    background-color: #7b95b7;
     border:none;
     color: black;
     box-shadow: none;
@@ -17,7 +17,7 @@
 }
 
 .popup-close:hover{
-    background-color: #7b95b7;
+    background-color: white;
     color:aliceblue;
 }
 
@@ -35,7 +35,6 @@
     margin: 5% 5% 5% 0;
     font-size: .7em;
     padding-left: 5%;
-    padding-top: 20%;
     text-align: left;
 }
 
