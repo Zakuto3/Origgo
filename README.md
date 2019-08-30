@@ -1,5 +1,5 @@
 # Origgo
-Flight acker
+Flight cracker
 HOW TO
 1. Make sure you have Node.js installed on your system: https://nodejs.org/en/
 2. Git clone this Repository.
